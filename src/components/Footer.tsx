@@ -5,9 +5,9 @@ const Footer = () => (
     <div className="container py-16">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="md:col-span-1">
-          <span className="font-serif text-2xl font-semibold">ConeYarn</span>
+          <span className="font-serif text-2xl font-bold uppercase">Yarneria</span>
           <p className="text-sm mt-3 opacity-70 font-sans leading-relaxed">
-            Premium yarns on cones for discerning knitters, designers, and textile professionals worldwide.
+            Premium selected Italian yarn on cones for knitters, designers, and textile professionals worldwide.
           </p>
         </div>
         <div>
@@ -44,7 +44,7 @@ const Footer = () => (
         </div>
       </div>
       <div className="border-t border-background/10 mt-12 pt-6 text-center text-xs font-sans opacity-40">
-        © 2026 ConeYarn. All rights reserved. Premium yarns on cones.
+        © 2026 Yarneria. All rights reserved. Premium selected Italian yarn on cones.
       </div>
     </div>
   </footer>

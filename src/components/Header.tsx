@@ -1,42 +1,67 @@
 import { Link } from "react-router-dom";
 import { ShoppingBag, Search, Menu, X, Heart } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+const announcements = [
+  "Free Worldwide Delivery Available",
+  "Easy & Simple Ordering",
+  "Italian Yarn Selection",
+];
 
 const Header = () => {
   const totalItems = useCartStore((s) => s.totalItems());
   const setIsOpen = useCartStore((s) => s.setIsOpen);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentAnnouncement, setCurrentAnnouncement] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   const navLinks = [
-    { to: "/products", label: "Shop All" },
-    { to: "/products", label: "New Arrivals" },
+    { to: "/products", label: "Yarns" },
+    { to: "/products", label: "Customers" },
+    { to: "/products", label: "Sale %" },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="bg-primary text-primary-foreground text-center py-2 text-xs font-sans tracking-widest uppercase">
-        Free shipping on orders over $150 · Premium yarns on cones
+      {/* Auto-sliding announcement bar */}
+      <div className="bg-primary text-primary-foreground text-center py-2 text-xs font-sans tracking-widest uppercase overflow-hidden">
+        <div
+          key={currentAnnouncement}
+          className="animate-fade-in"
+        >
+          ‹ {announcements[currentAnnouncement]} ›
+        </div>
       </div>
 
       <div className="container flex items-center justify-between py-4">
-        <button
-          className="lg:hidden p-2"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Left: Mobile menu toggle + Logo */}
+        <div className="flex items-center gap-3">
+          <button
+            className="lg:hidden p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
 
-        <Link to="/" className="flex flex-col items-center">
-          <span className="font-serif text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
-            ConeYarn
-          </span>
-          <span className="text-[10px] font-sans tracking-[0.3em] uppercase text-muted-foreground">
-            Premium Fiber Studio
-          </span>
-        </Link>
+          <Link to="/" className="flex flex-col items-start">
+            <span className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-foreground uppercase">
+              Yarneria
+            </span>
+            <span className="text-[9px] font-sans tracking-[0.2em] uppercase text-muted-foreground">
+              Premium Selected Italian Yarn on Cones
+            </span>
+          </Link>
+        </div>
 
+        {/* Center: Nav */}
         <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
@@ -49,6 +74,7 @@ const Header = () => {
           ))}
         </nav>
 
+        {/* Right: Icons */}
         <div className="flex items-center gap-3">
           <button className="p-2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
             <Search className="w-5 h-5" />
@@ -63,7 +89,7 @@ const Header = () => {
           >
             <ShoppingBag className="w-5 h-5" />
             {totalItems > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-sans font-semibold rounded-full flex items-center justify-center min-w-[18px] h-[18px]">
+              <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-sans font-semibold rounded-full flex items-center justify-center min-w-[18px] h-[18px]">
                 {totalItems}
               </span>
             )}
