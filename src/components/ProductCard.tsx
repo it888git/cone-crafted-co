@@ -74,7 +74,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </h3>
           <div className="flex items-center gap-2 pt-0.5">
             <span className="font-sans text-sm font-semibold text-foreground">
-              {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
+              {price.currencyCode} {parseFloat(price.amount).toFixed(2)} / kg
             </span>
           </div>
         </div>

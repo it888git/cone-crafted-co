@@ -87,7 +87,7 @@ const ProductDetail = () => {
 
             <div className="flex items-baseline gap-3">
               <span className="font-serif text-3xl font-semibold text-foreground">
-                {selectedVariant?.price.currencyCode} {parseFloat(selectedVariant?.price.amount || "0").toFixed(2)}
+                {selectedVariant?.price.currencyCode} {parseFloat(selectedVariant?.price.amount || "0").toFixed(2)} / kg
               </span>
             </div>
 

@@ -51,7 +51,7 @@ const CartDrawer = () => {
                     <h4 className="font-serif text-sm font-medium truncate">{item.product.node.title}</h4>
                     <p className="text-xs text-muted-foreground font-sans">{item.selectedOptions.map(o => o.value).join(' · ')}</p>
                     <p className="text-sm font-sans font-semibold mt-1">
-                      {item.price.currencyCode} {parseFloat(item.price.amount).toFixed(2)}
+                      {item.price.currencyCode} {parseFloat(item.price.amount).toFixed(2)} / kg
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <button
