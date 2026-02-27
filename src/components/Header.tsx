@@ -1,30 +1,25 @@
 import { Link } from "react-router-dom";
 import { ShoppingBag, Search, Menu, X, Heart } from "lucide-react";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/stores/cartStore";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 
 const Header = () => {
-  const { totalItems, setIsOpen } = useCart();
+  const totalItems = useCartStore((s) => s.totalItems());
+  const setIsOpen = useCartStore((s) => s.setIsOpen);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { to: "/products", label: "Shop All" },
-    { to: "/products?fiber=Alpaca", label: "Alpaca" },
-    { to: "/products?fiber=Cashmere", label: "Cashmere" },
-    { to: "/products?fiber=Merino", label: "Merino" },
-    { to: "/products?fiber=Silk", label: "Silk" },
+    { to: "/products", label: "New Arrivals" },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      {/* Top bar */}
       <div className="bg-primary text-primary-foreground text-center py-2 text-xs font-sans tracking-widest uppercase">
         Free shipping on orders over $150 · Premium yarns on cones
       </div>
 
       <div className="container flex items-center justify-between py-4">
-        {/* Mobile menu toggle */}
         <button
           className="lg:hidden p-2"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -33,7 +28,6 @@ const Header = () => {
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
 
-        {/* Logo */}
         <Link to="/" className="flex flex-col items-center">
           <span className="font-serif text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
             ConeYarn
@@ -43,7 +37,6 @@ const Header = () => {
           </span>
         </Link>
 
-        {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
@@ -56,7 +49,6 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* Actions */}
         <div className="flex items-center gap-3">
           <button className="p-2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
             <Search className="w-5 h-5" />
@@ -71,7 +63,7 @@ const Header = () => {
           >
             <ShoppingBag className="w-5 h-5" />
             {totalItems > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-sans font-semibold w-4.5 h-4.5 rounded-full flex items-center justify-center min-w-[18px] h-[18px]">
+              <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-sans font-semibold rounded-full flex items-center justify-center min-w-[18px] h-[18px]">
                 {totalItems}
               </span>
             )}
@@ -79,7 +71,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileMenuOpen && (
         <nav className="lg:hidden border-t border-border bg-background px-6 py-4 space-y-3">
           {navLinks.map((link) => (
