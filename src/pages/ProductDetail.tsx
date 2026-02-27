@@ -130,7 +130,7 @@ const ProductDetail = () => {
             {/* Actions */}
             <div className="flex gap-3">
               <Button
-                className="flex-1 bg-primary text-primary-foreground hover:opacity-90 py-6 text-sm font-sans tracking-wide"
+                className="flex-1 bg-orange-500 text-white hover:bg-orange-600 py-6 text-sm font-sans tracking-wide shadow-md border-0"
                 disabled={!available || cartLoading}
                 onClick={handleAddToCart}
               >
