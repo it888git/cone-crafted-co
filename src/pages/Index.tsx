@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Truck, Shield, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { categories, products } from "@/data/products";
+import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
 import heroImage from "@/assets/hero-yarn.png";
+import { categories } from "@/data/products";
+import { Loader2 } from "lucide-react";
 
 const Index = () => {
-  const featured = products.filter((p) => p.isBestseller || p.isNew).slice(0, 4);
+  const { data: products, isLoading } = useShopifyProducts(8);
 
   return (
     <main>
@@ -28,9 +30,6 @@ const Index = () => {
               <Button asChild className="bg-primary text-primary-foreground hover:opacity-90 px-8 py-6 text-sm font-sans tracking-wide">
                 <Link to="/products">Shop Collection <ArrowRight className="ml-2 w-4 h-4" /></Link>
               </Button>
-              <Button asChild variant="outline" className="px-8 py-6 text-sm font-sans tracking-wide border-foreground/20">
-                <Link to="/products?fiber=Cashmere">Explore Cashmere</Link>
-              </Button>
             </div>
           </div>
           <div className="relative animate-fade-in" style={{ animationDelay: "0.2s" }}>
@@ -50,7 +49,7 @@ const Index = () => {
             { icon: Truck, text: "Free Shipping $150+" },
             { icon: Shield, text: "Quality Guaranteed" },
             { icon: RotateCcw, text: "Easy Returns" },
-            { icon: Star, text: "4.9★ Average Rating" },
+            { icon: Star, text: "Premium Fibers" },
           ].map(({ icon: Icon, text }) => (
             <div key={text} className="flex items-center gap-2 text-sm font-sans text-muted-foreground">
               <Icon className="w-4 h-4 text-primary" />
@@ -74,7 +73,7 @@ const Index = () => {
           {categories.map((cat, i) => (
             <Link
               key={cat.name}
-              to={`/products?fiber=${cat.name}`}
+              to={`/products`}
               className="group relative overflow-hidden rounded-xl aspect-[3/4] animate-fade-in"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
@@ -100,7 +99,7 @@ const Index = () => {
           <div className="flex items-end justify-between mb-10">
             <div>
               <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold mb-2">
-                Staff Picks
+                Our Products
               </p>
               <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
                 Featured Yarns
@@ -113,11 +112,22 @@ const Index = () => {
               View all <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+            </div>
+          ) : products && products.length > 0 ? (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {products.slice(0, 4).map((product) => (
+                <ProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="font-serif text-xl text-muted-foreground">No products yet</p>
+              <p className="text-sm font-sans text-muted-foreground mt-2">Products will appear here once added to your Shopify store.</p>
+            </div>
+          )}
         </div>
       </section>
 

@@ -1,14 +1,24 @@
 import { useParams, Link } from "react-router-dom";
-import { products } from "@/data/products";
-import { useCart } from "@/context/CartContext";
-import { ShoppingBag, Star, Heart, ChevronRight, Truck, Shield, RotateCcw } from "lucide-react";
+import { useShopifyProduct } from "@/hooks/useShopifyProducts";
+import { useCartStore } from "@/stores/cartStore";
+import { ShoppingBag, Heart, ChevronRight, Truck, Shield, RotateCcw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ProductCard from "@/components/ProductCard";
+import { useState } from "react";
 
 const ProductDetail = () => {
-  const { id } = useParams();
-  const product = products.find((p) => p.id === id);
-  const { addItem } = useCart();
+  const { id: handle } = useParams();
+  const { data: product, isLoading } = useShopifyProduct(handle || "");
+  const addItem = useCartStore((s) => s.addItem);
+  const cartLoading = useCartStore((s) => s.isLoading);
+  const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
+
+  if (isLoading) {
+    return (
+      <div className="container py-20 flex justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -21,7 +31,23 @@ const ProductDetail = () => {
     );
   }
 
-  const related = products.filter((p) => p.fiber === product.fiber && p.id !== product.id).slice(0, 4);
+  const { node } = product;
+  const variants = node.variants.edges;
+  const selectedVariant = variants[selectedVariantIdx]?.node;
+  const image = node.images.edges[0]?.node;
+  const available = selectedVariant?.availableForSale ?? false;
+
+  const handleAddToCart = async () => {
+    if (!selectedVariant) return;
+    await addItem({
+      product,
+      variantId: selectedVariant.id,
+      variantTitle: selectedVariant.title,
+      price: selectedVariant.price,
+      quantity: 1,
+      selectedOptions: selectedVariant.selectedOptions || [],
+    });
+  };
 
   return (
     <main>
@@ -32,99 +58,90 @@ const ProductDetail = () => {
           <ChevronRight className="w-3 h-3" />
           <Link to="/products" className="hover:text-foreground transition-colors">Shop</Link>
           <ChevronRight className="w-3 h-3" />
-          <Link to={`/products?fiber=${product.fiber}`} className="hover:text-foreground transition-colors">{product.fiber}</Link>
-          <ChevronRight className="w-3 h-3" />
-          <span className="text-foreground">{product.name}</span>
+          <span className="text-foreground">{node.title}</span>
         </nav>
       </div>
 
-      {/* Product */}
       <section className="container pb-16">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Image */}
           <div className="relative">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full rounded-2xl object-cover aspect-square"
-            />
-            {product.isNew && (
-              <span className="absolute top-4 left-4 bg-accent text-accent-foreground text-[10px] font-sans tracking-wider uppercase px-3 py-1 rounded-full">
-                New
-              </span>
+            {image ? (
+              <img
+                src={image.url}
+                alt={image.altText || node.title}
+                className="w-full rounded-2xl object-cover aspect-square"
+              />
+            ) : (
+              <div className="w-full rounded-2xl bg-muted aspect-square flex items-center justify-center text-muted-foreground">
+                No image
+              </div>
             )}
           </div>
 
           {/* Details */}
           <div className="space-y-6 animate-fade-in">
             <div>
-              <p className="text-xs font-sans tracking-[0.2em] uppercase text-accent font-semibold mb-2">
-                {product.fiber} · {product.weight} · {product.origin}
-              </p>
-              <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">{product.name}</h1>
-              <div className="flex items-center gap-3 mt-3">
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${i < Math.floor(product.rating) ? "fill-accent text-accent" : "text-border"}`}
-                    />
-                  ))}
-                </div>
-                <span className="text-sm font-sans text-muted-foreground">
-                  {product.rating} ({product.reviews} reviews)
-                </span>
-              </div>
+              <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">{node.title}</h1>
             </div>
 
             <div className="flex items-baseline gap-3">
-              <span className="font-serif text-3xl font-semibold text-foreground">${product.price.toFixed(2)}</span>
-              {product.originalPrice && (
-                <span className="font-sans text-lg text-muted-foreground line-through">${product.originalPrice.toFixed(2)}</span>
-              )}
-              <span className="text-sm font-sans text-muted-foreground">/ {product.coneWeight} cone</span>
+              <span className="font-serif text-3xl font-semibold text-foreground">
+                {selectedVariant?.price.currencyCode} {parseFloat(selectedVariant?.price.amount || "0").toFixed(2)}
+              </span>
             </div>
 
-            <p className="font-sans text-sm text-muted-foreground leading-relaxed">{product.description}</p>
+            <p className="font-sans text-sm text-muted-foreground leading-relaxed">{node.description}</p>
 
-            {/* Color swatch */}
-            <div>
-              <p className="text-xs font-sans tracking-[0.15em] uppercase text-muted-foreground mb-2">Color</p>
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-8 h-8 rounded-full border-2 border-border"
-                  style={{ backgroundColor: product.colorHex }}
-                />
-                <span className="text-sm font-sans">{product.color}</span>
-              </div>
-            </div>
-
-            {/* Specs */}
-            <div className="grid grid-cols-2 gap-4 py-4 border-t border-b border-border">
-              {[
-                { label: "Fiber", value: product.fiber },
-                { label: "Weight", value: product.weight },
-                { label: "Yardage", value: `${product.yardage} yds` },
-                { label: "Cone Weight", value: product.coneWeight },
-                { label: "Origin", value: product.origin },
-                { label: "Care", value: product.careInstructions },
-              ].map(({ label, value }) => (
-                <div key={label}>
-                  <p className="text-[10px] font-sans tracking-[0.15em] uppercase text-muted-foreground">{label}</p>
-                  <p className="text-sm font-sans text-foreground mt-0.5">{value}</p>
+            {/* Variant selector */}
+            {variants.length > 1 && (
+              <div>
+                <p className="text-xs font-sans tracking-[0.15em] uppercase text-muted-foreground mb-2">Variant</p>
+                <div className="flex flex-wrap gap-2">
+                  {variants.map((v, idx) => (
+                    <button
+                      key={v.node.id}
+                      onClick={() => setSelectedVariantIdx(idx)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-sans transition-colors ${
+                        idx === selectedVariantIdx
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground hover:bg-secondary"
+                      }`}
+                    >
+                      {v.node.title}
+                    </button>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+
+            {/* Options display */}
+            {node.options.length > 0 && node.options[0].name !== "Title" && (
+              <div className="grid grid-cols-2 gap-4 py-4 border-t border-b border-border">
+                {node.options.map((opt) => (
+                  <div key={opt.name}>
+                    <p className="text-[10px] font-sans tracking-[0.15em] uppercase text-muted-foreground">{opt.name}</p>
+                    <p className="text-sm font-sans text-foreground mt-0.5">{opt.values.join(', ')}</p>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Actions */}
             <div className="flex gap-3">
               <Button
                 className="flex-1 bg-primary text-primary-foreground hover:opacity-90 py-6 text-sm font-sans tracking-wide"
-                disabled={!product.inStock}
-                onClick={() => addItem(product)}
+                disabled={!available || cartLoading}
+                onClick={handleAddToCart}
               >
-                <ShoppingBag className="w-4 h-4 mr-2" />
-                {product.inStock ? "Add to Cart" : "Sold Out"}
+                {cartLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <ShoppingBag className="w-4 h-4 mr-2" />
+                    {available ? "Add to Cart" : "Sold Out"}
+                  </>
+                )}
               </Button>
               <Button variant="outline" className="py-6 px-4 border-border" aria-label="Add to wishlist">
                 <Heart className="w-5 h-5" />
@@ -147,20 +164,6 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
-
-      {/* Related */}
-      {related.length > 0 && (
-        <section className="bg-muted/50 py-16">
-          <div className="container">
-            <h2 className="font-serif text-2xl font-semibold text-foreground mb-8">You May Also Like</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {related.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
     </main>
   );
 };
