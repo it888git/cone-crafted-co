@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { ShoppingBag, Search, Menu, X, Heart } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import logo from "@/assets/yarneria-logo.png";
 
 const announcements = [
-  "Free Worldwide Delivery Available",
+  "Free Delivery from 60€",
   "Easy & Simple Ordering",
   "Italian Yarn Selection",
 ];
@@ -13,14 +14,6 @@ const Header = () => {
   const totalItems = useCartStore((s) => s.totalItems());
   const setIsOpen = useCartStore((s) => s.setIsOpen);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentAnnouncement, setCurrentAnnouncement] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
 
   const navLinks = [
     { to: "/products", label: "Yarns" },
@@ -28,15 +21,16 @@ const Header = () => {
     { to: "/products", label: "Sale %" },
   ];
 
+  // Double the announcements for seamless loop
+  const marqueeText = announcements.map(a => `‹ ${a} ›`).join("     ");
+
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      {/* Auto-sliding announcement bar */}
-      <div className="bg-primary text-primary-foreground text-center py-2 text-xs font-sans tracking-widest uppercase overflow-hidden">
-        <div
-          key={currentAnnouncement}
-          className="animate-fade-in"
-        >
-          ‹ {announcements[currentAnnouncement]} ›
+      {/* Auto-sliding announcement bar - horizontal marquee */}
+      <div className="bg-primary text-primary-foreground py-2 text-xs font-sans tracking-widest uppercase overflow-hidden whitespace-nowrap">
+        <div className="inline-flex animate-marquee">
+          <span className="px-8">{marqueeText}</span>
+          <span className="px-8">{marqueeText}</span>
         </div>
       </div>
 
@@ -51,13 +45,12 @@ const Header = () => {
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
 
-          <Link to="/" className="flex flex-col items-start">
-            <span className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-foreground uppercase">
-              Yarneria
-            </span>
-            <span className="text-[9px] font-sans tracking-[0.2em] uppercase text-muted-foreground">
-              Premium Selected Italian Yarn on Cones
-            </span>
+          <Link to="/">
+            <img
+              src={logo}
+              alt="Yarneria - Premium Selected Italian Yarn on Cones"
+              className="h-10 md:h-12 w-auto"
+            />
           </Link>
         </div>
 
@@ -89,7 +82,7 @@ const Header = () => {
           >
             <ShoppingBag className="w-5 h-5" />
             {totalItems > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-sans font-semibold rounded-full flex items-center justify-center min-w-[18px] h-[18px]">
+              <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-sans font-semibold rounded-full flex items-center justify-center min-w-[18px] h-[18px]">
                 {totalItems}
               </span>
             )}

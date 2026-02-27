@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 20% 20%;
 
-    --primary: 33 80% 57%;
+    --primary: 220 46% 48%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 15% 95%;
@@ -24,7 +24,7 @@
     --muted: 220 10% 96%;
     --muted-foreground: 220 10% 46%;
 
-    --accent: 33 80% 57%;
+    --accent: 33 93% 54%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -32,26 +32,26 @@
 
     --border: 220 10% 90%;
     --input: 220 10% 90%;
-    --ring: 33 80% 57%;
+    --ring: 220 46% 48%;
 
     --radius: 0.5rem;
 
     --sidebar-background: 220 15% 97%;
     --sidebar-foreground: 220 20% 20%;
-    --sidebar-primary: 33 80% 57%;
+    --sidebar-primary: 220 46% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 10% 96%;
     --sidebar-accent-foreground: 220 20% 20%;
     --sidebar-border: 220 10% 90%;
-    --sidebar-ring: 33 80% 57%;
+    --sidebar-ring: 220 46% 48%;
 
     /* Custom tokens */
     --warm: 35 30% 96%;
     --warm-foreground: 220 20% 25%;
-    --copper: 33 80% 57%;
+    --copper: 33 93% 54%;
     --copper-foreground: 0 0% 100%;
-    --sage: 33 80% 57%;
-    --sage-light: 33 40% 94%;
+    --sage: 220 46% 48%;
+    --sage-light: 220 40% 94%;
     --cream: 0 0% 100%;
     --charcoal: 220 20% 20%;
   }
@@ -63,27 +63,27 @@
     --card-foreground: 220 10% 90%;
     --popover: 220 20% 10%;
     --popover-foreground: 220 10% 90%;
-    --primary: 33 80% 57%;
+    --primary: 220 46% 48%;
     --primary-foreground: 220 20% 8%;
     --secondary: 220 15% 18%;
     --secondary-foreground: 220 10% 90%;
     --muted: 220 15% 18%;
     --muted-foreground: 220 10% 55%;
-    --accent: 33 80% 57%;
+    --accent: 33 93% 54%;
     --accent-foreground: 220 20% 8%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 220 10% 90%;
     --border: 220 15% 20%;
     --input: 220 15% 20%;
-    --ring: 33 80% 57%;
+    --ring: 220 46% 48%;
     --sidebar-background: 220 20% 10%;
     --sidebar-foreground: 220 10% 90%;
-    --sidebar-primary: 33 80% 57%;
+    --sidebar-primary: 220 46% 48%;
     --sidebar-primary-foreground: 220 20% 8%;
     --sidebar-accent: 220 15% 15%;
     --sidebar-accent-foreground: 220 10% 90%;
     --sidebar-border: 220 15% 20%;
-    --sidebar-ring: 33 80% 57%;
+    --sidebar-ring: 220 46% 48%;
   }
 }
 
@@ -105,4 +105,14 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Marquee animation for announcement bar */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
 }

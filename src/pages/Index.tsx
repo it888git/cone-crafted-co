@@ -8,14 +8,14 @@ import { Loader2 } from "lucide-react";
 
 const categoryRows = {
   row2: [
-    { name: "Kid Silk Mohair", image: "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=600&h=400&fit=crop" },
-    { name: "Italian Cashmere", image: "https://images.unsplash.com/photo-1601731603247-7c9e1e155467?w=600&h=400&fit=crop" },
+    { name: "Kid Silk Mohair", image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&h=400&fit=crop&q=80" },
+    { name: "Italian Cashmere", image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop&q=80" },
   ],
   row3: [
-    { name: "Angora", image: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=400&fit=crop" },
-    { name: "Merino Wool", image: "https://images.unsplash.com/photo-1560481234-1b8aa0f92a32?w=400&h=400&fit=crop" },
-    { name: "Silk", image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop" },
-    { name: "Linen", image: "https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?w=400&h=400&fit=crop" },
+    { name: "Angora", image: "https://images.unsplash.com/photo-1601731603247-7c9e1e155467?w=400&h=400&fit=crop&q=80" },
+    { name: "Merino Wool", image: "https://images.unsplash.com/photo-1560481234-1b8aa0f92a32?w=400&h=400&fit=crop&q=80" },
+    { name: "Silk", image: "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=400&h=400&fit=crop&q=80" },
+    { name: "Linen", image: "https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?w=400&h=400&fit=crop&q=80" },
   ],
 };
 
@@ -28,7 +28,7 @@ const Index = () => {
       <section className="relative overflow-hidden bg-muted">
         <div className="container grid lg:grid-cols-2 gap-8 items-center py-16 lg:py-24">
           <div className="space-y-6 animate-fade-in">
-            <p className="text-xs font-sans tracking-[0.3em] uppercase text-primary font-semibold">
+            <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold">
               Unleash Your Creativity
             </p>
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.1] text-foreground text-balance">
@@ -38,7 +38,7 @@ const Index = () => {
               Carefully chosen for endless creative possibilities. Premium selected Italian yarn on cones.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
-              <Button asChild className="bg-primary text-primary-foreground hover:opacity-90 px-8 py-6 text-sm font-sans tracking-wide">
+              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm font-sans tracking-wide">
                 <Link to="/products">Shop now <ArrowRight className="ml-2 w-4 h-4" /></Link>
               </Button>
             </div>
@@ -72,9 +72,9 @@ const Index = () => {
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/60 via-foreground/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
           <div className="absolute inset-0 flex items-center px-8 md:px-12">
-            <Button className="bg-primary text-primary-foreground hover:opacity-90 text-sm font-sans tracking-wide px-8 py-6">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-sans tracking-wide px-8 py-6">
               All Yarns <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
           </div>
@@ -95,9 +95,9 @@ const Index = () => {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
               <div className="absolute bottom-5 left-5 right-5">
-                <h3 className="font-serif text-xl font-medium text-background">{cat.name}</h3>
+                <h3 className="font-serif text-xl font-medium text-background drop-shadow-lg">{cat.name}</h3>
               </div>
             </Link>
           ))}
@@ -118,9 +118,9 @@ const Index = () => {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
-                <h3 className="font-serif text-lg font-medium text-background">{cat.name}</h3>
+                <h3 className="font-serif text-lg font-medium text-background drop-shadow-lg">{cat.name}</h3>
               </div>
             </Link>
           ))}
@@ -132,7 +132,7 @@ const Index = () => {
         <div className="container">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-xs font-sans tracking-[0.3em] uppercase text-primary font-semibold mb-2">
+              <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold mb-2">
                 Our Products
               </p>
               <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
@@ -195,7 +195,7 @@ const Index = () => {
             { icon: Star, text: "Premium Fibers" },
           ].map(({ icon: Icon, text }) => (
             <div key={text} className="flex items-center gap-2 text-sm font-sans text-muted-foreground">
-              <Icon className="w-4 h-4 text-primary" />
+              <Icon className="w-4 h-4 text-accent" />
               <span>{text}</span>
             </div>
           ))}

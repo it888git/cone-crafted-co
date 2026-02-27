@@ -37,7 +37,7 @@ const Footer = () => (
               placeholder="your@email.com"
               className="flex-1 bg-background/10 border border-background/20 rounded-l-md px-3 py-2 text-sm font-sans placeholder:opacity-40 focus:outline-none focus:border-accent"
             />
-            <button className="bg-accent text-accent-foreground px-4 py-2 rounded-r-md text-sm font-sans font-medium hover:opacity-90 transition-opacity">
+            <button className="bg-primary text-primary-foreground px-4 py-2 rounded-r-md text-sm font-sans font-medium hover:bg-primary/90 transition-opacity">
               Join
             </button>
           </div>
