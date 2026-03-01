@@ -3,8 +3,11 @@ import { ArrowRight, Star, Truck, Shield, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
-import heroImage from "@/assets/hero-yarneria.png";
+import heroImage from "@/assets/hero-yarneria-cutout.png";
 import { Loader2 } from "lucide-react";
+import review1 from "@/assets/review-1.png";
+import review2 from "@/assets/review-2.png";
+import review3 from "@/assets/review-3.png";
 
 const categoryRows = {
   row2: [
@@ -26,7 +29,7 @@ const Index = () => {
     <main>
       {/* Hero */}
       <section className="relative overflow-hidden bg-muted">
-        <div className="container grid lg:grid-cols-2 gap-8 items-center py-16 lg:py-24">
+        <div className="container grid lg:grid-cols-2 gap-8 items-center py-10 lg:py-16">
           <div className="space-y-6 animate-fade-in">
             <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold">
               Unleash Your Creativity
@@ -43,12 +46,47 @@ const Index = () => {
               </Button>
             </div>
           </div>
-          <div className="relative animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <div className="relative hero-image-appear">
             <img
               src={heroImage}
               alt="Hand holding a red knitted heart with yarn"
-              className="w-full rounded-2xl shadow-2xl object-cover aspect-[4/3]"
+              className="w-full max-w-xl mx-auto object-contain drop-shadow-2xl"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Social proof / Reviews */}
+      <section className="container pt-10 pb-4 lg:pt-14 lg:pb-6">
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="flex justify-center -space-x-3 mb-5">
+            {[
+              { src: review1, alt: "Customer review photo 1" },
+              { src: review2, alt: "Customer review photo 2" },
+              { src: review3, alt: "Customer review photo 3" },
+            ].map((img) => (
+              <img
+                key={img.alt}
+                src={img.src}
+                alt={img.alt}
+                className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover ring-2 ring-background shadow-sm"
+                loading="lazy"
+              />
+            ))}
+          </div>
+
+          <p className="font-serif text-lg md:text-2xl leading-snug text-foreground">
+            “This was delivered faster than expected! The yarn is beautiful. This is a very good seller. I’ve ordered before.”
+          </p>
+
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm font-sans">
+            <div className="flex items-center gap-0.5 text-accent">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="w-4 h-4" fill="currentColor" />
+              ))}
+            </div>
+            <span className="font-semibold text-foreground">4.8/5</span>
+            <span className="text-muted-foreground">based on 700+ Etsy reviews</span>
           </div>
         </div>
       </section>

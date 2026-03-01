@@ -1,16 +1,27 @@
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
 import { Loader2 } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const Products = () => {
-  const { data: products, isLoading } = useShopifyProducts(50);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const searchQuery = params.get("search") || undefined;
+
+  const { data: products, isLoading } = useShopifyProducts(50, searchQuery);
 
   return (
     <main className="container py-8 lg:py-12">
       <div className="mb-8">
-        <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">All Yarns</h1>
+        <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
+          {searchQuery ? "Search results" : "All Yarns"}
+        </h1>
         <p className="text-sm font-sans text-muted-foreground mt-2">
-          {isLoading ? "Loading..." : `${products?.length || 0} products`}
+          {isLoading
+            ? "Loading..."
+            : searchQuery
+              ? `${products?.length || 0} products for “${searchQuery}”`
+              : `${products?.length || 0} products`}
         </p>
       </div>
 

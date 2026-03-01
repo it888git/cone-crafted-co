@@ -107,12 +107,50 @@
   }
 }
 
-/* Marquee animation for announcement bar */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+/* Smooth inline search pill */
+@keyframes search-pill-in {
+  0% {
+    opacity: 0;
+    transform: translateX(8px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
 }
 
-.animate-marquee {
-  animation: marquee 20s linear infinite;
+.search-pill {
+  animation: search-pill-in 160ms ease-out forwards;
+}
+
+/* Smooth hero image fade-in */
+@keyframes hero-fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.hero-image-appear {
+  animation: hero-fade-in-up 900ms ease-out forwards;
+}
+
+/* Slide animation for announcement bar */
+@keyframes announcement-slide-left {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.announcement-slide {
+  animation: announcement-slide-left 0.6s ease-in-out;
 }
