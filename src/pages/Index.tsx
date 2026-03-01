@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Star, Truck, Shield, RotateCcw } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { ArrowRight, Star, Truck, Shield, RotateCcw, Globe, Lock, ChevronLeft, ChevronRight, MapPin, Repeat2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
@@ -23,7 +24,32 @@ const categoryRows = {
 };
 
 const Index = () => {
-  const { data: products, isLoading } = useShopifyProducts(8);
+  const { data: products, isLoading } = useShopifyProducts(10);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateScrollButtons = () => {
+    if (!carouselRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
+  };
+
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (!carouselRef.current) return;
+    const cardWidth = carouselRef.current.querySelector('div')?.offsetWidth || 300;
+    carouselRef.current.scrollBy({ left: direction === 'left' ? -cardWidth : cardWidth, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (el) {
+      el.addEventListener('scroll', updateScrollButtons);
+      updateScrollButtons();
+      return () => el.removeEventListener('scroll', updateScrollButtons);
+    }
+  }, [products]);
 
   return (
     <main>
@@ -141,13 +167,13 @@ const Index = () => {
           ))}
         </div>
 
-        {/* Row 3: Four categories */}
+        {/* Row 3: Four categories - square */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {categoryRows.row3.map((cat, i) => (
             <Link
               key={cat.name}
               to="/products"
-              className="group relative overflow-hidden rounded-xl aspect-[3/4] animate-fade-in"
+              className="group relative overflow-hidden rounded-xl aspect-square animate-fade-in"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
               <img
@@ -165,33 +191,55 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Products */}
+      {/* Newest Collection Carousel */}
       <section className="bg-muted/50 py-16 lg:py-24">
         <div className="container">
           <div className="flex items-end justify-between mb-10">
             <div>
               <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold mb-2">
-                Our Products
+                Just Arrived
               </p>
               <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
-                Featured Yarns
+                Newest Collection
               </h2>
             </div>
-            <Link
-              to="/products"
-              className="text-sm font-sans text-primary hover:opacity-80 transition-colors flex items-center gap-1"
-            >
-              View all <ArrowRight className="w-4 h-4" />
-            </Link>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => scrollCarousel('left')}
+                disabled={!canScrollLeft}
+                className="p-2 rounded-full border border-border bg-background text-foreground hover:bg-muted transition-colors disabled:opacity-30"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => scrollCarousel('right')}
+                disabled={!canScrollRight}
+                className="p-2 rounded-full border border-border bg-background text-foreground hover:bg-muted transition-colors disabled:opacity-30"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+              <Link
+                to="/products"
+                className="ml-2 text-sm font-sans text-primary hover:opacity-80 transition-colors flex items-center gap-1"
+              >
+                View all <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
           {isLoading ? (
             <div className="flex justify-center py-20">
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
             </div>
           ) : products && products.length > 0 ? (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.slice(0, 4).map((product) => (
-                <ProductCard key={product.node.id} product={product} />
+            <div
+              ref={carouselRef}
+              className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {products.slice(0, 10).map((product) => (
+                <div key={product.node.id} className="min-w-[220px] md:min-w-[260px] snap-start flex-shrink-0" style={{ width: 'calc((100% - 96px) / 5)' }}>
+                  <ProductCard product={product} />
+                </div>
               ))}
             </div>
           ) : (
@@ -223,18 +271,21 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Feature Icons Section */}
+      {/* Trust Features Section */}
       <section className="border-t border-border py-10">
-        <div className="container flex flex-wrap justify-center gap-8 md:gap-16">
+        <div className="container grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {[
-            { icon: Truck, text: "Free Shipping" },
-            { icon: Shield, text: "Quality Guaranteed" },
-            { icon: RotateCcw, text: "Easy Returns" },
-            { icon: Star, text: "Premium Fibers" },
-          ].map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-2 text-sm font-sans text-muted-foreground">
-              <Icon className="w-4 h-4 text-accent" />
-              <span>{text}</span>
+            { icon: MapPin, title: "Luxury Italian Yarns", desc: "The Finest Fibers from Nature" },
+            { icon: Repeat2, title: "Easy Returns", desc: "Return within 30 days" },
+            { icon: Globe, title: "Worldwide Delivery", desc: "Fast Express Delivery available" },
+            { icon: Lock, title: "100% Secure Checkout", desc: "MasterCard / Visa / Paypal" },
+          ].map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="flex items-center gap-3 text-foreground">
+              <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
+              <div>
+                <p className="text-sm font-sans font-semibold">{title}</p>
+                <p className="text-xs font-sans text-muted-foreground">{desc}</p>
+              </div>
             </div>
           ))}
         </div>
