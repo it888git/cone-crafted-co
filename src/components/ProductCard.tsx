@@ -13,6 +13,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const isLoading = useCartStore((s) => s.isLoading);
   const { node } = product;
   const image = node.images.edges[0]?.node;
+  const image2 = node.images.edges[1]?.node;
   const price = node.priceRange.minVariantPrice;
   const firstVariant = node.variants.edges[0]?.node;
   const available = firstVariant?.availableForSale ?? false;
@@ -43,12 +44,22 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <Link to={`/product/${node.handle}`} className="block">
         <div className="relative overflow-hidden rounded-lg bg-muted aspect-square">
           {image ? (
-            <img
-              src={image.url}
-              alt={image.altText || node.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
+            <>
+              <img
+                src={image.url}
+                alt={image.altText || node.title}
+                className={`w-full h-full object-cover transition-all duration-500 ${image2 ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
+                loading="lazy"
+              />
+              {image2 && (
+                <img
+                  src={image2.url}
+                  alt={image2.altText || node.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+                  loading="lazy"
+                />
+              )}
+            </>
           ) : (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
               No image
@@ -85,7 +96,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               {meterage} (price per 100g)
             </p>
           )}
-          <p className="font-sans text-sm font-semibold text-accent pt-0.5">
+          <p className="font-sans text-sm font-semibold text-foreground pt-0.5">
             {formattedPrice}
           </p>
         </div>
