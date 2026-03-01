@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ShoppingBag, Search, Menu, X, Heart, User } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { useEffect, useRef, useState } from "react";
@@ -58,6 +58,8 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isProductsPage = location.pathname === "/products";
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const menuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -150,12 +152,13 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Search bar – hides on scroll or when mega menu is open */}
-      <div
-        className={`border-t border-border overflow-hidden transition-all duration-300 ${
-          scrolled || activeMenu ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
-        }`}
-      >
+      {/* Search bar – hides on scroll, on products page, or when mega menu is open */}
+      {!isProductsPage && (
+        <div
+          className={`border-t border-border overflow-hidden transition-all duration-300 ${
+            scrolled || activeMenu ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
+          }`}
+        >
         <div className="container flex items-center justify-center py-2.5">
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/60 border border-border/60 w-full max-w-md">
             <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
@@ -180,6 +183,7 @@ const Header = () => {
           </div>
         </div>
       </div>
+      )}
 
       {/* Mega menu dropdown */}
       {navLinks.map((link) =>

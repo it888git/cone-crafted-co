@@ -133,7 +133,7 @@ const Index = () => {
           <img
             src="https://images.unsplash.com/photo-1590412200988-a436970781fa?w=1200&h=400&fit=crop&q=80"
             alt="All Yarns - Yarn cones on shelves"
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
           />
           <div className="absolute inset-0 bg-foreground/40 group-hover:bg-foreground/50 transition-colors duration-300" />
@@ -159,7 +159,7 @@ const Index = () => {
               <img
                 src={cat.image}
                 alt={cat.name}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-foreground/40 group-hover:bg-foreground/50 transition-colors duration-300" />
@@ -187,7 +187,7 @@ const Index = () => {
               <img
                 src={cat.image}
                 alt={cat.name}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-foreground/40 group-hover:bg-foreground/50 transition-colors duration-300" />

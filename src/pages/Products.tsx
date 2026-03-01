@@ -26,10 +26,18 @@ const weightFilters = [
   "4 Worsted weight yarn",
 ];
 
+const featureFilters = [
+  "Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby",
+  "Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille",
+];
+
+const colorFilters = [
+  "White", "Black", "Grey", "Beige", "Brown", "Red", "Pink",
+  "Orange", "Yellow", "Green", "Blue", "Purple", "Multi",
+];
+
 const sortOptions = [
   { label: "Sort by latest", value: "latest" },
-  { label: "Sort by price: low to high", value: "price-asc" },
-  { label: "Sort by price: high to low", value: "price-desc" },
   { label: "Sort by name", value: "name" },
 ];
 
@@ -115,6 +123,40 @@ const Products = () => {
               ))}
             </ul>
           </div>
+
+          <div className="border-t border-border" />
+
+          {/* Feature filter */}
+          <div>
+            <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
+              Filter by Feature
+            </h3>
+            <ul className="space-y-2">
+              {featureFilters.map((f) => (
+                <li key={f} className="flex items-center gap-2">
+                  <input type="checkbox" className="rounded border-border" />
+                  <span className="text-sm font-sans text-muted-foreground">{f}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="border-t border-border" />
+
+          {/* Color filter */}
+          <div>
+            <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
+              Filter by Color
+            </h3>
+            <ul className="space-y-2">
+              {colorFilters.map((c) => (
+                <li key={c} className="flex items-center gap-2">
+                  <input type="checkbox" className="rounded border-border" />
+                  <span className="text-sm font-sans text-muted-foreground">{c}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </aside>
 
         {/* Main content */}
@@ -154,7 +196,7 @@ const Products = () => {
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
             </div>
           ) : products && products.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {products.map((product) => (
                 <ProductCard key={product.node.id} product={product} />
               ))}
