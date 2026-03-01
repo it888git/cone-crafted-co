@@ -11,13 +11,21 @@ const announcements = [
 ];
 
 const yarnsMegaMenu = {
-  composition: {
+  composition1: {
     title: "Shop by composition",
-    items: ["Wool", "Wool Blend", "Alpaca Blend", "Cashmere", "Mohair", "Cotton", "Viscose", "Linen", "Silk", "Other Composition"],
+    items: ["Wool", "Wool Blend", "Alpaca Blend", "Cashmere", "Mohair"],
   },
-  feature: {
+  composition2: {
+    title: "",
+    items: ["Cotton", "Viscose", "Linen", "Silk", "Other Composition"],
+  },
+  feature1: {
     title: "Shop by feature",
-    items: ["Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby", "Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille"],
+    items: ["Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby"],
+  },
+  feature2: {
+    title: "",
+    items: ["Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille"],
   },
 };
 
@@ -142,10 +150,10 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Search bar – hides on scroll */}
+      {/* Search bar – hides on scroll or when mega menu is open */}
       <div
         className={`border-t border-border overflow-hidden transition-all duration-300 ${
-          scrolled ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
+          scrolled || activeMenu ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
         }`}
       >
         <div className="container flex items-center justify-center py-2.5">
@@ -183,12 +191,16 @@ const Header = () => {
             onMouseLeave={handleMenuLeave}
           >
             <div className="container py-8">
-              <div className="flex gap-16">
-                {Object.values(link.mega).map((col) => (
-                  <div key={col.title}>
-                    <p className="text-xs font-sans tracking-widest uppercase text-muted-foreground/60 font-semibold mb-4">
-                      {col.title}
-                    </p>
+            <div className="flex gap-12">
+                {Object.values(link.mega).map((col, idx) => (
+                  <div key={col.title || `col-${idx}`}>
+                    {col.title ? (
+                      <p className="text-xs font-sans tracking-widest uppercase text-muted-foreground/60 font-semibold mb-4">
+                        {col.title}
+                      </p>
+                    ) : (
+                      <p className="mb-4 h-[16px]">&nbsp;</p>
+                    )}
                     <ul className="space-y-2.5">
                       {col.items.map((item) => (
                         <li key={item}>

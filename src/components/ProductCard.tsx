@@ -17,6 +17,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const firstVariant = node.variants.edges[0]?.node;
   const available = firstVariant?.availableForSale ?? false;
 
+  // Parse price to €/kg format
+  const priceNum = parseFloat(price.amount);
+  const formattedPrice = `${priceNum.toFixed(2).replace('.', ',')} €`;
+
+  // Extract meterage from description if available (e.g. "+/- 800m/100g")
+  const meterageMatch = node.description?.match(/\+?\/?-?\s*\d+\s*m\s*\/\s*\d+\s*g/i);
+  const meterage = meterageMatch ? meterageMatch[0] : null;
+
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (!firstVariant) return;
@@ -46,9 +54,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
               No image
             </div>
           )}
-          {/* Quick actions */}
-          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button className="p-2 bg-background/90 backdrop-blur-sm rounded-full text-foreground hover:bg-background transition-colors" aria-label="Add to wishlist">
+          {/* Favorite – always visible */}
+          <div className="absolute top-3 right-3">
+            <button className="p-2 bg-background/90 backdrop-blur-sm rounded-full text-foreground hover:text-accent transition-colors" aria-label="Add to wishlist">
               <Heart className="w-4 h-4" />
             </button>
           </div>
@@ -68,15 +76,18 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </Badge>
           )}
         </div>
-        <div className="mt-3 space-y-1">
-          <h3 className="font-serif text-base font-medium text-foreground group-hover:text-primary transition-colors">
+        <div className="mt-3 space-y-0.5">
+          <h3 className="font-sans text-sm font-medium text-foreground leading-snug line-clamp-2">
             {node.title}
           </h3>
-          <div className="flex items-center gap-2 pt-0.5">
-            <span className="font-sans text-sm font-semibold text-foreground">
-              {price.currencyCode} {parseFloat(price.amount).toFixed(2)} / kg
-            </span>
-          </div>
+          {meterage && (
+            <p className="font-sans text-xs text-muted-foreground">
+              {meterage} (price per 100g)
+            </p>
+          )}
+          <p className="font-sans text-sm font-semibold text-accent pt-0.5">
+            {formattedPrice}
+          </p>
         </div>
       </Link>
     </div>
