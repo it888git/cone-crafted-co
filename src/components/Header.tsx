@@ -10,14 +10,48 @@ const announcements = [
   "Easy & Simple Ordering",
 ];
 
+const yarnsMegaMenu = {
+  composition: {
+    title: "Shop by composition",
+    items: ["Wool", "Wool Blend", "Alpaca Blend", "Cashmere", "Mohair", "Cotton", "Viscose", "Linen", "Silk", "Other Composition"],
+  },
+  feature: {
+    title: "Shop by feature",
+    items: ["Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby", "Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille"],
+  },
+};
+
+const knittersMegaMenu = {
+  col1: { title: "Resources", items: ["Knitting Guides", "Pattern Library", "Yarn Weight Guide", "Color Palettes", "Needle Guide"] },
+  col2: { title: "Community", items: ["Our Story", "Blog", "Customer Projects", "Events"] },
+};
+
+const saleMegaMenu = {
+  col1: { title: "Sale", items: ["All Sale Items", "Clearance", "Bundle Deals", "Last Chance"] },
+};
+
+type NavItem = {
+  label: string;
+  to: string;
+  mega?: Record<string, { title: string; items: string[] }>;
+};
+
+const navLinks: NavItem[] = [
+  { to: "/products", label: "Yarns", mega: yarnsMegaMenu },
+  { to: "/products", label: "Knitters", mega: knittersMegaMenu },
+  { to: "/products", label: "Sale %", mega: saleMegaMenu },
+];
+
 const Header = () => {
   const totalItems = useCartStore((s) => s.totalItems());
   const setIsOpen = useCartStore((s) => s.setIsOpen);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const navigate = useNavigate();
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const menuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -25,11 +59,14 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navLinks = [
-    { to: "/products", label: "Yarns" },
-    { to: "/products", label: "Knitters" },
-    { to: "/products", label: "Sale %" },
-  ];
+  const handleMenuEnter = (label: string) => {
+    if (menuTimeoutRef.current) clearTimeout(menuTimeoutRef.current);
+    setActiveMenu(label);
+  };
+
+  const handleMenuLeave = () => {
+    menuTimeoutRef.current = setTimeout(() => setActiveMenu(null), 150);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -50,13 +87,23 @@ const Header = () => {
 
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link
+              <div
                 key={link.label}
-                to={link.to}
-                className="text-sm font-sans tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+                className="relative"
+                onMouseEnter={() => handleMenuEnter(link.label)}
+                onMouseLeave={handleMenuLeave}
               >
-                {link.label}
-              </Link>
+                <Link
+                  to={link.to}
+                  className={`text-sm font-sans tracking-wide transition-colors py-2 border-b-2 ${
+                    activeMenu === link.label
+                      ? "text-foreground border-foreground"
+                      : "text-muted-foreground hover:text-foreground border-transparent"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </div>
             ))}
           </nav>
         </div>
@@ -67,7 +114,7 @@ const Header = () => {
             <img
               src={logo}
               alt="Yarneria - Premium Selected Italian Yarn on Cones"
-              className="h-12 md:h-14 lg:h-16 w-auto"
+              className="h-12 md:h-14 lg:h-16 w-auto mix-blend-multiply"
             />
           </Link>
         </div>
@@ -125,6 +172,43 @@ const Header = () => {
           </div>
         </div>
       </div>
+
+      {/* Mega menu dropdown */}
+      {navLinks.map((link) =>
+        link.mega && activeMenu === link.label ? (
+          <div
+            key={link.label}
+            className="absolute left-0 right-0 bg-background border-b border-border shadow-lg z-50"
+            onMouseEnter={() => handleMenuEnter(link.label)}
+            onMouseLeave={handleMenuLeave}
+          >
+            <div className="container py-8">
+              <div className="flex gap-16">
+                {Object.values(link.mega).map((col) => (
+                  <div key={col.title}>
+                    <p className="text-xs font-sans tracking-widest uppercase text-muted-foreground/60 font-semibold mb-4">
+                      {col.title}
+                    </p>
+                    <ul className="space-y-2.5">
+                      {col.items.map((item) => (
+                        <li key={item}>
+                          <Link
+                            to="/products"
+                            className="text-sm font-sans text-foreground hover:text-primary transition-colors"
+                            onClick={() => setActiveMenu(null)}
+                          >
+                            {item}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : null
+      )}
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
