@@ -11,14 +11,14 @@ import review3 from "@/assets/review-3.png";
 
 const categoryRows = {
   row2: [
-    { name: "Kid Silk Mohair", image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&h=400&fit=crop&q=80" },
-    { name: "Italian Cashmere", image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop&q=80" },
+    { name: "Shop by Composition", image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop&q=80" },
+    { name: "Shop by Feature", image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&h=400&fit=crop&q=80" },
   ],
   row3: [
-    { name: "Angora", image: "https://images.unsplash.com/photo-1601731603247-7c9e1e155467?w=400&h=400&fit=crop&q=80" },
-    { name: "Merino Wool", image: "https://images.unsplash.com/photo-1560481234-1b8aa0f92a32?w=400&h=400&fit=crop&q=80" },
+    { name: "Cashmere", image: "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=400&h=400&fit=crop&q=80" },
+    { name: "Merino", image: "https://images.unsplash.com/photo-1560481234-1b8aa0f92a32?w=400&h=400&fit=crop&q=80" },
+    { name: "Mohair", image: "https://images.unsplash.com/photo-1601731603247-7c9e1e155467?w=400&h=400&fit=crop&q=80" },
     { name: "Silk", image: "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=400&h=400&fit=crop&q=80" },
-    { name: "Linen", image: "https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?w=400&h=400&fit=crop&q=80" },
   ],
 };
 
@@ -105,8 +105,8 @@ const Index = () => {
           className="group relative block overflow-hidden rounded-xl aspect-[3/1] mb-6 animate-fade-in"
         >
           <img
-            src="https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=1200&h=400&fit=crop"
-            alt="All Yarns"
+            src="https://images.unsplash.com/photo-1590412200988-a436970781fa?w=1200&h=400&fit=crop&q=80"
+            alt="All Yarns - Yarn cones on shelves"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
