@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, Search, Menu, X, Heart } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, Heart, User } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { useEffect, useRef, useState } from "react";
 import logo from "@/assets/yarneria-logo.png";
@@ -14,38 +14,32 @@ const Header = () => {
   const totalItems = useCartStore((s) => s.totalItems());
   const setIsOpen = useCartStore((s) => s.setIsOpen);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
-  const searchAreaRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    if (!searchOpen) return;
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchAreaRef.current && !searchAreaRef.current.contains(event.target as Node)) {
-        setSearchOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [searchOpen]);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const navLinks = [
     { to: "/products", label: "Yarns" },
-    { to: "/products", label: "Customers" },
+    { to: "/products", label: "Knitters" },
     { to: "/products", label: "Sale %" },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      {/* Auto-rotating announcement bar */}
+      {/* Announcement bar */}
       <AnnouncementBar />
 
+      {/* Main nav row */}
       <div className="container flex items-center py-4">
-        {/* Left: Mobile menu toggle + Logo */}
-        <div className="flex items-center gap-3 flex-1">
+        {/* Left: Mobile menu toggle + Nav links */}
+        <div className="flex items-center gap-6 flex-1">
           <button
             className="lg:hidden p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -54,6 +48,21 @@ const Header = () => {
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
 
+          <nav className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                to={link.to}
+                className="text-sm font-sans tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        {/* Center: Logo */}
+        <div className="flex-shrink-0">
           <Link to="/">
             <img
               src={logo}
@@ -63,56 +72,13 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Center: Nav */}
-        <nav className="hidden lg:flex flex-1 items-center justify-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              to={link.to}
-              className="text-sm font-sans tracking-wide text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Right: Icons + inline search */}
-        <div ref={searchAreaRef} className="flex items-center gap-3 justify-end flex-1">
-          {searchOpen && (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/70 border border-border/60 search-pill">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="bg-transparent border-none outline-none text-xs font-sans text-foreground placeholder:text-muted-foreground/70 w-32 md:w-44"
-                autoFocus
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    const term = searchTerm.trim();
-                    const params = new URLSearchParams();
-                    if (term) params.set("search", term);
-                    navigate(params.toString() ? `/products?${params.toString()}` : "/products");
-                    setSearchOpen(false);
-                  } else if (e.key === "Escape") {
-                    setSearchOpen(false);
-                  }
-                }}
-              />
-            </div>
-          )}
-          {!searchOpen && (
-            <button
-              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Search"
-              onClick={() => setSearchOpen(true)}
-            >
-              <Search className="w-5 h-5" />
-            </button>
-          )}
+        {/* Right: Icons */}
+        <div className="flex items-center gap-3 justify-end flex-1">
           <button className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block" aria-label="Wishlist">
             <Heart className="w-5 h-5" />
+          </button>
+          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block" aria-label="Account">
+            <User className="w-5 h-5" />
           </button>
           <button
             className="p-2 text-muted-foreground hover:text-foreground transition-colors relative"
@@ -129,6 +95,38 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Search bar – hides on scroll */}
+      <div
+        className={`border-t border-border overflow-hidden transition-all duration-300 ${
+          scrolled ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
+        }`}
+      >
+        <div className="container flex items-center justify-center py-2.5">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/60 border border-border/60 w-full max-w-md">
+            <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="What are you looking for today..."
+              className="bg-transparent border-none outline-none text-sm font-sans text-foreground placeholder:text-muted-foreground/60 w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const term = searchTerm.trim();
+                  const params = new URLSearchParams();
+                  if (term) params.set("search", term);
+                  navigate(params.toString() ? `/products?${params.toString()}` : "/products");
+                } else if (e.key === "Escape") {
+                  searchInputRef.current?.blur();
+                }
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
       {mobileMenuOpen && (
         <nav className="lg:hidden border-t border-border bg-background px-6 py-4 space-y-3">
           {navLinks.map((link) => (
