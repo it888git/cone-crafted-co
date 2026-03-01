@@ -55,8 +55,8 @@ const Index = () => {
     <main>
       {/* Hero */}
       <section className="relative overflow-hidden bg-muted">
-        <div className="container grid lg:grid-cols-2 gap-8 items-center py-10 lg:py-16">
-          <div className="space-y-6 animate-fade-in">
+        <div className="container grid lg:grid-cols-2 gap-6 items-center py-6 lg:py-10">
+          <div className="space-y-5 animate-fade-in">
             <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold">
               Unleash Your Creativity
             </p>
@@ -66,7 +66,7 @@ const Index = () => {
             <p className="text-base md:text-lg font-sans text-muted-foreground leading-relaxed max-w-lg">
               Carefully chosen for endless creative possibilities. Premium selected Italian yarn on cones.
             </p>
-            <div className="flex flex-wrap gap-3 pt-2">
+            <div className="flex flex-wrap gap-3 pt-1">
               <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm font-sans tracking-wide">
                 <Link to="/products">Shop now <ArrowRight className="ml-2 w-4 h-4" /></Link>
               </Button>
@@ -83,7 +83,7 @@ const Index = () => {
       </section>
 
       {/* Social proof / Reviews */}
-      <section className="container pt-10 pb-4 lg:pt-14 lg:pb-6">
+      <section className="container pt-8 pb-3 lg:pt-10 lg:pb-4">
         <div className="mx-auto max-w-3xl text-center">
           <div className="flex justify-center -space-x-3 mb-5">
             {[
@@ -102,7 +102,7 @@ const Index = () => {
           </div>
 
           <p className="font-serif text-lg md:text-2xl leading-snug text-foreground">
-            “This was delivered faster than expected! The yarn is beautiful. This is a very good seller. I’ve ordered before.”
+            "This was delivered faster than expected! The yarn is beautiful. This is a very good seller. I've ordered before."
           </p>
 
           <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm font-sans">
@@ -118,17 +118,17 @@ const Index = () => {
       </section>
 
       {/* Categories - Shop Our Selection */}
-      <section className="container py-16 lg:py-24">
-        <div className="text-center mb-12">
+      <section className="container py-10 lg:py-14">
+        <div className="text-center mb-8">
           <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
             Shop Our Selection
           </h2>
         </div>
 
-        {/* Full-width All Yarns */}
+        {/* Full-width All Yarns - Burga style */}
         <Link
           to="/products"
-          className="group relative block overflow-hidden rounded-xl aspect-[3/1] mb-6 animate-fade-in"
+          className="group relative block overflow-hidden rounded-xl aspect-[3/1] mb-4 animate-fade-in"
         >
           <img
             src="https://images.unsplash.com/photo-1590412200988-a436970781fa?w=1200&h=400&fit=crop&q=80"
@@ -136,16 +136,19 @@ const Index = () => {
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
-          <div className="absolute inset-0 flex items-center px-8 md:px-12">
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-sans tracking-wide px-8 py-6">
-              All Yarns <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
+          <div className="absolute inset-0 bg-foreground/40 group-hover:bg-foreground/50 transition-colors duration-300" />
+          <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 md:pb-8">
+            <h3 className="font-serif text-2xl md:text-3xl font-semibold text-background mb-3 drop-shadow-lg tracking-wide uppercase">
+              All Yarns
+            </h3>
+            <span className="border border-background text-background text-xs font-sans tracking-widest uppercase px-6 py-2.5 hover:bg-background hover:text-foreground transition-colors">
+              Shop Now
+            </span>
           </div>
         </Link>
 
-        {/* Row 2: Two categories */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        {/* Row 2: Two categories - Burga style */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           {categoryRows.row2.map((cat, i) => (
             <Link
               key={cat.name}
@@ -159,15 +162,20 @@ const Index = () => {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
-              <div className="absolute bottom-5 left-5 right-5">
-                <h3 className="font-serif text-xl font-medium text-background drop-shadow-lg">{cat.name}</h3>
+              <div className="absolute inset-0 bg-foreground/40 group-hover:bg-foreground/50 transition-colors duration-300" />
+              <div className="absolute inset-0 flex flex-col items-center justify-end pb-5 md:pb-7">
+                <h3 className="font-serif text-xl md:text-2xl font-semibold text-background mb-3 drop-shadow-lg tracking-wide uppercase">
+                  {cat.name}
+                </h3>
+                <span className="border border-background text-background text-xs font-sans tracking-widest uppercase px-5 py-2 hover:bg-background hover:text-foreground transition-colors">
+                  Shop Now
+                </span>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Row 3: Four categories - square */}
+        {/* Row 3: Four categories - square, Burga style */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {categoryRows.row3.map((cat, i) => (
             <Link
@@ -182,9 +190,14 @@ const Index = () => {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4">
-                <h3 className="font-serif text-lg font-medium text-background drop-shadow-lg">{cat.name}</h3>
+              <div className="absolute inset-0 bg-foreground/40 group-hover:bg-foreground/50 transition-colors duration-300" />
+              <div className="absolute inset-0 flex flex-col items-center justify-end pb-4 md:pb-6">
+                <h3 className="font-serif text-lg md:text-xl font-semibold text-background mb-2 drop-shadow-lg tracking-wide uppercase">
+                  {cat.name}
+                </h3>
+                <span className="border border-background text-background text-[10px] font-sans tracking-widest uppercase px-4 py-1.5 hover:bg-background hover:text-foreground transition-colors">
+                  Shop Now
+                </span>
               </div>
             </Link>
           ))}
@@ -192,9 +205,9 @@ const Index = () => {
       </section>
 
       {/* Newest Collection Carousel */}
-      <section className="bg-muted/50 py-16 lg:py-24">
+      <section className="bg-muted/50 py-10 lg:py-14">
         <div className="container">
-          <div className="flex items-end justify-between mb-10">
+          <div className="flex items-end justify-between mb-8">
             <div>
               <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold mb-2">
                 Just Arrived
@@ -252,7 +265,7 @@ const Index = () => {
       </section>
 
       {/* Newsletter CTA - Join Our Community */}
-      <section className="container py-16 lg:py-24">
+      <section className="container py-10 lg:py-14">
         <div className="bg-primary rounded-2xl p-10 md:p-16 text-center text-primary-foreground">
           <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Join Our Community</h2>
           <p className="font-sans text-sm opacity-80 max-w-md mx-auto mb-6">
@@ -264,7 +277,7 @@ const Index = () => {
               placeholder="your@email.com"
               className="flex-1 bg-primary-foreground/10 border border-primary-foreground/20 rounded-l-lg px-4 py-3 text-sm font-sans text-primary-foreground placeholder:text-primary-foreground/40 focus:outline-none focus:border-primary-foreground/50"
             />
-            <button className="bg-foreground text-background px-6 py-3 rounded-r-lg text-sm font-sans font-semibold hover:opacity-90 transition-opacity">
+            <button className="bg-accent text-accent-foreground px-6 py-3 rounded-r-lg text-sm font-sans font-semibold hover:opacity-90 transition-opacity">
               Subscribe
             </button>
           </div>
@@ -272,7 +285,7 @@ const Index = () => {
       </section>
 
       {/* Trust Features Section */}
-      <section className="border-t border-border py-10">
+      <section className="border-t border-border py-8">
         <div className="container grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {[
             { icon: MapPin, title: "Luxury Italian Yarns", desc: "The Finest Fibers from Nature" },
