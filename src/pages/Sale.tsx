@@ -20,7 +20,7 @@ const Sale = () => {
       <section className="container pb-16">
         <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-6">Yarn on sale</h1>
 
-        <div className="bg-muted/60 rounded-lg p-6 mb-8">
+        <div className="bg-accent/15 border border-accent/30 rounded-lg p-6 mb-8">
           <p className="text-sm font-sans text-muted-foreground leading-relaxed">
             Don't miss out on these yarn and save your money from our last-chance sale! The yarn on sale selection available at our store holds an undeniable appeal. Its presence on sale offers a unique opportunity for crafters to access quality fibers at a more affordable price. Whether it's limited-time promotions, clearance deals, or special offers, this yarn on sale selection presents a range of enticing options for budget-conscious customers.
           </p>
