@@ -2,7 +2,7 @@ import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
 import { Loader2, Search, ChevronDown, MapPin, Repeat2, Globe, Lock, SlidersHorizontal, X } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const yarnCategories = [
   { name: "All cone yarn", count: null },
@@ -104,8 +104,15 @@ const Products = () => {
   const [sortBy, setSortBy] = useState("latest");
   const [activeCategory, setActiveCategory] = useState("All cone yarn");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [showFloatingFilter, setShowFloatingFilter] = useState(false);
 
   const { data: products, isLoading } = useShopifyProducts(50, searchQuery);
+
+  useEffect(() => {
+    const onScroll = () => setShowFloatingFilter(window.scrollY > 200);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleSearch = () => {
     const term = localSearch.trim();
@@ -125,14 +132,16 @@ const Products = () => {
       </nav>
 
       <div className="flex gap-10">
-        {/* Mobile filter button */}
-        <button
-          className="lg:hidden fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 bg-foreground text-background rounded-full shadow-lg text-sm font-sans font-medium"
-          onClick={() => setMobileFiltersOpen(true)}
-        >
-          <SlidersHorizontal className="w-4 h-4" />
-          Filters
-        </button>
+        {/* Floating mobile filter button - only on scroll */}
+        {showFloatingFilter && (
+          <button
+            className="lg:hidden fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 bg-foreground text-background rounded-full shadow-lg text-sm font-sans font-medium"
+            onClick={() => setMobileFiltersOpen(true)}
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            Filters
+          </button>
+        )}
 
         {/* Mobile filter drawer */}
         {mobileFiltersOpen && (
@@ -179,6 +188,15 @@ const Products = () => {
               Experience unrivaled Italian quality for your crafting endeavors! Our cone yarn selection provides the convenience of larger quantities, minimizing interruptions while maximizing cost-efficiency. Whether you're a wholesale cone yarn buyer or an individual crafter, our fast worldwide service ensures fulfilling crafting experience.
             </p>
           </div>
+
+          {/* Inline filter button for mobile/tablet - between description and sort */}
+          <button
+            className="lg:hidden flex items-center gap-2 px-4 py-2.5 border border-border rounded-lg text-sm font-sans font-medium text-foreground mb-6"
+            onClick={() => setMobileFiltersOpen(true)}
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            Filters
+          </button>
 
           {/* Sort & count bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
