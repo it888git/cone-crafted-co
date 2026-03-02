@@ -11,10 +11,11 @@ import review2 from "@/assets/review-2.png";
 import review3 from "@/assets/review-3.png";
 import categoryCashmere from "@/assets/category-cashmere.jpg";
 import categoryMerino from "@/assets/category-merino.webp";
-import categoryMohair from "@/assets/category-mohair.avif";
+import categoryMohair from "@/assets/category-mohair.webp";
 import categorySilk from "@/assets/category-silk.jpg";
 import categoryFeature from "@/assets/category-feature.jpg";
 import categoryComposition from "@/assets/category-composition.jpg";
+import categoryAllYarns from "@/assets/category-all-yarns.webp";
 
 const categoryRows = {
   row2: [
@@ -137,7 +138,7 @@ const Index = () => {
           className="group relative block overflow-hidden rounded-xl aspect-[3/1] mb-4 animate-fade-in"
         >
           <img
-            src="https://images.unsplash.com/photo-1590412200988-a436970781fa?w=1200&h=400&fit=crop&q=80"
+            src={categoryAllYarns}
             alt="All Yarns - Yarn cones on shelves"
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
