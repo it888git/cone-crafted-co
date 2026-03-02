@@ -1,11 +1,13 @@
 import { useParams, Link } from "react-router-dom";
-import { useShopifyProduct } from "@/hooks/useShopifyProducts";
+import { useShopifyProduct, useShopifyProducts } from "@/hooks/useShopifyProducts";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
-import { ShoppingBag, Heart, ChevronRight, Truck, Shield, RotateCcw, Loader2, Clock, Package } from "lucide-react";
+import { ShoppingBag, Heart, ChevronRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { getPerKgPrice, formatEuro } from "@/lib/priceUtils";
+import { getPerKgPrice, formatEuro, extractWeightGrams } from "@/lib/priceUtils";
+import ProductCard from "@/components/ProductCard";
+import coneIcon from "@/assets/cone-icon.png";
 
 const ProductDetail = () => {
   const { id: handle } = useParams();
@@ -16,6 +18,9 @@ const ProductDetail = () => {
   const isInWishlist = useWishlistStore((s) => s.isInWishlist);
   const [selectedVariantIdx, setSelectedVariantIdx] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
+
+  // Fetch all products for "similar yarns"
+  const { data: allProducts } = useShopifyProducts(50);
 
   if (isLoading) {
     return (
@@ -55,9 +60,17 @@ const ProductDetail = () => {
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
   const perKgFormatted = `${formatEuro(perKgPrice)} / kg`;
 
-  // Selected variant price (shown only when variant selected & multiple variants)
-  const variantPriceNum = parseFloat(selectedVariant?.price.amount || "0");
-  const variantPriceFormatted = formatEuro(variantPriceNum);
+  // Stock display for selected variant
+  const stockCount = selectedVariant?.quantityAvailable ?? null;
+  const stockLabel = stockCount !== null
+    ? (stockCount >= 6 ? "5+" : String(stockCount))
+    : null;
+
+  // Similar yarns: match by first word of title (material keyword)
+  const titleWords = node.title.toLowerCase().split(/\s+/);
+  const similarProducts = (allProducts || []).filter(
+    (p) => p.node.handle !== node.handle && titleWords.some((w) => w.length > 3 && p.node.title.toLowerCase().includes(w))
+  ).slice(0, 4);
 
   const handleAddToCart = async () => {
     if (!selectedVariant) return;
@@ -99,7 +112,6 @@ const ProductDetail = () => {
                 No image
               </div>
             )}
-            {/* Wishlist heart on image */}
             <button
               onClick={() => toggleWishlist(product)}
               className="absolute top-4 right-4 p-2.5 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors shadow-sm"
@@ -124,50 +136,59 @@ const ProductDetail = () => {
               <span className="font-serif text-2xl font-semibold text-foreground">
                 {perKgFormatted}
               </span>
-              {variants.length > 1 && (
-                <p className="text-sm font-sans text-muted-foreground mt-1">
-                  {selectedVariant?.title}: {variantPriceFormatted}
-                </p>
-              )}
             </div>
 
             {/* Cone weight selector */}
             {hasMultipleVariants && (
               <div className="pt-1">
-                <p className="text-sm font-sans font-semibold text-foreground mb-3">Choose cone weight and quantity:</p>
-                <div className="flex flex-wrap gap-2">
-                  {variants.map((v, idx) => (
-                    <button
-                      key={v.node.id}
-                      onClick={() => { setSelectedVariantIdx(idx); setQuantity(1); }}
-                      className={`px-5 py-2.5 rounded-md text-sm font-sans font-medium transition-all border ${
-                        idx === selectedVariantIdx
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "bg-background text-foreground border-border hover:border-primary/50"
-                      }`}
-                    >
-                      {v.node.title}
-                    </button>
-                  ))}
+                <div className="flex flex-wrap gap-4">
+                  {variants.map((v, idx) => {
+                    const weight = extractWeightGrams(v.node.title);
+                    const label = weight ? `${weight}g` : v.node.title;
+                    const isSelected = idx === selectedVariantIdx;
+                    return (
+                      <button
+                        key={v.node.id}
+                        onClick={() => { setSelectedVariantIdx(idx); setQuantity(1); }}
+                        className={`relative flex flex-col items-center gap-1 transition-all ${
+                          isSelected ? "opacity-100" : "opacity-50 hover:opacity-80"
+                        }`}
+                        aria-label={`Select ${label}`}
+                      >
+                        <div className="relative w-14 h-16">
+                          <img
+                            src={coneIcon}
+                            alt=""
+                            className={`w-full h-full object-contain transition-all ${
+                              isSelected ? "grayscale-0" : "grayscale"
+                            }`}
+                            style={{ filter: isSelected ? 'none' : 'grayscale(100%) opacity(0.6)' }}
+                          />
+                        </div>
+                        <span className={`text-xs font-sans font-medium ${
+                          isSelected ? "text-foreground" : "text-muted-foreground"
+                        }`}>
+                          {label}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
 
-            {/* Selected variant price + quantity + add to cart (only when variant chosen) */}
+            {/* Stock + quantity + ATC (only when variant chosen) */}
             {variantChosen && (
               <div className="space-y-4 pt-1">
-                {hasMultipleVariants && selectedVariant && (
-                  <p className="text-sm font-sans text-muted-foreground">
-                    {selectedVariant.title}: <span className="font-semibold text-foreground">{variantPriceFormatted}</span>
+                {/* Stock indicator */}
+                {stockLabel !== null && available && (
+                  <p className="text-sm font-sans text-muted-foreground flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                    {stockLabel} in stock
                   </p>
                 )}
-
-                {/* Stock */}
-                {available && (
-                  <p className="text-sm font-sans text-green-600 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-                    In stock
-                  </p>
+                {!available && variantChosen && (
+                  <p className="text-sm font-sans text-destructive">Sold out</p>
                 )}
 
                 {/* Quantity + Add to cart */}
@@ -212,11 +233,21 @@ const ProductDetail = () => {
                 ))}
               </div>
             )}
-
-            <p className="font-sans text-sm text-muted-foreground leading-relaxed pt-2">{node.description}</p>
           </div>
         </div>
       </section>
+
+      {/* Similar Yarns */}
+      {similarProducts.length > 0 && (
+        <section className="container pb-16">
+          <h2 className="font-serif text-2xl font-semibold text-foreground mb-6">Similar Yarns</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {similarProducts.map((p) => (
+              <ProductCard key={p.node.handle} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 };
