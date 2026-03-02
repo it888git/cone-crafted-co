@@ -57,10 +57,10 @@ const FAQ = () => (
       <Accordion type="single" collapsible className="w-full">
         {faqs.map((faq, idx) => (
           <AccordionItem key={idx} value={`faq-${idx}`}>
-            <AccordionTrigger className="text-left font-sans text-sm font-medium text-foreground">
+            <AccordionTrigger className="text-left font-sans text-base font-medium text-foreground">
               {faq.question}
             </AccordionTrigger>
-            <AccordionContent className="text-sm font-sans text-muted-foreground leading-relaxed">
+            <AccordionContent className="text-base font-sans text-muted-foreground leading-relaxed">
               {faq.answer}
             </AccordionContent>
           </AccordionItem>

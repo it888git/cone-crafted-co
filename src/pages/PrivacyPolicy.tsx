@@ -15,7 +15,7 @@ const PrivacyPolicy = () => (
       <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-2">Privacy Policy</h1>
       <p className="text-sm font-sans text-muted-foreground mb-8">Last updated March 02, 2026</p>
 
-      <div className="prose prose-sm max-w-none font-sans text-foreground space-y-6">
+      <div className="prose max-w-none font-sans text-foreground space-y-6">
         <p>
           This privacy notice for Yarneria ('<strong>Company</strong>', '<strong>we</strong>', '<strong>us</strong>', or '<strong>our</strong>'), describes how and why we might collect, store, use, and/or share ('<strong>process</strong>') your information when you use our services ('<strong>Services</strong>'), such as when you:
         </p>

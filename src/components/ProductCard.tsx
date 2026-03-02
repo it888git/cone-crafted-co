@@ -44,7 +44,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <div className="group relative animate-fade-in">
+    <div className="group relative">
       <Link to={`/product/${node.handle}`} className="block">
         <div className="relative overflow-hidden rounded-lg bg-muted aspect-square">
           {image ? (
