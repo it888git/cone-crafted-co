@@ -5,6 +5,7 @@ import { useWishlistStore } from "@/stores/wishlistStore";
 import { ShoppingBag, Heart, ChevronRight, Truck, Shield, RotateCcw, Loader2, Clock, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { getPerKgPrice, formatEuro } from "@/lib/priceUtils";
 
 const ProductDetail = () => {
   const { id: handle } = useParams();
@@ -47,8 +48,14 @@ const ProductDetail = () => {
   const meterageMatch = node.description.match(/[\+\-\/]*\s*(\d+)\s*m\s*\/\s*100\s*g/i);
   const meterage = meterageMatch ? `+/- ${meterageMatch[1]}m / 100g` : null;
 
-  const priceNum = parseFloat(selectedVariant?.price.amount || "0");
-  const priceFormatted = `${priceNum.toFixed(2).replace('.', ',')} €`;
+  // Per-kg price from first variant (always shown)
+  const firstVariant = variants[0]?.node;
+  const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
+  const perKgFormatted = `${formatEuro(perKgPrice)} / kg`;
+
+  // Selected variant price (shown only when variant selected & multiple variants)
+  const variantPriceNum = parseFloat(selectedVariant?.price.amount || "0");
+  const variantPriceFormatted = formatEuro(variantPriceNum);
 
   const handleAddToCart = async () => {
     if (!selectedVariant) return;
@@ -113,8 +120,13 @@ const ProductDetail = () => {
 
             <div>
               <span className="font-serif text-2xl font-semibold text-foreground">
-                {priceFormatted} / kg
+                {perKgFormatted}
               </span>
+              {variants.length > 1 && (
+                <p className="text-sm font-sans text-muted-foreground mt-1">
+                  {selectedVariant?.title}: {variantPriceFormatted}
+                </p>
+              )}
             </div>
 
             {/* Stock */}

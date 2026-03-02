@@ -4,6 +4,7 @@ import type { ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import { Badge } from "@/components/ui/badge";
+import { getPerKgPrice, formatEuro } from "@/lib/priceUtils";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -21,9 +22,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const firstVariant = node.variants.edges[0]?.node;
   const available = firstVariant?.availableForSale ?? false;
 
-  // Parse price to €/kg format
-  const priceNum = parseFloat(price.amount);
-  const formattedPrice = `${priceNum.toFixed(2).replace('.', ',')} €`;
+  // Calculate price per kg from first variant weight
+  const { perKg } = getPerKgPrice(firstVariant?.price.amount || price.amount, firstVariant?.title || "");
+  const formattedPrice = `${formatEuro(perKg)} / kg`;
 
   // Extract meterage from description if available (e.g. "+/- 800m/100g")
   const meterageMatch = node.description?.match(/\+?\/?-?\s*\d+\s*m\s*\/\s*\d+\s*g/i);
@@ -100,7 +101,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </h3>
           {meterage && (
             <p className="font-sans text-xs text-muted-foreground">
-              {meterage} (price per 100g)
+              {meterage}
             </p>
           )}
           <p className="font-sans text-sm font-semibold text-foreground pt-0.5">
