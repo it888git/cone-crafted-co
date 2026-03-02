@@ -169,7 +169,7 @@ const ProductDetail = () => {
           </div>
 
           {/* Details */}
-          <div className="space-y-5 animate-fade-in">
+          <div className="space-y-5">
             <div>
               <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">{node.title}</h1>
               {meterage && (
