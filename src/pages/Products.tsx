@@ -32,8 +32,19 @@ const featureFilters = [
 ];
 
 const colorFilters = [
-  "White", "Black", "Grey", "Beige", "Brown", "Red", "Pink",
-  "Orange", "Yellow", "Green", "Blue", "Purple", "Multi",
+  { name: "White", hex: "#FFFFFF" },
+  { name: "Black", hex: "#1a1a1a" },
+  { name: "Grey", hex: "#9ca3af" },
+  { name: "Beige", hex: "#d4b896" },
+  { name: "Brown", hex: "#8B4513" },
+  { name: "Red", hex: "#dc2626" },
+  { name: "Pink", hex: "#ec4899" },
+  { name: "Orange", hex: "#f97316" },
+  { name: "Yellow", hex: "#eab308" },
+  { name: "Green", hex: "#22c55e" },
+  { name: "Blue", hex: "#3b82f6" },
+  { name: "Purple", hex: "#a855f7" },
+  { name: "Multi", hex: "conic-gradient(red, yellow, green, blue, purple, red)" },
 ];
 
 const sortOptions = [
@@ -61,26 +72,6 @@ const Products = () => {
 
   return (
     <main>
-      {/* Trust bar */}
-      <section className="border-b border-border py-4">
-        <div className="container grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
-          {[
-            { icon: MapPin, title: "Luxury Italian Yarns", desc: "The Finest Fibers from Nature" },
-            { icon: Repeat2, title: "Easy Returns", desc: "Return within 30 days" },
-            { icon: Globe, title: "Worldwide Delivery", desc: "Fast Express Delivery available" },
-            { icon: Lock, title: "100% Secure Checkout", desc: "MasterCard / Visa / Paypal" },
-          ].map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="flex items-center gap-3 text-foreground">
-              <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
-              <div>
-                <p className="text-sm font-sans font-semibold">{title}</p>
-                <p className="text-xs font-sans text-muted-foreground">{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <div className="container py-6 lg:py-10">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm font-sans text-muted-foreground mb-6">
@@ -108,7 +99,7 @@ const Products = () => {
           {/* Categories */}
           <div>
             <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
-              Yarn Categories
+              Yarn Categories ({yarnCategories.length})
             </h3>
             <ul className="space-y-1.5">
               {yarnCategories.map((cat) => (
@@ -133,7 +124,7 @@ const Products = () => {
           {/* Weight filter */}
           <div>
             <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
-              Filter by Weight
+              Filter by Weight ({weightFilters.length})
             </h3>
             <ul className="space-y-2">
               {weightFilters.map((w) => (
@@ -150,7 +141,7 @@ const Products = () => {
           {/* Feature filter */}
           <div>
             <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
-              Filter by Feature
+              Filter by Feature ({featureFilters.length})
             </h3>
             <ul className="space-y-2">
               {featureFilters.map((f) => (
@@ -167,16 +158,20 @@ const Products = () => {
           {/* Color filter */}
           <div>
             <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
-              Filter by Color
+              Filter by Color ({colorFilters.length})
             </h3>
-            <ul className="space-y-2">
+            <div className="flex flex-wrap gap-2">
               {colorFilters.map((c) => (
-                <li key={c} className="flex items-center gap-2">
-                  <input type="checkbox" className="rounded border-border" />
-                  <span className="text-sm font-sans text-muted-foreground">{c}</span>
-                </li>
+                <button
+                  key={c.name}
+                  title={c.name}
+                  className="w-7 h-7 rounded-full border-2 border-border hover:border-foreground transition-colors hover:scale-110"
+                  style={{
+                    background: c.name === "Multi" ? c.hex : c.hex,
+                  }}
+                />
               ))}
-            </ul>
+            </div>
           </div>
         </aside>
 
@@ -256,6 +251,26 @@ const Products = () => {
         </div>
       </section>
       </div>
+
+      {/* Trust bar - before footer */}
+      <section className="border-t border-border py-8 mt-6">
+        <div className="container grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
+          {[
+            { icon: MapPin, title: "Luxury Italian Yarns", desc: "The Finest Fibers from Nature" },
+            { icon: Repeat2, title: "Easy Returns", desc: "Return within 30 days" },
+            { icon: Globe, title: "Worldwide Delivery", desc: "Fast Express Delivery available" },
+            { icon: Lock, title: "100% Secure Checkout", desc: "MasterCard / Visa / Paypal" },
+          ].map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="flex items-center gap-3 text-foreground">
+              <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
+              <div>
+                <p className="text-sm font-sans font-semibold">{title}</p>
+                <p className="text-xs font-sans text-muted-foreground">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </main>
   );
 };
