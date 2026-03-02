@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ShoppingBag, Heart } from "lucide-react";
 import type { ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
+import { useWishlistStore } from "@/stores/wishlistStore";
 import { Badge } from "@/components/ui/badge";
 
 interface ProductCardProps {
@@ -11,6 +12,8 @@ interface ProductCardProps {
 const ProductCard = ({ product }: ProductCardProps) => {
   const addItem = useCartStore((s) => s.addItem);
   const isLoading = useCartStore((s) => s.isLoading);
+  const toggleWishlist = useWishlistStore((s) => s.toggleItem);
+  const isInWishlist = useWishlistStore((s) => s.isInWishlist(product.node.handle));
   const { node } = product;
   const image = node.images.edges[0]?.node;
   const image2 = node.images.edges[1]?.node;
@@ -67,8 +70,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
           )}
           {/* Favorite – always visible */}
           <div className="absolute top-3 right-3">
-            <button className="p-2 bg-background/90 backdrop-blur-sm rounded-full text-foreground hover:text-accent transition-colors" aria-label="Add to wishlist">
-              <Heart className="w-4 h-4" />
+            <button
+              onClick={(e) => { e.preventDefault(); toggleWishlist(product); }}
+              className={`p-2 bg-background/90 backdrop-blur-sm rounded-full transition-colors ${isInWishlist ? 'text-accent' : 'text-foreground hover:text-accent'}`}
+              aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <Heart className="w-4 h-4" fill={isInWishlist ? "currentColor" : "none"} />
             </button>
           </div>
           {available && (

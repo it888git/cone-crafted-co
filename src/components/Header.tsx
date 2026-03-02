@@ -105,7 +105,7 @@ const Header = () => {
               >
                 <Link
                   to={link.to}
-                  className={`text-sm font-sans tracking-wide transition-colors py-2 border-b-2 ${
+                  className={`text-base font-sans font-medium tracking-wide transition-colors py-2 border-b-2 ${
                     activeMenu === link.label
                       ? "text-foreground border-foreground"
                       : "text-muted-foreground hover:text-foreground border-transparent"
@@ -131,9 +131,9 @@ const Header = () => {
 
         {/* Right: Icons */}
         <div className="flex items-center gap-3 justify-end flex-1">
-          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block" aria-label="Wishlist">
+          <Link to="/wishlist" className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block" aria-label="Wishlist">
             <Heart className="w-6 h-6" />
-          </button>
+          </Link>
           <button className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block" aria-label="Account">
             <User className="w-6 h-6" />
           </button>
