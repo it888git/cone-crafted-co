@@ -80,7 +80,7 @@ const ProductDetail = () => {
   // Per-kg price from first variant (always shown)
   const firstVariant = variants[0]?.node;
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
-  const perKgFormatted = `${formatEuro(perKgPrice)} / kg`;
+  // perKgPrice used directly below
 
   // Similar yarns: match by first word of title (material keyword)
   const titleWords = node.title.toLowerCase().split(/\s+/);
@@ -179,68 +179,39 @@ const ProductDetail = () => {
 
             <div>
               <span className="font-serif text-2xl font-semibold text-foreground">
-                {perKgFormatted}
+                {Math.round(perKgPrice)} €/kg
               </span>
             </div>
 
-            {/* Product tags */}
-            {node.tags && node.tags.length > 0 && (
-              <div className="space-y-1.5">
-                {parseProductTags(node.tags).map((attr, idx) => (
-                  <p key={idx} className="text-sm font-sans text-muted-foreground">
-                    {attr.value ? (
-                      <><span className="font-medium text-foreground">{attr.label}:</span> {attr.value}</>
-                    ) : (
-                      <span className="font-medium text-foreground">{attr.label}</span>
-                    )}
-                  </p>
-                ))}
-              </div>
-            )}
-
-            {/* Cone weight & quantity dropdowns */}
+            {/* Cone weight & quantity selection */}
             <div className="pt-1">
-              <p className="text-sm font-sans text-muted-foreground mb-3">Choose cone weight and quantity</p>
-              <div className="flex flex-wrap gap-3">
-                <Select
-                  value={selectedVariantIdx !== null ? String(selectedVariantIdx) : ""}
-                  onValueChange={(val) => { setSelectedVariantIdx(Number(val)); setQuantity(1); }}
-                >
-                  <SelectTrigger className="w-[160px]">
-                    <SelectValue placeholder="Cone weight" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {variants.map((v, idx) => {
-                      const weight = extractWeightGrams(v.node.title);
-                      const label = weight ? `${weight}g` : v.node.title;
-                      const price = parseFloat(v.node.price.amount).toFixed(0);
-                      return (
-                        <SelectItem key={v.node.id} value={String(idx)}>
-                          {label} – {price}€
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
+              <p className="text-sm font-sans font-medium text-foreground mb-3">Choose cone weight and quantity:</p>
+              <Select
+                value={selectedVariantIdx !== null ? String(selectedVariantIdx) : ""}
+                onValueChange={(val) => { setSelectedVariantIdx(Number(val)); setQuantity(1); }}
+              >
+                <SelectTrigger className="w-full max-w-xs">
+                  <SelectValue placeholder="Select cone weight" />
+                </SelectTrigger>
+                <SelectContent>
+                  {variants.map((v, idx) => {
+                    const weight = extractWeightGrams(v.node.title);
+                    const label = weight ? `${weight}g` : v.node.title;
+                    return (
+                      <SelectItem key={v.node.id} value={String(idx)}>
+                        {label}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
 
-                {variantChosen && available && (
-                  <Select
-                    value={String(quantity)}
-                    onValueChange={(val) => setQuantity(Number(val))}
-                  >
-                    <SelectTrigger className="w-[100px]">
-                      <SelectValue placeholder="Qty" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-                        <SelectItem key={n} value={String(n)}>
-                          {n}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              </div>
+              {/* Show selected variant price */}
+              {variantChosen && selectedVariant && (
+                <p className="text-sm font-sans text-muted-foreground mt-2">
+                  {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g` : selectedVariant.title} – {parseFloat(selectedVariant.price.amount).toFixed(0)} €
+                </p>
+              )}
             </div>
 
             {/* Stock indicator */}
@@ -260,8 +231,25 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Add to cart */}
+            {/* Qty + Add to cart */}
             <div className="flex items-center gap-3">
+              {variantChosen && available && (
+                <div className="flex items-center border border-border rounded-md">
+                  <button
+                    className="px-3 py-2 text-sm font-sans text-foreground hover:bg-muted transition-colors"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  >
+                    −
+                  </button>
+                  <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[2rem] text-center">{quantity}</span>
+                  <button
+                    className="px-3 py-2 text-sm font-sans text-foreground hover:bg-muted transition-colors"
+                    onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                  >
+                    +
+                  </button>
+                </div>
+              )}
               <Button
                 className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm font-sans tracking-wide shadow-md border-0"
                 disabled={!canAddToCart}

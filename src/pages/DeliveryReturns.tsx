@@ -11,7 +11,7 @@ const DeliveryReturns = () => (
       </nav>
     </div>
 
-    <section className="container pb-16 max-w-3xl">
+    <section className="container pb-16 max-w-4xl">
       <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-8">Delivery & Returns Policy</h1>
 
       <div className="space-y-10">
@@ -26,49 +26,112 @@ const DeliveryReturns = () => (
           </p>
 
           {/* Shipping table */}
-          <div className="border border-border rounded-lg overflow-hidden mb-5">
+          <div className="border border-border rounded-lg overflow-x-auto mb-5">
             <table className="w-full text-sm font-sans">
               <thead>
                 <tr className="bg-muted">
                   <th className="text-left px-4 py-3 font-medium text-foreground">Destination</th>
-                  <th className="text-left px-4 py-3 font-medium text-foreground">Carrier</th>
+                  <th className="text-left px-4 py-3 font-medium text-foreground">Order Weight</th>
+                  <th className="text-left px-4 py-3 font-medium text-foreground">Delivery Method</th>
+                  <th className="text-center px-4 py-3 font-medium text-foreground">Cost</th>
                   <th className="text-left px-4 py-3 font-medium text-foreground">Delivery Time</th>
-                  <th className="text-right px-4 py-3 font-medium text-foreground">Cost</th>
+                  <th className="text-left px-4 py-3 font-medium text-foreground">Free Delivery</th>
                 </tr>
               </thead>
               <tbody className="text-muted-foreground">
+                {/* Lithuania, Latvia, Estonia */}
                 <tr className="border-t border-border">
-                  <td className="px-4 py-3">EU Countries</td>
-                  <td className="px-4 py-3">DHL / DPD</td>
-                  <td className="px-4 py-3">3–7 business days</td>
-                  <td className="px-4 py-3 text-right">From €4.99</td>
+                  <td className="px-4 py-3 align-top" rowSpan={3}>Lithuania, Latvia, Estonia</td>
+                  <td className="px-4 py-3">ALL</td>
+                  <td className="px-4 py-3">DPD Pickup Locker</td>
+                  <td className="px-4 py-3 text-center">3.50€</td>
+                  <td className="px-4 py-3">2 – 4 working days</td>
+                  <td className="px-4 py-3">Free Delivery DPD Pickup from 95€</td>
                 </tr>
                 <tr className="border-t border-border">
-                  <td className="px-4 py-3">EU (Free shipping)</td>
-                  <td className="px-4 py-3">DHL / DPD</td>
-                  <td className="px-4 py-3">3–7 business days</td>
-                  <td className="px-4 py-3 text-right">Free over €79</td>
+                  <td className="px-4 py-3">ALL</td>
+                  <td className="px-4 py-3">DPD Home Delivery</td>
+                  <td className="px-4 py-3 text-center">7.50€</td>
+                  <td className="px-4 py-3">2 – 4 working days</td>
+                  <td className="px-4 py-3">Free Delivery DPD Pickup from 95€</td>
                 </tr>
                 <tr className="border-t border-border">
-                  <td className="px-4 py-3">UK & Switzerland</td>
-                  <td className="px-4 py-3">DHL / DPD</td>
-                  <td className="px-4 py-3">5–10 business days</td>
-                  <td className="px-4 py-3 text-right">From €9.99</td>
+                  <td className="px-4 py-3">ALL</td>
+                  <td className="px-4 py-3">Express Mail (Post Office)</td>
+                  <td className="px-4 py-3 text-center">5.50€</td>
+                  <td className="px-4 py-3">3 – 5 working days</td>
+                  <td className="px-4 py-3">Free Delivery DPD Pickup from 95€</td>
+                </tr>
+
+                {/* United Kingdom */}
+                <tr className="border-t-2 border-border">
+                  <td className="px-4 py-3">United Kingdom</td>
+                  <td className="px-4 py-3">ALL</td>
+                  <td className="px-4 py-3">UPS Express Delivery</td>
+                  <td className="px-4 py-3 text-center">9.90€</td>
+                  <td className="px-4 py-3">4 – 7 working days</td>
+                  <td className="px-4 py-3">Free Delivery UPS Express from 150€</td>
+                </tr>
+
+                {/* Europe */}
+                <tr className="border-t-2 border-border">
+                  <td className="px-4 py-3 align-top" rowSpan={2}>
+                    <span className="font-semibold text-foreground">EUROPE</span>
+                    <br />
+                    <span className="text-xs leading-snug">(Austria, Belgium, Bulgaria, Croatia, Czech Republic, Denmark, Finland, France, Germany, Greece, Hungary, Ireland, Italy, Luxembourg, Malta, Netherlands, Poland, Portugal, Romania, Slovakia, Slovenia, Spain, Sweden, Cyprus.)</span>
+                  </td>
+                  <td className="px-4 py-3">up to 1kg</td>
+                  <td className="px-4 py-3">Express Mail (Post Office)</td>
+                  <td className="px-4 py-3 text-center">6.90€</td>
+                  <td className="px-4 py-3">4 – 8 working days</td>
+                  <td className="px-4 py-3" rowSpan={2}>Free Delivery UPS Express from 150€</td>
                 </tr>
                 <tr className="border-t border-border">
-                  <td className="px-4 py-3">USA & Canada</td>
-                  <td className="px-4 py-3">DHL / FedEx</td>
-                  <td className="px-4 py-3">7–14 business days</td>
-                  <td className="px-4 py-3 text-right">From €14.99</td>
+                  <td className="px-4 py-3">from 1kg</td>
+                  <td className="px-4 py-3">UPS Express Delivery</td>
+                  <td className="px-4 py-3 text-center">9.90€</td>
+                  <td className="px-4 py-3">3 – 7 working days</td>
+                </tr>
+
+                {/* International */}
+                <tr className="border-t-2 border-border">
+                  <td className="px-4 py-3 align-top" rowSpan={3}>
+                    <span className="font-semibold text-foreground">INTERNATIONAL</span>
+                    <br />
+                    <span className="text-xs leading-snug">(United States, Canada, Switzerland, Norway, Israel, United Arab Emirates, New Zealand, Liechtenstein, Monaco, Philippines, Iceland, Georgia, Malta, Turkey, Azerbaijan, Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan, Serbia, Moldova, Uzbekistan.)</span>
+                  </td>
+                  <td className="px-4 py-3">up to 2kg</td>
+                  <td className="px-4 py-3">Express Mail (Post Office)</td>
+                  <td className="px-4 py-3 text-center">14.90€</td>
+                  <td className="px-4 py-3">4 – 12 working days</td>
+                  <td className="px-4 py-3" rowSpan={3}>Free Delivery FEDEX Express from 300€</td>
                 </tr>
                 <tr className="border-t border-border">
-                  <td className="px-4 py-3">Rest of World</td>
-                  <td className="px-4 py-3">DHL / FedEx</td>
-                  <td className="px-4 py-3">7–21 business days</td>
-                  <td className="px-4 py-3 text-right">From €14.99</td>
+                  <td className="px-4 py-3">2 – 4 kg</td>
+                  <td className="px-4 py-3">FEDEX Express Delivery</td>
+                  <td className="px-4 py-3 text-center">39.90€</td>
+                  <td className="px-4 py-3">3 – 6 working days</td>
+                </tr>
+                <tr className="border-t border-border">
+                  <td className="px-4 py-3">from 4kg</td>
+                  <td className="px-4 py-3">FEDEX Express Delivery</td>
+                  <td className="px-4 py-3 text-center">59.90€</td>
+                  <td className="px-4 py-3">3 – 6 working days</td>
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          {/* Shipping & payment icons */}
+          <div className="flex flex-wrap items-center gap-4 mb-5">
+            <div className="flex items-center gap-2">
+              <img src="/icons/dhl.svg" alt="DHL" className="h-8" />
+              <img src="/icons/dpd.svg" alt="DPD" className="h-8" />
+              <img src="/icons/ups.svg" alt="UPS" className="h-8" />
+              <img src="/icons/fedex.svg" alt="FedEx" className="h-8" />
+            </div>
+            <div className="w-px h-6 bg-border mx-1" />
+            <img src="/icons/payment-icons.png" alt="Visa, Mastercard, Apple Pay, Google Pay, Amex, Shop Pay" className="h-8" />
           </div>
 
           <p className="text-xs font-sans text-muted-foreground leading-relaxed">

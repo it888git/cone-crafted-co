@@ -35,9 +35,7 @@ const knittersMegaMenu = {
   col2: { title: "Community", items: ["Our Story", "Blog", "Customer Projects", "Events"] },
 };
 
-const saleMegaMenu = {
-  col1: { title: "Sale", items: ["All Sale Items", "Clearance", "Bundle Deals", "Last Chance"] },
-};
+// No mega menu for Sale %
 
 type NavItem = {
   label: string;
@@ -48,7 +46,7 @@ type NavItem = {
 const navLinks: NavItem[] = [
   { to: "/products", label: "Yarns", mega: yarnsMegaMenu },
   { to: "/products", label: "Knitters", mega: knittersMegaMenu },
-  { to: "/products", label: "Sale %", mega: saleMegaMenu },
+  { to: "/sale", label: "Sale %" },
 ];
 
 const Header = () => {
