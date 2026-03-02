@@ -15,6 +15,7 @@ import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import DeliveryReturns from "./pages/DeliveryReturns";
 import FAQ from "./pages/FAQ";
+import Sale from "./pages/Sale";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const AppContent = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/delivery-returns" element={<DeliveryReturns />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/sale" element={<Sale />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
