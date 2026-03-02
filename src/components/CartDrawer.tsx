@@ -99,7 +99,7 @@ const CartDrawer = () => {
                 {isLoading || isSyncing ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
-                  "Checkout"
+                  <span className="text-base font-semibold">Checkout</span>
                 )}
               </Button>
               <img src="/icons/payment-methods.png" alt="Visa, Mastercard, Amex, Apple Pay, Google Pay, Shopify Pay" className="h-5 mx-auto opacity-60" />

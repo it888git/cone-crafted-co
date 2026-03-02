@@ -49,7 +49,7 @@ type NavItem = {
 
 const navLinks: NavItem[] = [
   { to: "/products", label: "Yarns", mega: yarnsMegaMenu },
-  { to: "/products", label: "Customer Care", mega: knittersMegaMenu },
+  { to: "/products", label: "Knitters", mega: knittersMegaMenu },
   { to: "/sale", label: "Sale %" },
 ];
 
@@ -204,6 +204,9 @@ const Header = () => {
             onMouseLeave={handleMenuLeave}
           >
             <div className="container py-8">
+              {link.label === "Knitters" && (
+                <p className="text-xs font-sans tracking-widest uppercase text-muted-foreground font-semibold mb-5">Customer Care</p>
+              )}
             <div className="flex gap-12">
                 {Object.values(link.mega).map((col, idx) => (
                   <div key={col.title || `col-${idx}`}>
@@ -212,7 +215,7 @@ const Header = () => {
                         {col.title}
                       </p>
                     ) : (
-                      <p className="mb-4 h-[16px]">&nbsp;</p>
+                      link.label !== "Knitters" && <p className="mb-4 h-[16px]">&nbsp;</p>
                     )}
                     <ul className="space-y-2.5">
                       {col.items.map((item) => {
