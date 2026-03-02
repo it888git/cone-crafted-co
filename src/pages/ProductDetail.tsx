@@ -4,32 +4,31 @@ import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import { ShoppingBag, Heart, ChevronRight, Loader2, Package, Truck, RotateCcw, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { getPerKgPrice, formatEuro, extractWeightGrams } from "@/lib/priceUtils";
 import ProductCard from "@/components/ProductCard";
 
-import coneVariantImg from "@/assets/cone-variant.png";
+const isNewProduct = (createdAt: string): boolean => {
+  const created = new Date(createdAt);
+  const twoWeeksAgo = new Date();
+  twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+  return created >= twoWeeksAgo;
+};
 
-const ConeIcon = ({ selected, label }: { selected: boolean; label: string }) => (
-  <div className="flex flex-col items-center">
-    <div className="relative w-16 h-20 md:w-20 md:h-24">
-      <img
-        src={coneVariantImg}
-        alt="Cone"
-        className={`w-full h-full object-contain transition-opacity ${
-          selected ? "opacity-100" : "opacity-30"
-        }`}
-      />
-      <span
-        className={`absolute inset-0 flex items-center justify-center text-xs md:text-sm font-sans font-semibold pt-2 ${
-          selected ? "text-foreground" : "text-muted-foreground/50"
-        }`}
-      >
-        {label}
-      </span>
-    </div>
-  </div>
-);
+const parseProductTags = (tags: string[]): { label: string; value: string }[] => {
+  const attrs: { label: string; value: string }[] = [];
+  for (const tag of tags) {
+    if (tag.includes(':')) {
+      const [label, ...rest] = tag.split(':');
+      attrs.push({ label: label.trim(), value: rest.join(':').trim() });
+    } else {
+      attrs.push({ label: tag.trim(), value: '' });
+    }
+  }
+  return attrs;
+};
 
 const ProductDetail = () => {
   const { id: handle } = useParams();
@@ -132,6 +131,11 @@ const ProductDetail = () => {
                   No image
                 </div>
               )}
+              {node.createdAt && isNewProduct(node.createdAt) && (
+                <Badge className="absolute top-4 left-4 text-xs font-sans tracking-wider uppercase px-3 py-1 bg-accent text-accent-foreground border-0">
+                  NEW
+                </Badge>
+              )}
               <button
                 onClick={() => toggleWishlist(product)}
                 className="absolute top-4 right-4 p-2.5 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors shadow-sm"
@@ -179,31 +183,65 @@ const ProductDetail = () => {
               </span>
             </div>
 
-            {/* Cone weight selector */}
-            {hasMultipleVariants && (
-              <div className="pt-1">
-                <p className="text-sm font-sans text-muted-foreground mb-3">Choose cone weight and quantity</p>
-                <div className="flex flex-wrap gap-5">
-                  {variants.map((v, idx) => {
-                    const weight = extractWeightGrams(v.node.title);
-                    const label = weight ? `${weight}g` : v.node.title;
-                    const isSelected = idx === selectedVariantIdx;
-                    return (
-                      <button
-                        key={v.node.id}
-                        onClick={() => { setSelectedVariantIdx(idx); setQuantity(1); }}
-                        className={`transition-all ${
-                          isSelected ? "opacity-100 scale-105" : "opacity-60 hover:opacity-90"
-                        }`}
-                        aria-label={`Select ${label}`}
-                      >
-                        <ConeIcon selected={isSelected} label={label} />
-                      </button>
-                    );
-                  })}
-                </div>
+            {/* Product tags */}
+            {node.tags && node.tags.length > 0 && (
+              <div className="space-y-1.5">
+                {parseProductTags(node.tags).map((attr, idx) => (
+                  <p key={idx} className="text-sm font-sans text-muted-foreground">
+                    {attr.value ? (
+                      <><span className="font-medium text-foreground">{attr.label}:</span> {attr.value}</>
+                    ) : (
+                      <span className="font-medium text-foreground">{attr.label}</span>
+                    )}
+                  </p>
+                ))}
               </div>
             )}
+
+            {/* Cone weight & quantity dropdowns */}
+            <div className="pt-1">
+              <p className="text-sm font-sans text-muted-foreground mb-3">Choose cone weight and quantity</p>
+              <div className="flex flex-wrap gap-3">
+                <Select
+                  value={selectedVariantIdx !== null ? String(selectedVariantIdx) : ""}
+                  onValueChange={(val) => { setSelectedVariantIdx(Number(val)); setQuantity(1); }}
+                >
+                  <SelectTrigger className="w-[160px]">
+                    <SelectValue placeholder="Cone weight" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {variants.map((v, idx) => {
+                      const weight = extractWeightGrams(v.node.title);
+                      const label = weight ? `${weight}g` : v.node.title;
+                      const price = parseFloat(v.node.price.amount).toFixed(0);
+                      return (
+                        <SelectItem key={v.node.id} value={String(idx)}>
+                          {label} – {price}€
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+
+                {variantChosen && available && (
+                  <Select
+                    value={String(quantity)}
+                    onValueChange={(val) => setQuantity(Number(val))}
+                  >
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue placeholder="Qty" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                        <SelectItem key={n} value={String(n)}>
+                          {n}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
+            </div>
 
             {/* Stock indicator */}
             {variantChosen && (
@@ -212,7 +250,7 @@ const ProductDetail = () => {
                   <p className="text-sm font-sans text-destructive">Sold out</p>
                 ) : (
                   <p className="text-sm font-sans text-muted-foreground flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                    <span className="w-2 h-2 rounded-full bg-accent inline-block" />
                     {selectedVariant && (selectedVariant as any).quantityAvailable != null
                       ? ((selectedVariant as any).quantityAvailable >= 6 ? "5+" : String((selectedVariant as any).quantityAvailable))
                       : "Available"
@@ -222,21 +260,8 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Quantity + Add to cart - always visible */}
+            {/* Add to cart */}
             <div className="flex items-center gap-3">
-              {variantChosen && available && (
-                <div className="flex items-center border border-border rounded-md">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
-                  >−</button>
-                  <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[32px] text-center">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
-                  >+</button>
-                </div>
-              )}
               <Button
                 className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm font-sans tracking-wide shadow-md border-0"
                 disabled={!canAddToCart}
