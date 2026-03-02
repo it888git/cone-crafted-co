@@ -144,7 +144,7 @@ const ProductDetail = () => {
             </div>
             {/* Thumbnails */}
             {images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-1">
+              <div className="flex gap-2 overflow-x-auto pb-1 justify-center">
                 {images.map((img, idx) => (
                   <button
                     key={idx}
