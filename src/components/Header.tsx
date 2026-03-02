@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ShoppingBag, Search, Menu, X, Heart, User } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import { useWishlistStore } from "@/stores/wishlistStore";
 import { useEffect, useRef, useState } from "react";
 import logo from "@/assets/yarneria-logo.png";
 
@@ -53,6 +54,7 @@ const navLinks: NavItem[] = [
 const Header = () => {
   const totalItems = useCartStore((s) => s.totalItems());
   const setIsOpen = useCartStore((s) => s.setIsOpen);
+  const wishlistCount = useWishlistStore((s) => s.items.length);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [scrolled, setScrolled] = useState(false);
@@ -131,8 +133,13 @@ const Header = () => {
 
         {/* Right: Icons */}
         <div className="flex items-center gap-3 justify-end flex-1">
-          <Link to="/wishlist" className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block" aria-label="Wishlist">
+          <Link to="/wishlist" className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block relative" aria-label="Wishlist">
             <Heart className="w-6 h-6" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-sans font-semibold rounded-full flex items-center justify-center min-w-[18px] h-[18px]">
+                {wishlistCount}
+              </span>
+            )}
           </Link>
           <button className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block" aria-label="Account">
             <User className="w-6 h-6" />

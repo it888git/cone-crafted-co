@@ -1,6 +1,6 @@
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
-import { Loader2, Search, ChevronDown } from "lucide-react";
+import { Loader2, Search, ChevronDown, MapPin, Repeat2, Globe, Lock } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -60,7 +60,28 @@ const Products = () => {
   };
 
   return (
-    <main className="container py-6 lg:py-10">
+    <main>
+      {/* Trust bar */}
+      <section className="border-b border-border py-4">
+        <div className="container grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
+          {[
+            { icon: MapPin, title: "Luxury Italian Yarns", desc: "The Finest Fibers from Nature" },
+            { icon: Repeat2, title: "Easy Returns", desc: "Return within 30 days" },
+            { icon: Globe, title: "Worldwide Delivery", desc: "Fast Express Delivery available" },
+            { icon: Lock, title: "100% Secure Checkout", desc: "MasterCard / Visa / Paypal" },
+          ].map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="flex items-center gap-3 text-foreground">
+              <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
+              <div>
+                <p className="text-sm font-sans font-semibold">{title}</p>
+                <p className="text-xs font-sans text-muted-foreground">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="container py-6 lg:py-10">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm font-sans text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
@@ -234,6 +255,7 @@ const Products = () => {
           </div>
         </div>
       </section>
+      </div>
     </main>
   );
 };

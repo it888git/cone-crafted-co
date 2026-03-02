@@ -59,8 +59,19 @@ const Footer = () => (
           </div>
         </div>
       </div>
-      <div className="border-t border-background/10 mt-12 pt-6 text-center text-xs font-sans opacity-40">
-        © 2026 Yarneria. All rights reserved. Premium selected Italian yarn on cones.
+      {/* Payment logos */}
+      <div className="border-t border-background/10 mt-12 pt-6 flex flex-col items-center gap-4">
+        <div className="flex items-center gap-4 opacity-60">
+          {/* Stripe / Visa / Mastercard / PayPal / Apple Pay logos as text badges */}
+          {["Visa", "Mastercard", "PayPal", "Apple Pay", "Stripe"].map((method) => (
+            <span key={method} className="text-[10px] font-sans border border-background/30 rounded px-2 py-1 uppercase tracking-wider">
+              {method}
+            </span>
+          ))}
+        </div>
+        <p className="text-xs font-sans opacity-40">
+          © 2026 Yarneria. All rights reserved. Premium selected Italian yarn on cones.
+        </p>
       </div>
     </div>
   </footer>
