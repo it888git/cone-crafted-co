@@ -7,15 +7,15 @@ const Wishlist = () => {
   const items = useWishlistStore((s) => s.items);
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container py-12">
-        <h1 className="font-serif text-3xl font-bold mb-2">My Wishlist</h1>
-        <p className="text-sm text-muted-foreground mb-8">
+    <main className="bg-background">
+      <div className="container py-8">
+        <h1 className="font-serif text-3xl font-bold mb-1">My Wishlist</h1>
+        <p className="text-sm text-muted-foreground mb-6">
           {items.length} {items.length === 1 ? "item" : "items"} saved
         </p>
 
         {items.length === 0 ? (
-          <div className="text-center py-20 space-y-4">
+          <div className="text-center py-12 space-y-4">
             <Heart className="w-12 h-12 mx-auto text-muted-foreground/40" />
             <p className="text-muted-foreground font-sans">Your wishlist is empty</p>
             <Link
