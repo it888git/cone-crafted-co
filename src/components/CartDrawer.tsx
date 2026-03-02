@@ -48,10 +48,21 @@ const CartDrawer = () => {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-serif text-sm font-medium truncate">{item.product.node.title}</h4>
-                    <p className="text-xs text-muted-foreground font-sans">{item.selectedOptions.map(o => o.value).join(' · ')}</p>
-                    <p className="text-sm font-sans font-semibold mt-1">
-                      {item.price.currencyCode} {parseFloat(item.price.amount).toFixed(2)} / kg
+                    <h4 className="font-serif text-base font-semibold">{item.product.node.title}</h4>
+                    <p className="text-sm text-muted-foreground font-sans mt-0.5">
+                      Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {parseFloat(item.price.amount).toFixed(0)}€
+                    </p>
+                    <p className="text-sm font-sans font-bold mt-0.5">
+                      {(() => {
+                        const weightMatch = item.selectedOptions.map(o => o.value).join('').match(/(\d+)\s*g/i);
+                        const grams = weightMatch ? parseInt(weightMatch[1], 10) : null;
+                        const price = parseFloat(item.price.amount);
+                        if (grams && grams > 0) {
+                          const perKg = (price / grams) * 1000;
+                          return `${perKg.toFixed(0).replace('.', ',')} €/kg`;
+                        }
+                        return `${price.toFixed(2).replace('.', ',')} €`;
+                      })()}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <button
