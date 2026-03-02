@@ -76,9 +76,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
             twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
             return created >= twoWeeksAgo;
           })() && (
-            <Badge className="absolute top-3 left-3 text-[10px] font-sans tracking-wider uppercase px-2 py-0.5 bg-accent text-accent-foreground border-0">
-              NEW
-            </Badge>
+            <div className="absolute top-3 left-3 px-2 py-0.5 bg-background/90 backdrop-blur-sm rounded-full">
+              <span className="text-[10px] font-sans tracking-wider uppercase font-medium text-muted-foreground">NEW</span>
+            </div>
           )}
           {/* Favorite – always visible */}
           <div className="absolute top-3 right-3">

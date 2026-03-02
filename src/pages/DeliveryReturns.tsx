@@ -122,17 +122,8 @@ const DeliveryReturns = () => (
             </table>
           </div>
 
-          {/* Shipping & payment icons */}
-          <div className="flex flex-wrap items-center gap-4 mb-5">
-            <div className="flex items-center gap-2">
-              <img src="/icons/dhl.svg" alt="DHL" className="h-8" />
-              <img src="/icons/dpd.svg" alt="DPD" className="h-8" />
-              <img src="/icons/ups.svg" alt="UPS" className="h-8" />
-              <img src="/icons/fedex.svg" alt="FedEx" className="h-8" />
-            </div>
-            <div className="w-px h-6 bg-border mx-1" />
-            <img src="/icons/payment-icons.png" alt="Visa, Mastercard, Apple Pay, Google Pay, Amex, Shop Pay" className="h-8" />
-          </div>
+
+
 
           <p className="text-xs font-sans text-muted-foreground leading-relaxed">
             Please keep in mind that orders outside of Europe may be subject to import duties and/or additional taxes or expenses. You will be responsible for the payment of any such additional duties and/or taxes. We advise you contact your local customs office or taxation authority for more information.

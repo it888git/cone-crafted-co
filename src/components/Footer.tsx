@@ -3,65 +3,12 @@ import { Instagram, Mail, MapPin } from "lucide-react";
 
 const ShippingPaymentLogos = () => (
   <div className="flex items-center gap-3 flex-wrap">
-    {/* DHL */}
-    <div className="border border-background/20 rounded px-3 py-1.5 flex items-center justify-center h-8 min-w-[60px]">
-      <svg viewBox="0 0 80 20" className="h-4 w-auto" fill="currentColor" opacity="0.7">
-        <text x="0" y="15" fontSize="14" fontWeight="bold" fontFamily="Arial, sans-serif" letterSpacing="-0.5">DHL</text>
-      </svg>
-    </div>
-    {/* DPD */}
-    <div className="border border-background/20 rounded px-3 py-1.5 flex items-center justify-center h-8 min-w-[60px]">
-      <svg viewBox="0 0 60 20" className="h-4 w-auto" fill="currentColor" opacity="0.7">
-        <text x="0" y="15" fontSize="13" fontWeight="bold" fontFamily="Arial, sans-serif">dpd</text>
-      </svg>
-    </div>
-    {/* UPS */}
-    <div className="border border-background/20 rounded px-3 py-1.5 flex items-center justify-center h-8 min-w-[60px]">
-      <svg viewBox="0 0 60 22" className="h-4 w-auto" fill="currentColor" opacity="0.7">
-        <rect x="2" y="1" width="56" height="20" rx="3" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.5" />
-        <text x="30" y="15" fontSize="11" fontWeight="bold" fontFamily="Arial, sans-serif" textAnchor="middle">UPS</text>
-      </svg>
-    </div>
-    {/* FedEx */}
-    <div className="border border-background/20 rounded px-3 py-1.5 flex items-center justify-center h-8 min-w-[60px]">
-      <svg viewBox="0 0 80 20" className="h-4 w-auto" fill="currentColor" opacity="0.7">
-        <text x="0" y="15" fontSize="13" fontWeight="bold" fontFamily="Arial, sans-serif">FedEx</text>
-      </svg>
-    </div>
-    {/* Divider */}
+    <img src="/icons/dhl.svg" alt="DHL" className="h-6 opacity-70" />
+    <img src="/icons/dpd.svg" alt="DPD" className="h-6 opacity-70" />
+    <img src="/icons/ups.svg" alt="UPS" className="h-6 opacity-70" />
+    <img src="/icons/fedex.svg" alt="FedEx" className="h-6 opacity-70" />
     <div className="w-px h-5 bg-background/20 mx-1" />
-    {/* Visa */}
-    <div className="border border-background/20 rounded px-3 py-1.5 flex items-center justify-center h-8 min-w-[50px]">
-      <svg viewBox="0 0 60 20" className="h-4 w-auto" fill="currentColor" opacity="0.7">
-        <text x="0" y="15" fontSize="14" fontWeight="bold" fontFamily="Arial, sans-serif" fontStyle="italic">VISA</text>
-      </svg>
-    </div>
-    {/* Mastercard */}
-    <div className="border border-background/20 rounded px-3 py-1.5 flex items-center justify-center h-8 min-w-[50px]">
-      <svg viewBox="0 0 36 22" className="h-4 w-auto" opacity="0.7">
-        <circle cx="13" cy="11" r="9" fill="none" stroke="currentColor" strokeWidth="1.2" />
-        <circle cx="23" cy="11" r="9" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      </svg>
-    </div>
-    {/* Amex */}
-    <div className="border border-background/20 rounded px-3 py-1.5 flex items-center justify-center h-8 min-w-[50px]">
-      <svg viewBox="0 0 50 22" className="h-4 w-auto" fill="currentColor" opacity="0.7">
-        <rect x="1" y="1" width="48" height="20" rx="2" fill="currentColor" opacity="0.15" />
-        <text x="25" y="14" fontSize="8" fontWeight="bold" fontFamily="Arial, sans-serif" textAnchor="middle">AMEX</text>
-      </svg>
-    </div>
-    {/* Apple Pay */}
-    <div className="border border-background/20 rounded px-3 py-1.5 flex items-center justify-center h-8 min-w-[60px]">
-      <svg viewBox="0 0 70 20" className="h-4 w-auto" fill="currentColor" opacity="0.7">
-        <text x="0" y="15" fontSize="12" fontFamily="Arial, sans-serif"> Pay</text>
-      </svg>
-    </div>
-    {/* Google Pay */}
-    <div className="border border-background/20 rounded px-3 py-1.5 flex items-center justify-center h-8 min-w-[60px]">
-      <svg viewBox="0 0 70 20" className="h-4 w-auto" fill="currentColor" opacity="0.7">
-        <text x="0" y="15" fontSize="12" fontFamily="Arial, sans-serif">G Pay</text>
-      </svg>
-    </div>
+    <img src="/icons/payment-icons.png" alt="Visa, Mastercard, Apple Pay, Google Pay" className="h-6 opacity-70" />
   </div>
 );
 

@@ -5,7 +5,7 @@ import { useWishlistStore } from "@/stores/wishlistStore";
 import { ShoppingBag, Heart, ChevronRight, Loader2, Package, Truck, RotateCcw, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { useState } from "react";
 import { getPerKgPrice, formatEuro, extractWeightGrams } from "@/lib/priceUtils";
 import ProductCard from "@/components/ProductCard";
@@ -132,9 +132,9 @@ const ProductDetail = () => {
                 </div>
               )}
               {node.createdAt && isNewProduct(node.createdAt) && (
-                <Badge className="absolute top-4 left-4 text-xs font-sans tracking-wider uppercase px-3 py-1 bg-accent text-accent-foreground border-0">
-                  NEW
-                </Badge>
+                <div className="absolute top-4 left-4 px-3 py-1 bg-background/90 backdrop-blur-sm rounded-full">
+                  <span className="text-xs font-sans tracking-wider uppercase font-medium text-muted-foreground">NEW</span>
+                </div>
               )}
               <button
                 onClick={() => toggleWishlist(product)}
@@ -183,34 +183,44 @@ const ProductDetail = () => {
               </span>
             </div>
 
-            {/* Cone weight & quantity selection */}
+            {/* Cone weight selection */}
             <div className="pt-1">
-              <p className="text-sm font-sans font-medium text-foreground mb-3">Choose cone weight and quantity:</p>
-              <Select
-                value={selectedVariantIdx !== null ? String(selectedVariantIdx) : ""}
-                onValueChange={(val) => { setSelectedVariantIdx(Number(val)); setQuantity(1); }}
-              >
-                <SelectTrigger className="w-full max-w-xs">
-                  <SelectValue placeholder="Select cone weight" />
-                </SelectTrigger>
-                <SelectContent>
-                  {variants.map((v, idx) => {
-                    const weight = extractWeightGrams(v.node.title);
-                    const label = weight ? `${weight}g` : v.node.title;
-                    return (
-                      <SelectItem key={v.node.id} value={String(idx)}>
-                        {label}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
+              <p className="text-xs font-sans uppercase tracking-widest text-muted-foreground mb-3">Choose cone weight</p>
+              <div className="flex flex-wrap gap-2">
+                {variants.map((v, idx) => {
+                  const weight = extractWeightGrams(v.node.title);
+                  const label = weight ? `${weight}g` : v.node.title;
+                  const isSelected = selectedVariantIdx === idx;
+                  const variantAvailable = v.node.availableForSale;
+                  return (
+                    <button
+                      key={v.node.id}
+                      onClick={() => { setSelectedVariantIdx(idx); setQuantity(1); }}
+                      disabled={!variantAvailable}
+                      className={`px-4 py-2.5 rounded-lg text-sm font-sans font-medium transition-all border ${
+                        isSelected
+                          ? "border-foreground bg-foreground text-background shadow-sm"
+                          : variantAvailable
+                            ? "border-border bg-background text-foreground hover:border-foreground/50"
+                            : "border-border bg-muted text-muted-foreground/40 line-through cursor-not-allowed"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
 
-              {/* Show selected variant price */}
+              {/* Selected variant price */}
               {variantChosen && selectedVariant && (
-                <p className="text-sm font-sans text-muted-foreground mt-2">
-                  {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g` : selectedVariant.title} – {parseFloat(selectedVariant.price.amount).toFixed(0)} €
-                </p>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="font-serif text-xl font-semibold text-foreground">
+                    {parseFloat(selectedVariant.price.amount).toFixed(0)} €
+                  </span>
+                  <span className="text-sm font-sans text-muted-foreground">
+                    / {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g cone` : selectedVariant.title}
+                  </span>
+                </div>
               )}
             </div>
 
