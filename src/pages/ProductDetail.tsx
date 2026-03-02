@@ -14,7 +14,7 @@ const ProductDetail = () => {
   const cartLoading = useCartStore((s) => s.isLoading);
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
   const isInWishlist = useWishlistStore((s) => s.isInWishlist);
-  const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
+  const [selectedVariantIdx, setSelectedVariantIdx] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
 
   if (isLoading) {
@@ -38,10 +38,12 @@ const ProductDetail = () => {
 
   const { node } = product;
   const variants = node.variants.edges;
-  const selectedVariant = variants[selectedVariantIdx]?.node;
+  const hasMultipleVariants = variants.length > 1;
+  const selectedVariant = selectedVariantIdx !== null ? variants[selectedVariantIdx]?.node : (hasMultipleVariants ? null : variants[0]?.node);
   const images = node.images.edges;
   const image = images[0]?.node;
   const available = selectedVariant?.availableForSale ?? false;
+  const variantChosen = selectedVariant !== null;
   const wishlisted = isInWishlist(node.handle);
 
   // Extract meterage from description
@@ -129,88 +131,72 @@ const ProductDetail = () => {
               )}
             </div>
 
-            {/* Stock */}
-            {available && (
-              <p className="text-sm font-sans text-green-600 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-                In stock
-              </p>
-            )}
-
-            {/* Quantity + Add to cart */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center border border-border rounded-md">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
-                >−</button>
-                <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[32px] text-center">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
-                >+</button>
-              </div>
-              <Button
-                className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm font-sans tracking-wide shadow-md border-0"
-                disabled={!available || cartLoading}
-                onClick={handleAddToCart}
-              >
-                {cartLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <>
-                    <ShoppingBag className="w-4 h-4 mr-2" />
-                    {available ? "Add to Cart" : "Sold Out"}
-                  </>
-                )}
-              </Button>
-            </div>
-
-            {/* Add to wishlist text button */}
-            <button
-              onClick={() => toggleWishlist(product)}
-              className="flex items-center gap-2 text-sm font-sans text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Heart className={`w-4 h-4 ${wishlisted ? "fill-accent text-accent" : ""}`} />
-              {wishlisted ? "Added to wishlist" : "Add to wishlist"}
-            </button>
-
-            <p className="font-sans text-sm font-semibold text-foreground">
-              Purchase as much as you need for your project!
-            </p>
-
-            {/* Trust points */}
-            <div className="space-y-2.5">
-              {[
-                { icon: RotateCcw, text: "30 Days easy returns" },
-                { icon: Truck, text: "Quick order dispatch within 48 hours" },
-                { icon: Package, text: "Each unit corresponds to 100 grams" },
-              ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-2 text-xs font-sans text-muted-foreground">
-                  <Icon className="w-3.5 h-3.5 text-primary" />
-                  <span>{text}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Variant selector */}
-            {variants.length > 1 && (
-              <div className="pt-2">
-                <p className="text-xs font-sans tracking-[0.15em] uppercase text-muted-foreground mb-2">Variant</p>
+            {/* Cone weight selector */}
+            {hasMultipleVariants && (
+              <div className="pt-1">
+                <p className="text-sm font-sans font-semibold text-foreground mb-3">Choose cone weight and quantity:</p>
                 <div className="flex flex-wrap gap-2">
                   {variants.map((v, idx) => (
                     <button
                       key={v.node.id}
-                      onClick={() => setSelectedVariantIdx(idx)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-sans transition-colors ${
+                      onClick={() => { setSelectedVariantIdx(idx); setQuantity(1); }}
+                      className={`px-5 py-2.5 rounded-md text-sm font-sans font-medium transition-all border ${
                         idx === selectedVariantIdx
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted text-muted-foreground hover:bg-secondary"
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-background text-foreground border-border hover:border-primary/50"
                       }`}
                     >
                       {v.node.title}
                     </button>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* Selected variant price + quantity + add to cart (only when variant chosen) */}
+            {variantChosen && (
+              <div className="space-y-4 pt-1">
+                {hasMultipleVariants && selectedVariant && (
+                  <p className="text-sm font-sans text-muted-foreground">
+                    {selectedVariant.title}: <span className="font-semibold text-foreground">{variantPriceFormatted}</span>
+                  </p>
+                )}
+
+                {/* Stock */}
+                {available && (
+                  <p className="text-sm font-sans text-green-600 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                    In stock
+                  </p>
+                )}
+
+                {/* Quantity + Add to cart */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center border border-border rounded-md">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
+                    >−</button>
+                    <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[32px] text-center">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
+                    >+</button>
+                  </div>
+                  <Button
+                    className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm font-sans tracking-wide shadow-md border-0"
+                    disabled={!available || cartLoading}
+                    onClick={handleAddToCart}
+                  >
+                    {cartLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <ShoppingBag className="w-4 h-4 mr-2" />
+                        {available ? "Add to Cart" : "Sold Out"}
+                      </>
+                    )}
+                  </Button>
                 </div>
               </div>
             )}
