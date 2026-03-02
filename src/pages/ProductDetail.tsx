@@ -2,12 +2,56 @@ import { useParams, Link } from "react-router-dom";
 import { useShopifyProduct, useShopifyProducts } from "@/hooks/useShopifyProducts";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
-import { ShoppingBag, Heart, ChevronRight, Loader2 } from "lucide-react";
+import { ShoppingBag, Heart, ChevronRight, Loader2, Package, Truck, RotateCcw, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { getPerKgPrice, formatEuro, extractWeightGrams } from "@/lib/priceUtils";
 import ProductCard from "@/components/ProductCard";
-import coneIcon from "@/assets/cone-icon.png";
+
+const ConeIcon = ({ selected, label }: { selected: boolean; label: string }) => (
+  <div className="flex flex-col items-center gap-1.5">
+    <svg width="56" height="72" viewBox="0 0 56 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Cone body - trapezoid shape */}
+      <path
+        d="M16 8 L40 8 L48 58 Q48 64 28 64 Q8 64 8 58 Z"
+        fill="none"
+        stroke={selected ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground) / 0.4)"}
+        strokeWidth="1.5"
+      />
+      {/* Top ellipse (hole) */}
+      <ellipse
+        cx="28" cy="8" rx="12" ry="5"
+        fill="none"
+        stroke={selected ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground) / 0.4)"}
+        strokeWidth="1.5"
+      />
+      {/* Bottom ellipse */}
+      <ellipse
+        cx="28" cy="60" rx="20" ry="5"
+        fill="none"
+        stroke={selected ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground) / 0.4)"}
+        strokeWidth="1.5"
+      />
+      {/* Yarn wrap lines */}
+      <line x1="14" y1="20" x2="42" y2="20" stroke={selected ? "hsl(var(--foreground) / 0.15)" : "hsl(var(--muted-foreground) / 0.1)"} strokeWidth="0.5" />
+      <line x1="12" y1="30" x2="44" y2="30" stroke={selected ? "hsl(var(--foreground) / 0.15)" : "hsl(var(--muted-foreground) / 0.1)"} strokeWidth="0.5" />
+      <line x1="10" y1="40" x2="46" y2="40" stroke={selected ? "hsl(var(--foreground) / 0.15)" : "hsl(var(--muted-foreground) / 0.1)"} strokeWidth="0.5" />
+      <line x1="9" y1="50" x2="47" y2="50" stroke={selected ? "hsl(var(--foreground) / 0.15)" : "hsl(var(--muted-foreground) / 0.1)"} strokeWidth="0.5" />
+      {/* Weight text inside cone */}
+      <text
+        x="28" y="40"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fill={selected ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground) / 0.5)"}
+        fontSize="11"
+        fontFamily="Inter, sans-serif"
+        fontWeight={selected ? "600" : "400"}
+      >
+        {label}
+      </text>
+    </svg>
+  </div>
+);
 
 const ProductDetail = () => {
   const { id: handle } = useParams();
@@ -18,6 +62,7 @@ const ProductDetail = () => {
   const isInWishlist = useWishlistStore((s) => s.isInWishlist);
   const [selectedVariantIdx, setSelectedVariantIdx] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [selectedImageIdx, setSelectedImageIdx] = useState(0);
 
   // Fetch all products for "similar yarns"
   const { data: allProducts } = useShopifyProducts(50);
@@ -46,7 +91,7 @@ const ProductDetail = () => {
   const hasMultipleVariants = variants.length > 1;
   const selectedVariant = selectedVariantIdx !== null ? variants[selectedVariantIdx]?.node : (hasMultipleVariants ? null : variants[0]?.node);
   const images = node.images.edges;
-  const image = images[0]?.node;
+  const mainImage = images[selectedImageIdx]?.node || images[0]?.node;
   const available = selectedVariant?.availableForSale ?? false;
   const variantChosen = selectedVariant !== null;
   const wishlisted = isInWishlist(node.handle);
@@ -60,12 +105,13 @@ const ProductDetail = () => {
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
   const perKgFormatted = `${formatEuro(perKgPrice)} / kg`;
 
-
   // Similar yarns: match by first word of title (material keyword)
   const titleWords = node.title.toLowerCase().split(/\s+/);
   const similarProducts = (allProducts || []).filter(
     (p) => p.node.handle !== node.handle && titleWords.some((w) => w.length > 3 && p.node.title.toLowerCase().includes(w))
   ).slice(0, 4);
+
+  const canAddToCart = variantChosen && available && !cartLoading;
 
   const handleAddToCart = async () => {
     if (!selectedVariant) return;
@@ -94,28 +140,50 @@ const ProductDetail = () => {
 
       <section className="container pb-16">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
-          {/* Image */}
-          <div className="relative">
-            {image ? (
-              <img
-                src={image.url}
-                alt={image.altText || node.title}
-                className="w-full rounded-2xl object-cover aspect-square"
-              />
-            ) : (
-              <div className="w-full rounded-2xl bg-muted aspect-square flex items-center justify-center text-muted-foreground">
-                No image
+          {/* Image gallery */}
+          <div className="space-y-3">
+            <div className="relative">
+              {mainImage ? (
+                <img
+                  src={mainImage.url}
+                  alt={mainImage.altText || node.title}
+                  className="w-full rounded-2xl object-cover aspect-square"
+                />
+              ) : (
+                <div className="w-full rounded-2xl bg-muted aspect-square flex items-center justify-center text-muted-foreground">
+                  No image
+                </div>
+              )}
+              <button
+                onClick={() => toggleWishlist(product)}
+                className="absolute top-4 right-4 p-2.5 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors shadow-sm"
+                aria-label="Toggle wishlist"
+              >
+                <Heart
+                  className={`w-5 h-5 transition-colors ${wishlisted ? "fill-accent text-accent" : "text-muted-foreground"}`}
+                />
+              </button>
+            </div>
+            {/* Thumbnails */}
+            {images.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImageIdx(idx)}
+                    className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                      idx === selectedImageIdx ? "border-foreground" : "border-transparent opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <img
+                      src={img.node.url}
+                      alt={img.node.altText || `${node.title} ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
               </div>
             )}
-            <button
-              onClick={() => toggleWishlist(product)}
-              className="absolute top-4 right-4 p-2.5 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors shadow-sm"
-              aria-label="Toggle wishlist"
-            >
-              <Heart
-                className={`w-5 h-5 transition-colors ${wishlisted ? "fill-accent text-accent" : "text-muted-foreground"}`}
-              />
-            </button>
           </div>
 
           {/* Details */}
@@ -137,7 +205,7 @@ const ProductDetail = () => {
             {hasMultipleVariants && (
               <div className="pt-1">
                 <p className="text-sm font-sans text-muted-foreground mb-3">Choose cone weight and quantity</p>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-5">
                   {variants.map((v, idx) => {
                     const weight = extractWeightGrams(v.node.title);
                     const label = weight ? `${weight}g` : v.node.title;
@@ -146,26 +214,12 @@ const ProductDetail = () => {
                       <button
                         key={v.node.id}
                         onClick={() => { setSelectedVariantIdx(idx); setQuantity(1); }}
-                        className={`relative flex flex-col items-center gap-1 transition-all ${
-                          isSelected ? "opacity-100" : "opacity-50 hover:opacity-80"
+                        className={`transition-all ${
+                          isSelected ? "opacity-100 scale-105" : "opacity-60 hover:opacity-90"
                         }`}
                         aria-label={`Select ${label}`}
                       >
-                        <div className="relative w-14 h-16">
-                          <img
-                            src={coneIcon}
-                            alt=""
-                            className={`w-full h-full object-contain transition-all ${
-                              isSelected ? "grayscale-0" : "grayscale"
-                            }`}
-                            style={{ filter: isSelected ? 'none' : 'grayscale(100%) opacity(0.6)' }}
-                          />
-                        </div>
-                        <span className={`text-xs font-sans font-medium ${
-                          isSelected ? "text-foreground" : "text-muted-foreground"
-                        }`}>
-                          {label}
-                        </span>
+                        <ConeIcon selected={isSelected} label={label} />
                       </button>
                     );
                   })}
@@ -173,10 +227,9 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Stock + quantity + ATC (only when variant chosen) */}
+            {/* Stock indicator */}
             {variantChosen && (
-              <div className="space-y-4 pt-1">
-                {/* Stock / sold out indicator */}
+              <div>
                 {!available ? (
                   <p className="text-sm font-sans text-destructive">Sold out</p>
                 ) : (
@@ -188,41 +241,58 @@ const ProductDetail = () => {
                     } in stock
                   </p>
                 )}
-
-                {/* Quantity + Add to cart */}
-                {available && (
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center border border-border rounded-md">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
-                        disabled={!available}
-                      >−</button>
-                      <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[32px] text-center">{quantity}</span>
-                      <button
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
-                        disabled={!available}
-                      >+</button>
-                    </div>
-                    <Button
-                      className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm font-sans tracking-wide shadow-md border-0"
-                      disabled={!available || cartLoading}
-                      onClick={handleAddToCart}
-                    >
-                      {cartLoading ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <>
-                          <ShoppingBag className="w-4 h-4 mr-2" />
-                          Add to Cart
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                )}
               </div>
             )}
+
+            {/* Quantity + Add to cart - always visible */}
+            <div className="flex items-center gap-3">
+              {variantChosen && available && (
+                <div className="flex items-center border border-border rounded-md">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
+                  >−</button>
+                  <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[32px] text-center">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
+                  >+</button>
+                </div>
+              )}
+              <Button
+                className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm font-sans tracking-wide shadow-md border-0"
+                disabled={!canAddToCart}
+                onClick={handleAddToCart}
+              >
+                {cartLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <ShoppingBag className="w-4 h-4 mr-2" />
+                    Add to Cart
+                  </>
+                )}
+              </Button>
+            </div>
+
+            {/* Info section below ATC */}
+            <div className="border-t border-border pt-5 space-y-2.5">
+              <p className="text-sm font-sans font-semibold text-foreground">Order as much yarn as you need for your project</p>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
+                  <Truck className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  Quick order dispatch within 48h with tracking
+                </li>
+                <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
+                  <RotateCcw className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  30 Days easy returns
+                </li>
+                <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
+                  <Scale className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  Combine desired weight with available cones
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
