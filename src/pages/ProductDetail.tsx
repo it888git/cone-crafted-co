@@ -60,11 +60,8 @@ const ProductDetail = () => {
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
   const perKgFormatted = `${formatEuro(perKgPrice)} / kg`;
 
-  // Stock display for selected variant
-  const stockCount = selectedVariant?.quantityAvailable ?? null;
-  const stockLabel = stockCount !== null
-    ? (stockCount >= 6 ? "5+" : String(stockCount))
-    : null;
+  // Stock display - not available via Storefront API without inventory scope
+  const stockLabel = null;
 
   // Similar yarns: match by first word of title (material keyword)
   const titleWords = node.title.toLowerCase().split(/\s+/);
