@@ -24,7 +24,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   // Calculate price per kg from first variant weight
   const { perKg } = getPerKgPrice(firstVariant?.price.amount || price.amount, firstVariant?.title || "");
-  const formattedPrice = `${formatEuro(perKg)} / kg`;
+  const formattedPrice = `${Math.round(perKg)} €/kg`;
 
   // Extract meterage from description if available (e.g. "+/- 800m/100g")
   const meterageMatch = node.description?.match(/\+?\/?-?\s*\d+\s*m\s*\/\s*\d+\s*g/i);

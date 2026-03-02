@@ -5,17 +5,17 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const yarnCategories = [
-  { name: "All cone yarn", count: null },
-  { name: "Wool yarn", count: null },
-  { name: "Wool blend yarn", count: null },
-  { name: "Alpaca blend yarn", count: null },
-  { name: "Cashmere yarn", count: null },
-  { name: "Mohair yarn", count: null },
-  { name: "Cotton yarn", count: null },
-  { name: "Viscose yarn", count: null },
-  { name: "Linen yarn", count: null },
-  { name: "Silk blend yarn", count: null },
-  { name: "Acrylic yarn (Synthetic)", count: null },
+  "All cone yarn",
+  "Wool yarn",
+  "Wool blend yarn",
+  "Alpaca blend yarn",
+  "Cashmere yarn",
+  "Mohair yarn",
+  "Cotton yarn",
+  "Viscose yarn",
+  "Linen yarn",
+  "Silk blend yarn",
+  "Acrylic yarn (Synthetic)",
 ];
 
 const weightFilters = [
@@ -53,47 +53,63 @@ const sortOptions = [
 ];
 
 const FilterSidebar = ({
-  localSearch, setLocalSearch, handleSearch, activeCategory, setActiveCategory,
+  localSearch, setLocalSearch, handleSearch, activeCategory, setActiveCategory, products,
 }: {
   localSearch: string; setLocalSearch: (v: string) => void; handleSearch: () => void;
   activeCategory: string; setActiveCategory: (v: string) => void;
-}) => (
+  products?: any[];
+}) => {
+  // Count products per tag-based filter (simple keyword match on tags/title)
+  const countFor = (keyword: string) => {
+    if (!products) return 0;
+    const kw = keyword.toLowerCase();
+    return products.filter((p) => {
+      const title = p.node.title.toLowerCase();
+      const tags = (p.node.tags || []).map((t: string) => t.toLowerCase());
+      return title.includes(kw) || tags.some((t: string) => t.includes(kw));
+    }).length;
+  };
+
+  return (
   <>
     <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2">
       <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
       <input type="text" placeholder="Search products..." className="bg-transparent border-none outline-none text-sm font-sans text-foreground placeholder:text-muted-foreground/60 w-full" value={localSearch} onChange={(e) => setLocalSearch(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
     </div>
     <div>
-      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Yarn Categories ({yarnCategories.length})</h3>
+      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Yarn Categories</h3>
       <ul className="space-y-1.5">
         {yarnCategories.map((cat) => (
-          <li key={cat.name}><button onClick={() => setActiveCategory(cat.name)} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat.name ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat.name !== "All cone yarn" ? "pl-4" : ""}`}>{cat.name}</button></li>
+          <li key={cat}><button onClick={() => setActiveCategory(cat)} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat !== "All cone yarn" ? "pl-4" : ""}`}>{cat}{cat !== "All cone yarn" && <span className="text-muted-foreground/60 ml-1">({countFor(cat.replace(/ yarn.*$/i, ''))})</span>}</button></li>
         ))}
       </ul>
     </div>
     <div className="border-t border-border" />
     <div>
-      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Weight ({weightFilters.length})</h3>
+      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Weight</h3>
       <ul className="space-y-2">
-        {weightFilters.map((w) => (<li key={w} className="flex items-center gap-2"><input type="checkbox" className="rounded border-border" /><span className="text-sm font-sans text-muted-foreground">{w}</span></li>))}
+        {weightFilters.map((w) => (<li key={w} className="flex items-center gap-2"><input type="checkbox" className="rounded border-border" /><span className="text-sm font-sans text-muted-foreground">{w} <span className="text-muted-foreground/60">({countFor(w.replace(/^\d\s*/, '').replace(/ weight yarn$/i, '').replace(/ yarn$/i, ''))})</span></span></li>))}
       </ul>
     </div>
     <div className="border-t border-border" />
     <div>
-      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Feature ({featureFilters.length})</h3>
+      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Feature</h3>
       <ul className="space-y-2">
-        {featureFilters.map((f) => (<li key={f} className="flex items-center gap-2"><input type="checkbox" className="rounded border-border" /><span className="text-sm font-sans text-muted-foreground">{f}</span></li>))}
+        {featureFilters.map((f) => (<li key={f} className="flex items-center gap-2"><input type="checkbox" className="rounded border-border" /><span className="text-sm font-sans text-muted-foreground">{f} <span className="text-muted-foreground/60">({countFor(f)})</span></span></li>))}
       </ul>
     </div>
     <div className="border-t border-border" />
     <div>
-      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Color ({colorFilters.length})</h3>
+      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Color</h3>
       <div className="flex flex-wrap gap-2">
-        {colorFilters.map((c) => (<button key={c.name} title={c.name} className="w-7 h-7 rounded-full border-2 border-border hover:border-foreground transition-colors hover:scale-110" style={{ background: c.hex }} />))}
+        {colorFilters.map((c) => (<button key={c.name} title={`${c.name} (${countFor(c.name)})`} className="w-7 h-7 rounded-full border-2 border-border hover:border-foreground transition-colors hover:scale-110 relative group" style={{ background: c.hex }}>
+          <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] font-sans text-muted-foreground opacity-0 group-hover:opacity-100 whitespace-nowrap">{countFor(c.name)}</span>
+        </button>))}
       </div>
     </div>
   </>
 );
+};
 
 const Products = () => {
   const location = useLocation();
@@ -160,6 +176,7 @@ const Products = () => {
                 handleSearch={handleSearch}
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
+                products={products}
               />
             </aside>
           </div>
@@ -173,6 +190,7 @@ const Products = () => {
             handleSearch={handleSearch}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
+            products={products}
           />
         </aside>
 

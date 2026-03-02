@@ -261,7 +261,7 @@ const ProductDetail = () => {
                 </div>
               )}
               <Button
-                className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm font-sans tracking-wide shadow-md border-0"
+                className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-base font-sans font-semibold tracking-wide shadow-md border-0"
                 disabled={!canAddToCart}
                 onClick={handleAddToCart}
               >
