@@ -22,17 +22,21 @@ const yarnsMegaMenu = {
   },
   feature1: {
     title: "Shop by feature",
-    items: ["Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby"],
+    items: ["Fluffy", "Boucle", "Shiny", "Sequins"],
   },
   feature2: {
     title: "",
-    items: ["Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille"],
+    items: ["Tape", "Scrubby", "Tweed", "Luxurious"],
+  },
+  feature3: {
+    title: "",
+    items: ["Thick & thin", "Gradient", "Elastic", "Chenille"],
   },
 };
 
 const knittersMegaMenu = {
-  col1: { title: "Resources", items: ["Knitting Guides", "Pattern Library", "Yarn Weight Guide", "Color Palettes", "Needle Guide"] },
-  col2: { title: "Community", items: ["Our Story", "Blog", "Customer Projects", "Events"] },
+  col1: { title: "", items: ["About Us", "Favourite Yarn"] },
+  col2: { title: "", items: ["Delivery & Returns Policy", "Most Frequent Questions"] },
 };
 
 // No mega menu for Sale %
@@ -211,17 +215,26 @@ const Header = () => {
                       <p className="mb-4 h-[16px]">&nbsp;</p>
                     )}
                     <ul className="space-y-2.5">
-                      {col.items.map((item) => (
-                        <li key={item}>
-                          <Link
-                            to="/products"
-                            className="text-sm font-sans text-foreground hover:text-primary transition-colors"
-                            onClick={() => setActiveMenu(null)}
-                          >
-                            {item}
-                          </Link>
-                        </li>
-                      ))}
+                      {col.items.map((item) => {
+                        const knitterRoutes: Record<string, string> = {
+                          "About Us": "/about",
+                          "Favourite Yarn": "/wishlist",
+                          "Delivery & Returns Policy": "/delivery-returns",
+                          "Most Frequent Questions": "/faq",
+                        };
+                        const to = knitterRoutes[item] || "/products";
+                        return (
+                          <li key={item}>
+                            <Link
+                              to={to}
+                              className="text-sm font-sans text-foreground hover:text-primary transition-colors"
+                              onClick={() => setActiveMenu(null)}
+                            >
+                              {item}
+                            </Link>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 ))}
