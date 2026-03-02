@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { ShoppingBag, Search, Menu, X, Heart, User } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, Heart, User, ChevronDown } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import { useEffect, useRef, useState } from "react";
@@ -49,7 +49,7 @@ type NavItem = {
 
 const navLinks: NavItem[] = [
   { to: "/products", label: "Yarns", mega: yarnsMegaMenu },
-  { to: "/products", label: "Knitters", mega: knittersMegaMenu },
+  { to: "/products", label: "Customer Care", mega: knittersMegaMenu },
   { to: "/sale", label: "Sale %" },
 ];
 
@@ -134,7 +134,7 @@ const Header = () => {
         </div>
 
         {/* Right: Icons */}
-        <div className="flex items-center gap-3 justify-end flex-1">
+        <div className="flex items-center gap-1 sm:gap-3 justify-end flex-1">
           <Link to="/wishlist" className="p-2 text-muted-foreground hover:text-foreground transition-colors relative" aria-label="Wishlist">
             <Heart className="w-6 h-6" />
             {wishlistCount > 0 && (
@@ -246,16 +246,9 @@ const Header = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <nav className="lg:hidden border-t border-border bg-background px-6 py-4 space-y-3">
+        <nav className="lg:hidden border-t border-border bg-background px-6 py-4 space-y-1 max-h-[70vh] overflow-y-auto">
           {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              to={link.to}
-              className="block text-sm font-sans tracking-wide text-muted-foreground hover:text-foreground py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {link.label}
-            </Link>
+            <MobileNavItem key={link.label} link={link} onClose={() => setMobileMenuOpen(false)} />
           ))}
         </nav>
       )}
@@ -264,6 +257,64 @@ const Header = () => {
 };
 
 export default Header;
+
+const MobileNavItem = ({ link, onClose }: { link: NavItem; onClose: () => void }) => {
+  const [open, setOpen] = useState(false);
+  const knitterRoutes: Record<string, string> = {
+    "About Us": "/about",
+    "Favourite Yarn": "/wishlist",
+    "Delivery & Returns Policy": "/delivery-returns",
+    "Most Frequent Questions": "/faq",
+  };
+
+  if (!link.mega) {
+    return (
+      <Link
+        to={link.to}
+        className="block text-sm font-sans tracking-wide text-muted-foreground hover:text-foreground py-2.5 border-b border-border/50"
+        onClick={onClose}
+      >
+        {link.label}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="border-b border-border/50">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between text-sm font-sans tracking-wide text-muted-foreground hover:text-foreground py-2.5"
+      >
+        {link.label}
+        <ChevronDown className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="pb-3 pl-3 space-y-1">
+          {Object.values(link.mega!).map((col, idx) => (
+            <div key={idx}>
+              {col.title && (
+                <p className="text-[10px] font-sans tracking-widest uppercase text-muted-foreground/60 font-semibold mt-2 mb-1">{col.title}</p>
+              )}
+              {col.items.map((item) => {
+                const to = knitterRoutes[item] || "/products";
+                return (
+                  <Link
+                    key={item}
+                    to={to}
+                    className="block text-sm font-sans text-foreground/80 hover:text-foreground py-1.5"
+                    onClick={onClose}
+                  >
+                    {item}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const AnnouncementBar = () => {
   const [index, setIndex] = useState(0);

@@ -178,14 +178,14 @@ const ProductDetail = () => {
             </div>
 
             <div>
-              <span className="font-serif text-2xl font-semibold text-foreground">
+              <span className="font-sans text-2xl font-semibold text-foreground">
                 {Math.round(perKgPrice)} €/kg
               </span>
             </div>
 
             {/* Cone weight selection */}
             <div className="pt-1">
-              <p className="text-xs font-sans uppercase tracking-widest text-muted-foreground mb-3">Choose cone weight</p>
+              <p className="text-xs font-sans uppercase tracking-widest text-muted-foreground mb-3">Choose cone weight and quantity</p>
               <div className="flex flex-wrap gap-2">
                 {variants.map((v, idx) => {
                   const weight = extractWeightGrams(v.node.title);
@@ -214,7 +214,7 @@ const ProductDetail = () => {
               {/* Selected variant price */}
               {variantChosen && selectedVariant && (
                 <div className="mt-3 flex items-baseline gap-2">
-                  <span className="font-serif text-xl font-semibold text-foreground">
+                  <span className="font-sans text-xl font-semibold text-foreground">
                     {parseFloat(selectedVariant.price.amount).toFixed(0)} €
                   </span>
                   <span className="text-sm font-sans text-muted-foreground">

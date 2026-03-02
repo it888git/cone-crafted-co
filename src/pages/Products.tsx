@@ -1,6 +1,6 @@
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
-import { Loader2, Search, ChevronDown, MapPin, Repeat2, Globe, Lock } from "lucide-react";
+import { Loader2, Search, ChevronDown, MapPin, Repeat2, Globe, Lock, SlidersHorizontal, X } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -52,6 +52,49 @@ const sortOptions = [
   { label: "Sort by name", value: "name" },
 ];
 
+const FilterSidebar = ({
+  localSearch, setLocalSearch, handleSearch, activeCategory, setActiveCategory,
+}: {
+  localSearch: string; setLocalSearch: (v: string) => void; handleSearch: () => void;
+  activeCategory: string; setActiveCategory: (v: string) => void;
+}) => (
+  <>
+    <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2">
+      <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+      <input type="text" placeholder="Search products..." className="bg-transparent border-none outline-none text-sm font-sans text-foreground placeholder:text-muted-foreground/60 w-full" value={localSearch} onChange={(e) => setLocalSearch(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
+    </div>
+    <div>
+      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Yarn Categories ({yarnCategories.length})</h3>
+      <ul className="space-y-1.5">
+        {yarnCategories.map((cat) => (
+          <li key={cat.name}><button onClick={() => setActiveCategory(cat.name)} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat.name ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat.name !== "All cone yarn" ? "pl-4" : ""}`}>{cat.name}</button></li>
+        ))}
+      </ul>
+    </div>
+    <div className="border-t border-border" />
+    <div>
+      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Weight ({weightFilters.length})</h3>
+      <ul className="space-y-2">
+        {weightFilters.map((w) => (<li key={w} className="flex items-center gap-2"><input type="checkbox" className="rounded border-border" /><span className="text-sm font-sans text-muted-foreground">{w}</span></li>))}
+      </ul>
+    </div>
+    <div className="border-t border-border" />
+    <div>
+      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Feature ({featureFilters.length})</h3>
+      <ul className="space-y-2">
+        {featureFilters.map((f) => (<li key={f} className="flex items-center gap-2"><input type="checkbox" className="rounded border-border" /><span className="text-sm font-sans text-muted-foreground">{f}</span></li>))}
+      </ul>
+    </div>
+    <div className="border-t border-border" />
+    <div>
+      <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Color ({colorFilters.length})</h3>
+      <div className="flex flex-wrap gap-2">
+        {colorFilters.map((c) => (<button key={c.name} title={c.name} className="w-7 h-7 rounded-full border-2 border-border hover:border-foreground transition-colors hover:scale-110" style={{ background: c.hex }} />))}
+      </div>
+    </div>
+  </>
+);
+
 const Products = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -60,6 +103,7 @@ const Products = () => {
   const [localSearch, setLocalSearch] = useState(searchQuery || "");
   const [sortBy, setSortBy] = useState("latest");
   const [activeCategory, setActiveCategory] = useState("All cone yarn");
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const { data: products, isLoading } = useShopifyProducts(50, searchQuery);
 
@@ -81,98 +125,46 @@ const Products = () => {
       </nav>
 
       <div className="flex gap-10">
+        {/* Mobile filter button */}
+        <button
+          className="lg:hidden fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 bg-foreground text-background rounded-full shadow-lg text-sm font-sans font-medium"
+          onClick={() => setMobileFiltersOpen(true)}
+        >
+          <SlidersHorizontal className="w-4 h-4" />
+          Filters
+        </button>
+
+        {/* Mobile filter drawer */}
+        {mobileFiltersOpen && (
+          <div className="lg:hidden fixed inset-0 z-50 flex">
+            <div className="absolute inset-0 bg-black/50" onClick={() => setMobileFiltersOpen(false)} />
+            <aside className="relative ml-auto w-80 max-w-[85vw] h-full bg-background border-l border-border overflow-y-auto p-6 space-y-8">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="font-sans text-lg font-bold text-foreground">Filters</h2>
+                <button onClick={() => setMobileFiltersOpen(false)} className="p-1.5 rounded-full hover:bg-muted">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <FilterSidebar
+                localSearch={localSearch}
+                setLocalSearch={setLocalSearch}
+                handleSearch={handleSearch}
+                activeCategory={activeCategory}
+                setActiveCategory={setActiveCategory}
+              />
+            </aside>
+          </div>
+        )}
+
         {/* Sidebar */}
         <aside className="hidden lg:block w-60 flex-shrink-0 space-y-8">
-          {/* Search */}
-          <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2">
-            <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="bg-transparent border-none outline-none text-sm font-sans text-foreground placeholder:text-muted-foreground/60 w-full"
-              value={localSearch}
-              onChange={(e) => setLocalSearch(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            />
-          </div>
-
-          {/* Categories */}
-          <div>
-            <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
-              Yarn Categories ({yarnCategories.length})
-            </h3>
-            <ul className="space-y-1.5">
-              {yarnCategories.map((cat) => (
-                <li key={cat.name}>
-                  <button
-                    onClick={() => setActiveCategory(cat.name)}
-                    className={`text-sm font-sans w-full text-left py-1 transition-colors ${
-                      activeCategory === cat.name
-                        ? "text-foreground font-semibold"
-                        : "text-muted-foreground hover:text-foreground"
-                    } ${cat.name !== "All cone yarn" ? "pl-4" : ""}`}
-                  >
-                    {cat.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="border-t border-border" />
-
-          {/* Weight filter */}
-          <div>
-            <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
-              Filter by Weight ({weightFilters.length})
-            </h3>
-            <ul className="space-y-2">
-              {weightFilters.map((w) => (
-                <li key={w} className="flex items-center gap-2">
-                  <input type="checkbox" className="rounded border-border" />
-                  <span className="text-sm font-sans text-muted-foreground">{w}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="border-t border-border" />
-
-          {/* Feature filter */}
-          <div>
-            <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
-              Filter by Feature ({featureFilters.length})
-            </h3>
-            <ul className="space-y-2">
-              {featureFilters.map((f) => (
-                <li key={f} className="flex items-center gap-2">
-                  <input type="checkbox" className="rounded border-border" />
-                  <span className="text-sm font-sans text-muted-foreground">{f}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="border-t border-border" />
-
-          {/* Color filter */}
-          <div>
-            <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">
-              Filter by Color ({colorFilters.length})
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {colorFilters.map((c) => (
-                <button
-                  key={c.name}
-                  title={c.name}
-                  className="w-7 h-7 rounded-full border-2 border-border hover:border-foreground transition-colors hover:scale-110"
-                  style={{
-                    background: c.name === "Multi" ? c.hex : c.hex,
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+          <FilterSidebar
+            localSearch={localSearch}
+            setLocalSearch={setLocalSearch}
+            handleSearch={handleSearch}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+          />
         </aside>
 
         {/* Main content */}

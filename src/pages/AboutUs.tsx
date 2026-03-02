@@ -17,7 +17,7 @@ const AboutUs = () => (
           <h1 className="font-serif text-4xl md:text-5xl font-semibold text-foreground">About Us</h1>
         </div>
 
-        <div className="space-y-5 text-base font-sans text-muted-foreground leading-relaxed">
+        <div className="space-y-5 text-lg font-sans text-muted-foreground leading-relaxed">
           <p>
             We are locally providing the broadest selection of yarn for all the passionate knitters, weavers and crocheters in Lithuania and Latvia. Our family works in this industry for over 25 years. The end of 2019, we began our journey on Etsy and now we are expanding worldwide!
           </p>

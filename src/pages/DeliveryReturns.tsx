@@ -21,7 +21,7 @@ const DeliveryReturns = () => (
             <Truck className="w-5 h-5 text-foreground" />
             <h2 className="font-serif text-2xl font-semibold text-foreground">Delivery Policy</h2>
           </div>
-          <p className="text-sm font-sans text-muted-foreground mb-5 leading-relaxed">
+          <p className="text-base font-sans text-muted-foreground mb-5 leading-relaxed">
             Our dedicated team is working around the clock to pack and ship all orders from our warehouse within 48 hours. The customer receives tracking details via e-mail after the shipping confirmation.
           </p>
 
@@ -136,7 +136,7 @@ const DeliveryReturns = () => (
             <RotateCcw className="w-5 h-5 text-foreground" />
             <h2 className="font-serif text-2xl font-semibold text-foreground">Returns Policy</h2>
           </div>
-          <div className="space-y-3 text-sm font-sans text-muted-foreground leading-relaxed">
+          <div className="space-y-3 text-base font-sans text-muted-foreground leading-relaxed">
             <p>Thanks for your interest in our yarn. We hope you are happy with your purchase. However, if you are not completely satisfied with your purchase for any reason, you may return it to us for store credit or an exchange.</p>
             <p>All returns must be postmarked within <strong className="text-foreground">thirty (30) days</strong> of the purchase date. All returned items must be in unused condition.</p>
             <p>
