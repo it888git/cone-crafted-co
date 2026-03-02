@@ -60,8 +60,6 @@ const ProductDetail = () => {
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
   const perKgFormatted = `${formatEuro(perKgPrice)} / kg`;
 
-  // Stock display - not available via Storefront API without inventory scope
-  const stockLabel = null;
 
   // Similar yarns: match by first word of title (material keyword)
   const titleWords = node.title.toLowerCase().split(/\s+/);
@@ -138,6 +136,7 @@ const ProductDetail = () => {
             {/* Cone weight selector */}
             {hasMultipleVariants && (
               <div className="pt-1">
+                <p className="text-sm font-sans text-muted-foreground mb-3">Choose cone weight and quantity</p>
                 <div className="flex flex-wrap gap-4">
                   {variants.map((v, idx) => {
                     const weight = extractWeightGrams(v.node.title);
@@ -177,57 +176,51 @@ const ProductDetail = () => {
             {/* Stock + quantity + ATC (only when variant chosen) */}
             {variantChosen && (
               <div className="space-y-4 pt-1">
-                {/* Stock indicator */}
-                {stockLabel !== null && available && (
+                {/* Stock / sold out indicator */}
+                {!available ? (
+                  <p className="text-sm font-sans text-destructive">Sold out</p>
+                ) : (
                   <p className="text-sm font-sans text-muted-foreground flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-                    {stockLabel} in stock
+                    {selectedVariant && (selectedVariant as any).quantityAvailable != null
+                      ? ((selectedVariant as any).quantityAvailable >= 6 ? "5+" : String((selectedVariant as any).quantityAvailable))
+                      : "Available"
+                    } in stock
                   </p>
-                )}
-                {!available && variantChosen && (
-                  <p className="text-sm font-sans text-destructive">Sold out</p>
                 )}
 
                 {/* Quantity + Add to cart */}
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center border border-border rounded-md">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
-                    >−</button>
-                    <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[32px] text-center">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
-                    >+</button>
+                {available && (
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center border border-border rounded-md">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
+                        disabled={!available}
+                      >−</button>
+                      <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[32px] text-center">{quantity}</span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="px-3 py-2 text-sm font-sans text-muted-foreground hover:text-foreground"
+                        disabled={!available}
+                      >+</button>
+                    </div>
+                    <Button
+                      className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm font-sans tracking-wide shadow-md border-0"
+                      disabled={!available || cartLoading}
+                      onClick={handleAddToCart}
+                    >
+                      {cartLoading ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <>
+                          <ShoppingBag className="w-4 h-4 mr-2" />
+                          Add to Cart
+                        </>
+                      )}
+                    </Button>
                   </div>
-                  <Button
-                    className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm font-sans tracking-wide shadow-md border-0"
-                    disabled={!available || cartLoading}
-                    onClick={handleAddToCart}
-                  >
-                    {cartLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <>
-                        <ShoppingBag className="w-4 h-4 mr-2" />
-                        {available ? "Add to Cart" : "Sold Out"}
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {/* Options table */}
-            {node.options.length > 0 && node.options[0].name !== "Title" && (
-              <div className="border-t border-border pt-4 mt-4 space-y-3">
-                {node.options.map((opt) => (
-                  <div key={opt.name} className="flex justify-between text-sm font-sans">
-                    <span className="font-semibold text-foreground">{opt.name}</span>
-                    <span className="text-muted-foreground">{opt.values.join(', ')}</span>
-                  </div>
-                ))}
+                )}
               </div>
             )}
           </div>
@@ -237,7 +230,7 @@ const ProductDetail = () => {
       {/* Similar Yarns */}
       {similarProducts.length > 0 && (
         <section className="container pb-16">
-          <h2 className="font-serif text-2xl font-semibold text-foreground mb-6">Similar Yarns</h2>
+          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-6">Similar Yarns</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {similarProducts.map((p) => (
               <ProductCard key={p.node.handle} product={p} />
