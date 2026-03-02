@@ -135,7 +135,7 @@ const Header = () => {
 
         {/* Right: Icons */}
         <div className="flex items-center gap-3 justify-end flex-1">
-          <Link to="/wishlist" className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block relative" aria-label="Wishlist">
+          <Link to="/wishlist" className="p-2 text-muted-foreground hover:text-foreground transition-colors relative" aria-label="Wishlist">
             <Heart className="w-6 h-6" />
             {wishlistCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-sans font-semibold rounded-full flex items-center justify-center min-w-[18px] h-[18px]">
@@ -143,7 +143,7 @@ const Header = () => {
               </span>
             )}
           </Link>
-          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:block" aria-label="Account">
+          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex" aria-label="Account">
             <User className="w-6 h-6" />
           </button>
           <button

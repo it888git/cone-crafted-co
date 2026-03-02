@@ -9,17 +9,23 @@ import { Loader2 } from "lucide-react";
 import review1 from "@/assets/review-1.png";
 import review2 from "@/assets/review-2.png";
 import review3 from "@/assets/review-3.png";
+import categoryCashmere from "@/assets/category-cashmere.jpg";
+import categoryMerino from "@/assets/category-merino.webp";
+import categoryMohair from "@/assets/category-mohair.avif";
+import categorySilk from "@/assets/category-silk.jpg";
+import categoryFeature from "@/assets/category-feature.jpg";
+import categoryComposition from "@/assets/category-composition.jpg";
 
 const categoryRows = {
   row2: [
-    { name: "Shop by Composition", image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop&q=80" },
-    { name: "Shop by Feature", image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&h=400&fit=crop&q=80" },
+    { name: "Shop by Composition", image: categoryComposition },
+    { name: "Shop by Feature", image: categoryFeature },
   ],
   row3: [
-    { name: "Cashmere", image: "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=400&h=400&fit=crop&q=80" },
-    { name: "Merino", image: "https://images.unsplash.com/photo-1560481234-1b8aa0f92a32?w=400&h=400&fit=crop&q=80" },
-    { name: "Mohair", image: "https://images.unsplash.com/photo-1601731603247-7c9e1e155467?w=400&h=400&fit=crop&q=80" },
-    { name: "Silk", image: "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=400&h=400&fit=crop&q=80" },
+    { name: "Cashmere", image: categoryCashmere },
+    { name: "Merino", image: categoryMerino },
+    { name: "Mohair", image: categoryMohair },
+    { name: "Silk", image: categorySilk },
   ],
 };
 
@@ -55,7 +61,7 @@ const Index = () => {
     <main>
       {/* Hero */}
       <section className="relative overflow-hidden bg-muted">
-        <div className="container grid lg:grid-cols-2 gap-6 items-center py-6 lg:py-10">
+        <div className="container grid lg:grid-cols-2 gap-6 items-center py-6 lg:py-10 px-4 md:px-6">
           <div className="space-y-5 animate-fade-in">
             <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold">
               Unleash Your Creativity
@@ -207,8 +213,8 @@ const Index = () => {
       {/* Newest Collection Carousel */}
       <section className="bg-muted/50 py-10 lg:py-14">
         <div className="container">
-          <div className="flex items-end justify-between mb-8">
-            <div>
+          <div className="flex items-end justify-between mb-8 gap-4">
+            <div className="min-w-0">
               <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold mb-2">
                 Just Arrived
               </p>
@@ -216,7 +222,7 @@ const Index = () => {
                 Newest Collection
               </h2>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={() => scrollCarousel('left')}
                 disabled={!canScrollLeft}
@@ -233,7 +239,7 @@ const Index = () => {
               </button>
               <Link
                 to="/products"
-                className="ml-2 text-sm font-sans text-primary hover:opacity-80 transition-colors flex items-center gap-1"
+                className="ml-2 text-sm font-sans text-primary hover:opacity-80 transition-colors items-center gap-1 hidden sm:flex"
               >
                 View all <ArrowRight className="w-4 h-4" />
               </Link>
@@ -250,7 +256,7 @@ const Index = () => {
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {products.slice(0, 10).map((product) => (
-                <div key={product.node.id} className="min-w-[220px] md:min-w-[260px] snap-start flex-shrink-0" style={{ width: 'calc((100% - 96px) / 5)' }}>
+                <div key={product.node.id} className="min-w-[180px] sm:min-w-[220px] md:min-w-[260px] snap-start flex-shrink-0" style={{ width: 'calc((100% - 96px) / 5)' }}>
                   <ProductCard product={product} />
                 </div>
               ))}
@@ -275,7 +281,7 @@ const Index = () => {
             <input
               type="email"
               placeholder="your@email.com"
-              className="flex-1 bg-primary-foreground/10 border border-primary-foreground/20 rounded-l-lg px-4 py-3 text-sm font-sans text-primary-foreground placeholder:text-primary-foreground/40 focus:outline-none focus:border-primary-foreground/50"
+              className="flex-1 min-w-0 bg-primary-foreground/10 border border-primary-foreground/20 rounded-l-lg px-4 py-3 text-sm font-sans text-primary-foreground placeholder:text-primary-foreground/40 focus:outline-none focus:border-primary-foreground/50"
             />
             <button className="bg-accent text-accent-foreground px-6 py-3 rounded-r-lg text-sm font-sans font-semibold hover:opacity-90 transition-opacity">
               Subscribe
