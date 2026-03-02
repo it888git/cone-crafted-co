@@ -69,6 +69,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
               No image
             </div>
           )}
+          {/* NEW badge */}
+          {node.createdAt && (() => {
+            const created = new Date(node.createdAt);
+            const twoWeeksAgo = new Date();
+            twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+            return created >= twoWeeksAgo;
+          })() && (
+            <Badge className="absolute top-3 left-3 text-[10px] font-sans tracking-wider uppercase px-2 py-0.5 bg-accent text-accent-foreground border-0">
+              NEW
+            </Badge>
+          )}
           {/* Favorite – always visible */}
           <div className="absolute top-3 right-3">
             <button
