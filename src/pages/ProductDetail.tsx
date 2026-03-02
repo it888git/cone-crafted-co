@@ -8,48 +8,26 @@ import { useState } from "react";
 import { getPerKgPrice, formatEuro, extractWeightGrams } from "@/lib/priceUtils";
 import ProductCard from "@/components/ProductCard";
 
+import coneVariantImg from "@/assets/cone-variant.png";
+
 const ConeIcon = ({ selected, label }: { selected: boolean; label: string }) => (
-  <div className="flex flex-col items-center gap-1.5">
-    <svg width="56" height="72" viewBox="0 0 56 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Cone body - trapezoid shape */}
-      <path
-        d="M16 8 L40 8 L48 58 Q48 64 28 64 Q8 64 8 58 Z"
-        fill="none"
-        stroke={selected ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground) / 0.4)"}
-        strokeWidth="1.5"
+  <div className="flex flex-col items-center">
+    <div className="relative w-16 h-20 md:w-20 md:h-24">
+      <img
+        src={coneVariantImg}
+        alt="Cone"
+        className={`w-full h-full object-contain transition-opacity ${
+          selected ? "opacity-100" : "opacity-30"
+        }`}
       />
-      {/* Top ellipse (hole) */}
-      <ellipse
-        cx="28" cy="8" rx="12" ry="5"
-        fill="none"
-        stroke={selected ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground) / 0.4)"}
-        strokeWidth="1.5"
-      />
-      {/* Bottom ellipse */}
-      <ellipse
-        cx="28" cy="60" rx="20" ry="5"
-        fill="none"
-        stroke={selected ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground) / 0.4)"}
-        strokeWidth="1.5"
-      />
-      {/* Yarn wrap lines */}
-      <line x1="14" y1="20" x2="42" y2="20" stroke={selected ? "hsl(var(--foreground) / 0.15)" : "hsl(var(--muted-foreground) / 0.1)"} strokeWidth="0.5" />
-      <line x1="12" y1="30" x2="44" y2="30" stroke={selected ? "hsl(var(--foreground) / 0.15)" : "hsl(var(--muted-foreground) / 0.1)"} strokeWidth="0.5" />
-      <line x1="10" y1="40" x2="46" y2="40" stroke={selected ? "hsl(var(--foreground) / 0.15)" : "hsl(var(--muted-foreground) / 0.1)"} strokeWidth="0.5" />
-      <line x1="9" y1="50" x2="47" y2="50" stroke={selected ? "hsl(var(--foreground) / 0.15)" : "hsl(var(--muted-foreground) / 0.1)"} strokeWidth="0.5" />
-      {/* Weight text inside cone */}
-      <text
-        x="28" y="40"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill={selected ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground) / 0.5)"}
-        fontSize="11"
-        fontFamily="Inter, sans-serif"
-        fontWeight={selected ? "600" : "400"}
+      <span
+        className={`absolute inset-0 flex items-center justify-center text-xs md:text-sm font-sans font-semibold pt-2 ${
+          selected ? "text-foreground" : "text-muted-foreground/50"
+        }`}
       >
         {label}
-      </text>
-    </svg>
+      </span>
+    </div>
   </div>
 );
 
@@ -138,8 +116,8 @@ const ProductDetail = () => {
         </nav>
       </div>
 
-      <section className="container pb-16">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+      <section className="container pb-16 px-4 md:px-6">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-10">
           {/* Image gallery */}
           <div className="space-y-3">
             <div className="relative">
