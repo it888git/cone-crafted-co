@@ -66,7 +66,7 @@ const ProductDetail = () => {
   const { node } = product;
   const variants = node.variants.edges;
   const hasMultipleVariants = variants.length > 1;
-  const selectedVariant = selectedVariantIdx !== null ? variants[selectedVariantIdx]?.node : (hasMultipleVariants ? null : variants[0]?.node);
+  const selectedVariant = selectedVariantIdx !== null ? variants[selectedVariantIdx]?.node : null;
   const images = node.images.edges;
   const mainImage = images[selectedImageIdx]?.node || images[0]?.node;
   const available = selectedVariant?.availableForSale ?? false;
