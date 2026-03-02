@@ -76,9 +76,9 @@ const Footer = () => (
             <li><Link to="/about" className="hover:opacity-100 transition-opacity">About Us</Link></li>
             <li><Link to="/" className="hover:opacity-100 transition-opacity">My Account</Link></li>
             <li><Link to="/wishlist" className="hover:opacity-100 transition-opacity">My Wishlist</Link></li>
-            <li><Link to="/" className="hover:opacity-100 transition-opacity">Privacy Policy</Link></li>
-            <li><Link to="/" className="hover:opacity-100 transition-opacity">Delivery &amp; Returns Policy</Link></li>
-            <li><Link to="/" className="hover:opacity-100 transition-opacity">Most Frequent Questions</Link></li>
+            <li><Link to="/privacy-policy" className="hover:opacity-100 transition-opacity">Privacy Policy</Link></li>
+            <li><Link to="/delivery-returns" className="hover:opacity-100 transition-opacity">Delivery &amp; Returns Policy</Link></li>
+            <li><Link to="/faq" className="hover:opacity-100 transition-opacity">Most Frequent Questions</Link></li>
           </ul>
         </div>
 
