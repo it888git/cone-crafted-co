@@ -205,7 +205,7 @@ const Header = () => {
           >
             <div className="container py-8">
               {link.label === "Knitters" && (
-                <p className="text-xs font-sans tracking-widest uppercase text-muted-foreground font-semibold mb-5">Customer Care</p>
+                <p className="text-xs font-sans tracking-widest uppercase text-muted-foreground/60 font-semibold mb-5">Customer Care</p>
               )}
             <div className="flex gap-12">
                 {Object.values(link.mega).map((col, idx) => (
