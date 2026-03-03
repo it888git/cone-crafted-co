@@ -19,11 +19,12 @@ const yarnCategories = [
 ];
 
 const weightFilters = [
-  "0 Lace weight yarn",
-  "1 Fingering weight yarn",
-  "2 Sport weight yarn",
-  "3 DK weight yarn",
-  "4 Worsted weight yarn",
+  "0 Lace weight",
+  "1 Fingering weight",
+  "2 Sport weight",
+  "3 DK/Light worsted weight",
+  "4 Aran/Worsted weight",
+  "5 Chunky/Bulky weight",
 ];
 
 const featureFilters = [
@@ -120,19 +121,23 @@ const FilterSidebar = ({
     <div>
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Feature</h3>
       <ul className="space-y-2">
-        {featureFilters.map((f) => (
-          <li key={f} className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              className="rounded border-border accent-[hsl(var(--primary))]"
-              checked={activeFeatures.includes(f)}
-              onChange={() => toggleFeature(f)}
-            />
-            <span className={`text-sm font-sans ${activeFeatures.includes(f) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
-              {f} <span className="text-muted-foreground/60">({countFor(f)})</span>
-            </span>
-          </li>
-        ))}
+      {featureFilters.map((f) => {
+          const count = countFor(f);
+          if (count === 0) return null;
+          return (
+            <li key={f} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="rounded border-border accent-[hsl(var(--primary))]"
+                checked={activeFeatures.includes(f)}
+                onChange={() => toggleFeature(f)}
+              />
+              <span className={`text-sm font-sans ${activeFeatures.includes(f) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                {f} <span className="text-muted-foreground/60">({count})</span>
+              </span>
+            </li>
+          );
+        })}
       </ul>
     </div>
     <div className="border-t border-border" />
