@@ -4,19 +4,22 @@ import { Loader2, Search, ChevronDown, MapPin, Repeat2, Globe, Lock, SlidersHori
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 
-const yarnCategories = [
-  "All cone yarn",
-  "Wool yarn",
-  "Wool blend yarn",
-  "Alpaca blend yarn",
-  "Cashmere yarn",
-  "Mohair yarn",
-  "Cotton yarn",
-  "Viscose yarn",
-  "Linen yarn",
-  "Silk blend yarn",
-  "Acrylic yarn (Synthetic)",
-];
+// Map each category to exact tag(s) that should match
+const yarnCategoryTags: Record<string, string[]> = {
+  "All cone yarn": [],
+  "Wool yarn": ["wool"],
+  "Wool blend yarn": ["wool blend"],
+  "Alpaca blend yarn": ["alpaca", "alpaca blend"],
+  "Cashmere yarn": ["cashmere"],
+  "Mohair yarn": ["mohair"],
+  "Cotton yarn": ["cotton"],
+  "Viscose yarn": ["viscose"],
+  "Linen yarn": ["linen"],
+  "Silk blend yarn": ["silk", "silk blend"],
+  "Acrylic yarn (Synthetic)": ["acrylic", "synthetic"],
+};
+
+const yarnCategories = Object.keys(yarnCategoryTags);
 
 const weightFilters = [
   "0 Lace weight",
@@ -53,11 +56,17 @@ const sortOptions = [
   { label: "Sort by name", value: "name" },
 ];
 
-// Helper: check if product matches a keyword in tags only
+// Helper: check if product has a tag containing keyword (substring)
 const productMatchesTag = (p: any, keyword: string) => {
   const kw = keyword.toLowerCase();
   const tags = (p.node.tags || []).map((t: string) => t.toLowerCase());
   return tags.some((t: string) => t.includes(kw));
+};
+
+// Helper: check if product has an exact tag match (for categories)
+const productHasExactTag = (p: any, exactTags: string[]) => {
+  const tags = (p.node.tags || []).map((t: string) => t.toLowerCase().trim());
+  return exactTags.some(et => tags.includes(et.toLowerCase()));
 };
 
 // Helper: check if product matches a keyword in tags or title (for search)
@@ -87,6 +96,13 @@ const FilterSidebar = ({
     return products.filter((p) => productMatchesTag(p, keyword)).length;
   };
 
+  const countForCategory = (cat: string) => {
+    if (!products) return 0;
+    const tags = yarnCategoryTags[cat] || [];
+    if (tags.length === 0) return 0;
+    return products.filter((p) => productHasExactTag(p, tags)).length;
+  };
+
   return (
   <>
     <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2">
@@ -97,7 +113,7 @@ const FilterSidebar = ({
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Yarn Categories</h3>
       <ul className="space-y-1.5">
         {yarnCategories.map((cat) => (
-          <li key={cat}><button onClick={() => setActiveCategory(activeCategory === cat ? "All cone yarn" : cat)} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat !== "All cone yarn" ? "pl-4" : ""}`}>{cat}{cat !== "All cone yarn" && <span className="text-muted-foreground/60 ml-1">({countFor(cat.replace(/ yarn.*$/i, ''))})</span>}</button></li>
+          <li key={cat}><button onClick={() => setActiveCategory(activeCategory === cat ? "All cone yarn" : cat)} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat !== "All cone yarn" ? "pl-4" : ""}`}>{cat}{cat !== "All cone yarn" && <span className="text-muted-foreground/60 ml-1">({countForCategory(cat)})</span>}</button></li>
         ))}
       </ul>
     </div>
@@ -220,10 +236,10 @@ const Products = () => {
       });
     }
 
-    // Category filter
+    // Category filter (exact tag match)
     if (activeCategory !== "All cone yarn") {
-      const catKeyword = activeCategory.replace(/ yarn.*$/i, '').toLowerCase();
-      result = result.filter(p => productMatchesTag(p, catKeyword));
+      const catTags = yarnCategoryTags[activeCategory] || [];
+      result = result.filter(p => productHasExactTag(p, catTags));
     }
 
     // Weight filters (OR within group)
