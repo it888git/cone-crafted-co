@@ -191,17 +191,43 @@ const Products = () => {
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const searchQuery = params.get("search") || undefined;
+  const categoryParam = params.get("category") || undefined;
+  const featureParam = params.get("feature") || undefined;
+
+  // Resolve category param to matching yarnCategory key
+  const resolvedCategory = useMemo(() => {
+    if (!categoryParam) return "All cone yarn";
+    const kw = categoryParam.toLowerCase();
+    const match = yarnCategories.find(cat => cat.toLowerCase().includes(kw));
+    return match || "All cone yarn";
+  }, [categoryParam]);
+
+  // Resolve feature param to matching featureFilter
+  const resolvedFeatures = useMemo(() => {
+    if (!featureParam) return [];
+    const kw = featureParam.toLowerCase();
+    const match = featureFilters.find(f => f.toLowerCase() === kw);
+    return match ? [match] : [];
+  }, [featureParam]);
+
   const [localSearch, setLocalSearch] = useState(searchQuery || "");
   const [sortBy, setSortBy] = useState("latest");
-  const [activeCategory, setActiveCategory] = useState("All cone yarn");
+  const [activeCategory, setActiveCategory] = useState(resolvedCategory);
   const [activeWeights, setActiveWeights] = useState<string[]>([]);
-  const [activeFeatures, setActiveFeatures] = useState<string[]>([]);
+  const [activeFeatures, setActiveFeatures] = useState<string[]>(resolvedFeatures);
   const [activeColors, setActiveColors] = useState<string[]>([]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [showFloatingFilter, setShowFloatingFilter] = useState(false);
 
   // Fetch all products (no server-side search query - we filter client-side for AND logic)
   const { data: products, isLoading } = useShopifyProducts(50);
+
+  // Sync URL params to filter state on navigation
+  useEffect(() => {
+    setActiveCategory(resolvedCategory);
+    setActiveFeatures(resolvedFeatures);
+    setLocalSearch(searchQuery || "");
+  }, [resolvedCategory, resolvedFeatures, searchQuery]);
 
   useEffect(() => {
     const onScroll = () => setShowFloatingFilter(window.scrollY > 200);

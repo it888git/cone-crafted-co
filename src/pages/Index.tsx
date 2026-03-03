@@ -19,14 +19,14 @@ import categoryAllYarns from "@/assets/category-all-yarns.webp";
 
 const categoryRows = {
   row2: [
-    { name: "Shop by Composition", image: categoryComposition },
-    { name: "Shop by Feature", image: categoryFeature },
+    { name: "Shop by Composition", image: categoryComposition, link: "/products" },
+    { name: "Shop by Feature", image: categoryFeature, link: "/products" },
   ],
   row3: [
-    { name: "Cashmere", image: categoryCashmere },
-    { name: "Merino", image: categoryAllYarns },
-    { name: "Mohair", image: categoryMohair },
-    { name: "Silk", image: categorySilk },
+    { name: "Cashmere", image: categoryCashmere, link: "/products?category=cashmere" },
+    { name: "Merino", image: categoryAllYarns, link: "/products?category=merino" },
+    { name: "Mohair", image: categoryMohair, link: "/products?category=mohair" },
+    { name: "Silk", image: categorySilk, link: "/products?category=silk" },
   ],
 };
 
@@ -137,7 +137,7 @@ const Index = () => {
           {categoryRows.row2.map((cat, i) => (
             <Link
               key={cat.name}
-              to="/products"
+              to={cat.link}
               className="group relative overflow-hidden rounded-xl aspect-[3/2] animate-fade-in"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
@@ -165,7 +165,7 @@ const Index = () => {
           {categoryRows.row3.map((cat, i) => (
             <Link
               key={cat.name}
-              to="/products"
+              to={cat.link}
               className="group relative overflow-hidden rounded-xl aspect-square animate-fade-in"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
