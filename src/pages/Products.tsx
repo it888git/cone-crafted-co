@@ -2,7 +2,7 @@ import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
 import { Loader2, Search, ChevronDown, MapPin, Repeat2, Globe, Lock, SlidersHorizontal, X } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const yarnCategories = [
   "All cone yarn",
@@ -52,22 +52,32 @@ const sortOptions = [
   { label: "Sort by name", value: "name" },
 ];
 
+// Helper: check if product matches a keyword in tags/title
+const productMatchesKeyword = (p: any, keyword: string) => {
+  const kw = keyword.toLowerCase();
+  const title = p.node.title.toLowerCase();
+  const tags = (p.node.tags || []).map((t: string) => t.toLowerCase());
+  return title.includes(kw) || tags.some((t: string) => t.includes(kw));
+};
+
 const FilterSidebar = ({
-  localSearch, setLocalSearch, handleSearch, activeCategory, setActiveCategory, products,
+  localSearch, setLocalSearch, handleSearch,
+  activeCategory, setActiveCategory,
+  activeWeights, toggleWeight,
+  activeFeatures, toggleFeature,
+  activeColors, toggleColor,
+  products,
 }: {
   localSearch: string; setLocalSearch: (v: string) => void; handleSearch: () => void;
   activeCategory: string; setActiveCategory: (v: string) => void;
+  activeWeights: string[]; toggleWeight: (w: string) => void;
+  activeFeatures: string[]; toggleFeature: (f: string) => void;
+  activeColors: string[]; toggleColor: (c: string) => void;
   products?: any[];
 }) => {
-  // Count products per tag-based filter (simple keyword match on tags/title)
   const countFor = (keyword: string) => {
     if (!products) return 0;
-    const kw = keyword.toLowerCase();
-    return products.filter((p) => {
-      const title = p.node.title.toLowerCase();
-      const tags = (p.node.tags || []).map((t: string) => t.toLowerCase());
-      return title.includes(kw) || tags.some((t: string) => t.includes(kw));
-    }).length;
+    return products.filter((p) => productMatchesKeyword(p, keyword)).length;
   };
 
   return (
@@ -80,7 +90,7 @@ const FilterSidebar = ({
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Yarn Categories</h3>
       <ul className="space-y-1.5">
         {yarnCategories.map((cat) => (
-          <li key={cat}><button onClick={() => setActiveCategory(cat)} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat !== "All cone yarn" ? "pl-4" : ""}`}>{cat}{cat !== "All cone yarn" && <span className="text-muted-foreground/60 ml-1">({countFor(cat.replace(/ yarn.*$/i, ''))})</span>}</button></li>
+          <li key={cat}><button onClick={() => setActiveCategory(activeCategory === cat ? "All cone yarn" : cat)} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat !== "All cone yarn" ? "pl-4" : ""}`}>{cat}{cat !== "All cone yarn" && <span className="text-muted-foreground/60 ml-1">({countFor(cat.replace(/ yarn.*$/i, ''))})</span>}</button></li>
         ))}
       </ul>
     </div>
@@ -88,23 +98,58 @@ const FilterSidebar = ({
     <div>
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Weight</h3>
       <ul className="space-y-2">
-        {weightFilters.map((w) => (<li key={w} className="flex items-center gap-2"><input type="checkbox" className="rounded border-border" /><span className="text-sm font-sans text-muted-foreground">{w} <span className="text-muted-foreground/60">({countFor(w.replace(/^\d\s*/, '').replace(/ weight yarn$/i, '').replace(/ yarn$/i, ''))})</span></span></li>))}
+        {weightFilters.map((w) => {
+          const wKey = w.replace(/^\d\s*/, '').replace(/ weight yarn$/i, '').replace(/ yarn$/i, '');
+          return (
+            <li key={w} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="rounded border-border accent-[hsl(var(--primary))]"
+                checked={activeWeights.includes(w)}
+                onChange={() => toggleWeight(w)}
+              />
+              <span className={`text-sm font-sans ${activeWeights.includes(w) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                {w} <span className="text-muted-foreground/60">({countFor(wKey)})</span>
+              </span>
+            </li>
+          );
+        })}
       </ul>
     </div>
     <div className="border-t border-border" />
     <div>
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Feature</h3>
       <ul className="space-y-2">
-        {featureFilters.map((f) => (<li key={f} className="flex items-center gap-2"><input type="checkbox" className="rounded border-border" /><span className="text-sm font-sans text-muted-foreground">{f} <span className="text-muted-foreground/60">({countFor(f)})</span></span></li>))}
+        {featureFilters.map((f) => (
+          <li key={f} className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              className="rounded border-border accent-[hsl(var(--primary))]"
+              checked={activeFeatures.includes(f)}
+              onChange={() => toggleFeature(f)}
+            />
+            <span className={`text-sm font-sans ${activeFeatures.includes(f) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+              {f} <span className="text-muted-foreground/60">({countFor(f)})</span>
+            </span>
+          </li>
+        ))}
       </ul>
     </div>
     <div className="border-t border-border" />
     <div>
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Color</h3>
       <div className="flex flex-wrap gap-2">
-        {colorFilters.map((c) => (<button key={c.name} title={`${c.name} (${countFor(c.name)})`} className="w-7 h-7 rounded-full border-2 border-border hover:border-foreground transition-colors hover:scale-110 relative group" style={{ background: c.hex }}>
-          <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] font-sans text-muted-foreground opacity-0 group-hover:opacity-100 whitespace-nowrap">{countFor(c.name)}</span>
-        </button>))}
+        {colorFilters.map((c) => (
+          <button
+            key={c.name}
+            title={`${c.name} (${countFor(c.name)})`}
+            onClick={() => toggleColor(c.name)}
+            className={`w-7 h-7 rounded-full border-2 transition-colors hover:scale-110 relative group ${activeColors.includes(c.name) ? "border-primary ring-2 ring-primary/30" : "border-border hover:border-foreground"}`}
+            style={{ background: c.hex }}
+          >
+            <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] font-sans text-muted-foreground opacity-0 group-hover:opacity-100 whitespace-nowrap">{countFor(c.name)}</span>
+          </button>
+        ))}
       </div>
     </div>
   </>
@@ -119,10 +164,14 @@ const Products = () => {
   const [localSearch, setLocalSearch] = useState(searchQuery || "");
   const [sortBy, setSortBy] = useState("latest");
   const [activeCategory, setActiveCategory] = useState("All cone yarn");
+  const [activeWeights, setActiveWeights] = useState<string[]>([]);
+  const [activeFeatures, setActiveFeatures] = useState<string[]>([]);
+  const [activeColors, setActiveColors] = useState<string[]>([]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [showFloatingFilter, setShowFloatingFilter] = useState(false);
 
-  const { data: products, isLoading } = useShopifyProducts(50, searchQuery);
+  // Fetch all products (no server-side search query - we filter client-side for AND logic)
+  const { data: products, isLoading } = useShopifyProducts(50);
 
   useEffect(() => {
     const onScroll = () => setShowFloatingFilter(window.scrollY > 200);
@@ -135,6 +184,92 @@ const Products = () => {
     const p = new URLSearchParams();
     if (term) p.set("search", term);
     navigate(p.toString() ? `/products?${p.toString()}` : "/products");
+  };
+
+  const toggleWeight = (w: string) => setActiveWeights(prev => prev.includes(w) ? prev.filter(x => x !== w) : [...prev, w]);
+  const toggleFeature = (f: string) => setActiveFeatures(prev => prev.includes(f) ? prev.filter(x => x !== f) : [...prev, f]);
+  const toggleColor = (c: string) => setActiveColors(prev => prev.includes(c) ? prev.filter(x => x !== c) : [...prev, c]);
+
+  // Client-side filtering
+  const filteredProducts = useMemo(() => {
+    if (!products) return [];
+    let result = [...products];
+
+    // AND search: every word must match title or tags
+    if (searchQuery) {
+      const words = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
+      result = result.filter(p => {
+        const title = p.node.title.toLowerCase();
+        const tags = (p.node.tags || []).map((t: string) => t.toLowerCase());
+        const allText = title + " " + tags.join(" ");
+        return words.every(word => allText.includes(word));
+      });
+    }
+
+    // Category filter
+    if (activeCategory !== "All cone yarn") {
+      const catKeyword = activeCategory.replace(/ yarn.*$/i, '').toLowerCase();
+      result = result.filter(p => productMatchesKeyword(p, catKeyword));
+    }
+
+    // Weight filters (OR within group)
+    if (activeWeights.length > 0) {
+      result = result.filter(p =>
+        activeWeights.some(w => {
+          const wKey = w.replace(/^\d\s*/, '').replace(/ weight yarn$/i, '').replace(/ yarn$/i, '');
+          return productMatchesKeyword(p, wKey);
+        })
+      );
+    }
+
+    // Feature filters (OR within group)
+    if (activeFeatures.length > 0) {
+      result = result.filter(p =>
+        activeFeatures.some(f => productMatchesKeyword(p, f))
+      );
+    }
+
+    // Color filters (OR within group)
+    if (activeColors.length > 0) {
+      result = result.filter(p =>
+        activeColors.some(c => productMatchesKeyword(p, c))
+      );
+    }
+
+    // Sorting
+    if (sortBy === "name") {
+      result.sort((a, b) => a.node.title.localeCompare(b.node.title));
+    } else {
+      result.sort((a, b) => new Date(b.node.createdAt).getTime() - new Date(a.node.createdAt).getTime());
+    }
+
+    return result;
+  }, [products, searchQuery, activeCategory, activeWeights, activeFeatures, activeColors, sortBy]);
+
+  // Collect all active filter labels for display
+  const activeFilterTags = useMemo(() => {
+    const tags: { label: string; type: string; value: string }[] = [];
+    if (activeCategory !== "All cone yarn") {
+      tags.push({ label: activeCategory, type: "category", value: activeCategory });
+    }
+    activeWeights.forEach(w => tags.push({ label: w, type: "weight", value: w }));
+    activeFeatures.forEach(f => tags.push({ label: f, type: "feature", value: f }));
+    activeColors.forEach(c => tags.push({ label: c, type: "color", value: c }));
+    return tags;
+  }, [activeCategory, activeWeights, activeFeatures, activeColors]);
+
+  const removeFilter = (tag: { type: string; value: string }) => {
+    if (tag.type === "category") setActiveCategory("All cone yarn");
+    else if (tag.type === "weight") toggleWeight(tag.value);
+    else if (tag.type === "feature") toggleFeature(tag.value);
+    else if (tag.type === "color") toggleColor(tag.value);
+  };
+
+  const clearAllFilters = () => {
+    setActiveCategory("All cone yarn");
+    setActiveWeights([]);
+    setActiveFeatures([]);
+    setActiveColors([]);
   };
 
   return (
@@ -176,6 +311,12 @@ const Products = () => {
                 handleSearch={handleSearch}
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
+                activeWeights={activeWeights}
+                toggleWeight={toggleWeight}
+                activeFeatures={activeFeatures}
+                toggleFeature={toggleFeature}
+                activeColors={activeColors}
+                toggleColor={toggleColor}
                 products={products}
               />
             </aside>
@@ -190,6 +331,12 @@ const Products = () => {
             handleSearch={handleSearch}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
+            activeWeights={activeWeights}
+            toggleWeight={toggleWeight}
+            activeFeatures={activeFeatures}
+            toggleFeature={toggleFeature}
+            activeColors={activeColors}
+            toggleColor={toggleColor}
             products={products}
           />
         </aside>
@@ -217,7 +364,7 @@ const Products = () => {
           </button>
 
           {/* Sort & count bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-2 pb-4 border-b border-border">
             <div className="flex items-center gap-2">
               <select
                 value={sortBy}
@@ -231,17 +378,39 @@ const Products = () => {
               <ChevronDown className="w-4 h-4 text-muted-foreground" />
             </div>
             <p className="text-sm font-sans text-muted-foreground">
-              {isLoading ? "Loading..." : `Showing 1–${products?.length || 0} of ${products?.length || 0} results`}
+              {isLoading ? "Loading..." : `Showing 1–${filteredProducts.length} of ${filteredProducts.length} results`}
             </p>
           </div>
+
+          {/* Active filter tags */}
+          {activeFilterTags.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 py-3 mb-4">
+              {activeFilterTags.map((tag) => (
+                <button
+                  key={`${tag.type}-${tag.value}`}
+                  onClick={() => removeFilter(tag)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-sans font-medium hover:bg-primary/20 transition-colors"
+                >
+                  {tag.label}
+                  <X className="w-3 h-3" />
+                </button>
+              ))}
+              <button
+                onClick={clearAllFilters}
+                className="text-xs font-sans text-primary hover:text-primary/80 underline underline-offset-2 ml-1"
+              >
+                Clear all
+              </button>
+            </div>
+          )}
 
           {isLoading ? (
             <div className="flex justify-center py-20">
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
             </div>
-          ) : products && products.length > 0 ? (
+          ) : filteredProducts.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <ProductCard key={product.node.id} product={product} />
               ))}
             </div>
@@ -249,7 +418,7 @@ const Products = () => {
             <div className="text-center py-20">
               <p className="font-serif text-xl text-muted-foreground">No products found</p>
               <p className="text-sm font-sans text-muted-foreground mt-2">
-                Products will appear here once added to your Shopify store.
+                Try adjusting your filters or search terms.
               </p>
             </div>
           )}
