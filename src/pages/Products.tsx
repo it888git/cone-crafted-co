@@ -53,12 +53,18 @@ const sortOptions = [
   { label: "Sort by name", value: "name" },
 ];
 
-// Helper: check if product matches a keyword in tags/title
+// Helper: check if product matches a keyword in tags only
+const productMatchesTag = (p: any, keyword: string) => {
+  const kw = keyword.toLowerCase();
+  const tags = (p.node.tags || []).map((t: string) => t.toLowerCase());
+  return tags.some((t: string) => t.includes(kw));
+};
+
+// Helper: check if product matches a keyword in tags or title (for search)
 const productMatchesKeyword = (p: any, keyword: string) => {
   const kw = keyword.toLowerCase();
   const title = p.node.title.toLowerCase();
-  const tags = (p.node.tags || []).map((t: string) => t.toLowerCase());
-  return title.includes(kw) || tags.some((t: string) => t.includes(kw));
+  return title.includes(kw) || productMatchesTag(p, kw);
 };
 
 const FilterSidebar = ({
@@ -78,7 +84,7 @@ const FilterSidebar = ({
 }) => {
   const countFor = (keyword: string) => {
     if (!products) return 0;
-    return products.filter((p) => productMatchesKeyword(p, keyword)).length;
+    return products.filter((p) => productMatchesTag(p, keyword)).length;
   };
 
   return (
@@ -144,17 +150,20 @@ const FilterSidebar = ({
     <div>
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Color</h3>
       <div className="flex flex-wrap gap-2">
-        {colorFilters.map((c) => (
-          <button
-            key={c.name}
-            title={`${c.name} (${countFor(c.name)})`}
-            onClick={() => toggleColor(c.name)}
-            className={`w-7 h-7 rounded-full border-2 transition-colors hover:scale-110 relative group ${activeColors.includes(c.name) ? "border-primary ring-2 ring-primary/30" : "border-border hover:border-foreground"}`}
-            style={{ background: c.hex }}
-          >
-            <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] font-sans text-muted-foreground opacity-0 group-hover:opacity-100 whitespace-nowrap">{countFor(c.name)}</span>
-          </button>
-        ))}
+        {colorFilters.map((c) => {
+          const count = countFor(c.name);
+          return (
+            <button
+              key={c.name}
+              title={`${c.name} (${count})`}
+              onClick={() => toggleColor(c.name)}
+              className={`w-8 h-8 rounded-full border-2 transition-colors hover:scale-110 relative flex items-center justify-center ${activeColors.includes(c.name) ? "border-primary ring-2 ring-primary/30" : "border-border hover:border-foreground"}`}
+              style={{ background: c.hex }}
+            >
+              <span className="text-[10px] font-sans font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{count}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   </>
@@ -214,7 +223,7 @@ const Products = () => {
     // Category filter
     if (activeCategory !== "All cone yarn") {
       const catKeyword = activeCategory.replace(/ yarn.*$/i, '').toLowerCase();
-      result = result.filter(p => productMatchesKeyword(p, catKeyword));
+      result = result.filter(p => productMatchesTag(p, catKeyword));
     }
 
     // Weight filters (OR within group)
@@ -222,7 +231,7 @@ const Products = () => {
       result = result.filter(p =>
         activeWeights.some(w => {
           const wKey = w.replace(/^\d\s*/, '').replace(/ weight yarn$/i, '').replace(/ yarn$/i, '');
-          return productMatchesKeyword(p, wKey);
+          return productMatchesTag(p, wKey);
         })
       );
     }
@@ -230,14 +239,14 @@ const Products = () => {
     // Feature filters (OR within group)
     if (activeFeatures.length > 0) {
       result = result.filter(p =>
-        activeFeatures.some(f => productMatchesKeyword(p, f))
+        activeFeatures.some(f => productMatchesTag(p, f))
       );
     }
 
     // Color filters (OR within group)
     if (activeColors.length > 0) {
       result = result.filter(p =>
-        activeColors.some(c => productMatchesKeyword(p, c))
+        activeColors.some(c => productMatchesTag(p, c))
       );
     }
 
