@@ -225,7 +225,16 @@ const Header = () => {
                           "Delivery & Returns Policy": "/delivery-returns",
                           "Most Frequent Questions": "/faq",
                         };
-                        const to = knitterRoutes[item] || "/products";
+                        // Build filter URL for composition/feature items
+                        let to = knitterRoutes[item] || "/products";
+                        if (!knitterRoutes[item] && link.label === "Yarns") {
+                          const isFeature = ["Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby", "Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille"].includes(item);
+                          if (isFeature) {
+                            to = `/products?feature=${encodeURIComponent(item.toLowerCase())}`;
+                          } else if (item !== "Other Composition") {
+                            to = `/products?category=${encodeURIComponent(item.toLowerCase())}`;
+                          }
+                        }
                         return (
                           <li key={item}>
                             <Link
@@ -299,7 +308,12 @@ const MobileNavItem = ({ link, onClose }: { link: NavItem; onClose: () => void }
                 <p className="text-[10px] font-sans tracking-widest uppercase text-muted-foreground/60 font-semibold mt-2 mb-1">{col.title}</p>
               )}
               {col.items.map((item) => {
-                const to = knitterRoutes[item] || "/products";
+                const to = knitterRoutes[item] || (() => {
+                  const isFeature = ["Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby", "Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille"].includes(item);
+                  if (link.label === "Yarns" && isFeature) return `/products?feature=${encodeURIComponent(item.toLowerCase())}`;
+                  if (link.label === "Yarns" && item !== "Other Composition") return `/products?category=${encodeURIComponent(item.toLowerCase())}`;
+                  return "/products";
+                })();
                 return (
                   <Link
                     key={item}
