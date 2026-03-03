@@ -102,7 +102,7 @@ const CartDrawer = () => {
                   <span className="text-base font-semibold">Checkout</span>
                 )}
               </Button>
-              <img src="/icons/payment-methods.png" alt="Visa, Mastercard, Amex, Apple Pay, Google Pay, Shopify Pay" className="h-5 mx-auto opacity-60" />
+              
               <p className="text-[11px] text-muted-foreground text-center font-sans">
                 Shipping calculated at checkout
               </p>

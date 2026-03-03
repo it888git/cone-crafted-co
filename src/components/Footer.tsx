@@ -7,8 +7,8 @@ const ShippingPaymentLogos = () => (
     <img src="/icons/dpd.svg" alt="DPD" className="h-6 opacity-70" />
     <img src="/icons/ups.svg" alt="UPS" className="h-6 opacity-70" />
     <img src="/icons/fedex.svg" alt="FedEx" className="h-6 opacity-70" />
-    <div className="w-px h-5 bg-background/20 mx-1" />
-    <img src="/icons/payment-icons.png" alt="Visa, Mastercard, Apple Pay, Google Pay" className="h-6 opacity-70" />
+    
+    
   </div>
 );
 

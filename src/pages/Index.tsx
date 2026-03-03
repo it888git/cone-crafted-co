@@ -24,7 +24,7 @@ const categoryRows = {
   ],
   row3: [
     { name: "Cashmere", image: categoryCashmere },
-    { name: "Merino", image: categoryMerino },
+    { name: "Merino", image: categoryAllYarns },
     { name: "Mohair", image: categoryMohair },
     { name: "Silk", image: categorySilk },
   ],
@@ -131,28 +131,6 @@ const Index = () => {
             Shop Our Selection
           </h2>
         </div>
-
-        {/* Full-width All Yarns - Burga style */}
-        <Link
-          to="/products"
-          className="group relative block overflow-hidden rounded-xl aspect-[3/1] mb-4 animate-fade-in"
-        >
-          <img
-            src={categoryAllYarns}
-            alt="All Yarns - Yarn cones on shelves"
-            className="absolute inset-0 w-full h-full object-cover"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-foreground/40 group-hover:bg-foreground/50 transition-colors duration-300" />
-          <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 md:pb-8">
-            <h3 className="font-serif text-2xl md:text-3xl font-semibold text-background mb-3 drop-shadow-lg tracking-wide uppercase">
-              All Yarns
-            </h3>
-            <span className="border border-background text-background text-xs font-sans tracking-widest uppercase px-6 py-2.5 hover:bg-background hover:text-foreground transition-colors">
-              Shop Now
-            </span>
-          </div>
-        </Link>
 
         {/* Row 2: Two categories - Burga style */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
