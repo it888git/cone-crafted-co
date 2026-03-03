@@ -383,8 +383,20 @@ const Products = () => {
           </div>
 
           {/* Active filter tags */}
-          {activeFilterTags.length > 0 && (
+          {(activeFilterTags.length > 0 || searchQuery) && (
             <div className="flex flex-wrap items-center gap-2 py-3 mb-4">
+              {searchQuery && (
+                <button
+                  onClick={() => {
+                    setLocalSearch("");
+                    navigate("/products");
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-sans font-medium hover:bg-primary/20 transition-colors"
+                >
+                  Search: "{searchQuery}"
+                  <X className="w-3 h-3" />
+                </button>
+              )}
               {activeFilterTags.map((tag) => (
                 <button
                   key={`${tag.type}-${tag.value}`}
