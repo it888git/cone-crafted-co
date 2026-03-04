@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Instagram, Mail, MapPin } from "lucide-react";
+import NewsletterForm from "@/components/NewsletterForm";
 
 const ShippingPaymentLogos = () => (
   <div className="flex items-center gap-3 flex-wrap">
@@ -58,16 +59,7 @@ const Footer = () => (
         <div>
           <h4 className="font-sans text-xs tracking-[0.2em] uppercase mb-5 opacity-50">Newsletter</h4>
           <p className="text-sm opacity-70 font-sans mb-3 leading-relaxed">New fibers, limited runs, and 10% off your first order.</p>
-          <div className="flex">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="flex-1 bg-background/10 border border-background/20 rounded-l-md px-3 py-2 text-sm font-sans placeholder:opacity-40 focus:outline-none focus:border-accent"
-            />
-            <button className="bg-accent text-accent-foreground px-4 py-2 rounded-r-md text-sm font-sans font-medium hover:bg-accent/90 transition-opacity">
-              Join
-            </button>
-          </div>
+          <NewsletterForm variant="footer" />
         </div>
       </div>
       {/* Shipping & Payment logos + Copyright */}
