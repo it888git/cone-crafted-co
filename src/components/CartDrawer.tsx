@@ -48,7 +48,7 @@ const CartDrawer = () => {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-sans text-sm font-semibold">{item.product.node.title}</h4>
+                    <h4 className="font-sans text-sm font-semibold text-foreground">{item.product.node.title}</h4>
                     <p className="text-sm text-muted-foreground font-sans mt-0.5">
                       Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {parseFloat(item.price.amount).toFixed(0)}€
                     </p>

@@ -90,7 +90,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <button
               onClick={handleAddToCart}
               disabled={isLoading}
-              className="absolute bottom-3 right-3 p-2.5 bg-primary text-primary-foreground rounded-full opacity-0 group-hover:opacity-100 transition-all hover:scale-110 shadow-lg disabled:opacity-50"
+              className="absolute bottom-3 right-3 p-2.5 bg-primary text-primary-foreground rounded-full hidden md:block opacity-0 group-hover:opacity-100 transition-all hover:scale-110 shadow-lg disabled:opacity-50"
               aria-label="Add to cart"
             >
               <ShoppingBag className="w-4 h-4" />

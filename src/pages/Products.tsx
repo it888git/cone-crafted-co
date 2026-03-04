@@ -399,7 +399,20 @@ const Products = () => {
 
         {/* Main content */}
         <div className="flex-1 min-w-0">
-          {/* Mobile search + filter row */}
+          <h1 className="font-sans text-3xl md:text-4xl font-semibold text-foreground mb-4">
+            {searchQuery ? "Search results" : "All cone yarn"}
+          </h1>
+
+          {/* Description banner */}
+          {!searchQuery && (
+            <div className="bg-muted/60 rounded-lg p-5 mb-6">
+              <p className="text-sm font-sans text-muted-foreground leading-relaxed">
+                Experience unrivaled Italian quality for your crafting endeavors! Our cone yarn selection provides the convenience of larger quantities, minimizing interruptions while maximizing cost-efficiency. Whether you're a wholesale cone yarn buyer or an individual crafter, our fast worldwide service ensures fulfilling crafting experience.
+              </p>
+            </div>
+          )}
+
+          {/* Mobile search + filter row - after description */}
           <div className="lg:hidden flex items-center gap-2 mb-4">
             <div className="flex-1 flex items-center gap-2 border border-border rounded-lg px-3 py-2.5">
               <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
@@ -427,19 +440,6 @@ const Products = () => {
               Filters
             </button>
           </div>
-
-          <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
-            {searchQuery ? "Search results" : "All cone yarn"}
-          </h1>
-
-          {/* Description banner - hide when search results showing on mobile */}
-          {!searchQuery && (
-            <div className="bg-muted/60 rounded-lg p-5 mb-6">
-              <p className="text-sm font-sans text-muted-foreground leading-relaxed">
-                Experience unrivaled Italian quality for your crafting endeavors! Our cone yarn selection provides the convenience of larger quantities, minimizing interruptions while maximizing cost-efficiency. Whether you're a wholesale cone yarn buyer or an individual crafter, our fast worldwide service ensures fulfilling crafting experience.
-              </p>
-            </div>
-          )}
 
           {/* Sort & count bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-2 pb-4 border-b border-border">
@@ -517,7 +517,7 @@ const Products = () => {
 
       {/* FAQs */}
       <section className="mt-14 border border-border rounded-xl p-8 md:p-10">
-        <h2 className="font-serif text-2xl md:text-3xl font-semibold text-foreground mb-6">FAQs</h2>
+        <h2 className="font-sans text-2xl md:text-3xl font-semibold text-foreground mb-6">FAQs</h2>
         <div className="space-y-6">
           <div>
             <h3 className="font-sans text-sm font-bold text-foreground mb-2">
