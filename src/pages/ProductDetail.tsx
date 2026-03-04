@@ -266,9 +266,13 @@ const ProductDetail = () => {
                 </div>
               )}
               <Button
-                className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-base font-sans font-semibold tracking-wide shadow-md border-0"
-                disabled={!canAddToCart && available}
-                onClick={available ? handleAddToCart : undefined}
+                className={`flex-1 py-6 text-base font-sans font-semibold tracking-wide shadow-md border-0 ${
+                  !available && variantChosen
+                    ? "bg-muted text-muted-foreground hover:bg-muted cursor-not-allowed"
+                    : "bg-primary text-primary-foreground hover:bg-primary/90"
+                }`}
+                disabled={!canAddToCart}
+                onClick={canAddToCart ? handleAddToCart : undefined}
               >
                 {cartLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

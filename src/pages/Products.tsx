@@ -107,7 +107,7 @@ const FilterSidebar = ({
   <>
     <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2">
       <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-      <input type="text" placeholder="Search products..." className="bg-transparent border-none outline-none text-sm font-sans text-foreground placeholder:text-muted-foreground/60 w-full" value={localSearch} onChange={(e) => setLocalSearch(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
+      <input type="text" style={{ fontSize: '16px' }} placeholder="Search products..." className="bg-transparent border-none outline-none text-sm font-sans text-foreground placeholder:text-muted-foreground/60 w-full" value={localSearch} onChange={(e) => setLocalSearch(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
     </div>
     <div>
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Yarn Categories</h3>
@@ -416,9 +416,10 @@ const Products = () => {
           <div className="lg:hidden flex items-center gap-2 mb-4">
             <div className="flex-1 flex items-center gap-2 border border-border rounded-lg px-3 py-2.5">
               <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-              <input
-                type="text"
-                placeholder="Search products..."
+               <input
+                 type="text"
+                 style={{ fontSize: '16px' }}
+                 placeholder="Search products..."
                 className="bg-transparent border-none outline-none text-sm font-sans text-foreground placeholder:text-muted-foreground/60 w-full"
                 value={localSearch}
                 onChange={(e) => setLocalSearch(e.target.value)}
