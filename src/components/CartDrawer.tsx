@@ -1,6 +1,6 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { useCartStore } from "@/stores/cartStore";
-import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingBag } from "lucide-react";
+import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingBag, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 
@@ -93,13 +93,16 @@ const CartDrawer = () => {
               </div>
               <Button
                 onClick={handleCheckout}
-                className="w-full bg-primary text-primary-foreground hover:opacity-90 font-sans"
+                className="w-full bg-primary text-primary-foreground hover:opacity-90 font-sans py-6"
                 disabled={items.length === 0 || isLoading || isSyncing}
               >
                 {isLoading || isSyncing ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
-                  <span className="text-base font-semibold">Checkout</span>
+                  <span className="flex items-center justify-center gap-2 text-base font-semibold">
+                    <Lock className="w-4 h-4" />
+                    Secure Checkout
+                  </span>
                 )}
               </Button>
               

@@ -131,11 +131,16 @@ const ProductDetail = () => {
                   No image
                 </div>
               )}
-              {node.createdAt && isNewProduct(node.createdAt) && (
+              {/* Sold out takes priority over NEW */}
+              {!node.variants.edges.some((v: any) => v.node.availableForSale) ? (
+                <div className="absolute top-4 left-4 px-3 py-1 bg-background/90 backdrop-blur-sm rounded-full">
+                  <span className="text-xs font-sans tracking-wider uppercase font-medium text-muted-foreground">Sold Out</span>
+                </div>
+              ) : node.createdAt && isNewProduct(node.createdAt) ? (
                 <div className="absolute top-4 left-4 px-3 py-1 bg-background/90 backdrop-blur-sm rounded-full">
                   <span className="text-xs font-sans tracking-wider uppercase font-medium text-muted-foreground">NEW</span>
                 </div>
-              )}
+              ) : null}
               <button
                 onClick={() => toggleWishlist(product)}
                 className="absolute top-4 right-4 p-2.5 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors shadow-sm"
@@ -171,7 +176,7 @@ const ProductDetail = () => {
           {/* Details */}
           <div className="space-y-5">
             <div>
-              <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">{node.title}</h1>
+              <h1 className="font-sans text-2xl md:text-3xl font-bold text-foreground tracking-tight">{node.title}</h1>
               {meterage && (
                 <p className="text-sm font-sans text-muted-foreground mt-1">{meterage}</p>
               )}
@@ -278,19 +283,22 @@ const ProductDetail = () => {
 
             {/* Info section below ATC */}
             <div className="border-t border-border pt-5 space-y-2.5">
-              <p className="text-sm font-sans font-semibold text-foreground">Order as much yarn as you need for your project</p>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
+                  <Package className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  Order as many cones as needed for your project
+                </li>
+                <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
                   <Truck className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  Quick order dispatch within 48h with tracking
+                  Quick order dispatch within 48 hours
+                </li>
+                <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
+                  <Truck className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  Order tracking available
                 </li>
                 <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
                   <RotateCcw className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  30 Days easy returns
-                </li>
-                <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
-                  <Scale className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  Combine desired weight with available cones
+                  30 days easy returns
                 </li>
               </ul>
             </div>
@@ -301,7 +309,7 @@ const ProductDetail = () => {
       {/* Similar Yarns */}
       {similarProducts.length > 0 && (
         <section className="container pb-16">
-          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-6">Similar Yarns</h2>
+          <h2 className="font-sans text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-6">Similar Yarns</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {similarProducts.map((p) => (
               <ProductCard key={p.node.handle} product={p} />

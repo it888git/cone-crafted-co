@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
+import NewsletterForm from "@/components/NewsletterForm";
 import { ArrowRight, Star, Truck, Shield, RotateCcw, Globe, Lock, ChevronLeft, ChevronRight, MapPin, Repeat2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
@@ -119,7 +120,7 @@ const Index = () => {
               ))}
             </div>
             <span className="font-semibold text-foreground">4.8/5</span>
-            <span className="text-muted-foreground">based on 700+ Etsy reviews</span>
+            <a href="https://www.etsy.com/shop/YarneriaShop" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors">based on 700+ Etsy reviews</a>
           </div>
         </div>
       </section>
@@ -256,16 +257,7 @@ const Index = () => {
           <p className="font-sans text-sm opacity-80 max-w-md mx-auto mb-6">
             Get early access to new fibers, limited colorways, and 10% off your first order.
           </p>
-          <div className="flex max-w-sm mx-auto">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="flex-1 min-w-0 bg-primary-foreground/10 border border-primary-foreground/20 rounded-l-lg px-4 py-3 text-sm font-sans text-primary-foreground placeholder:text-primary-foreground/40 focus:outline-none focus:border-primary-foreground/50"
-            />
-            <button className="bg-accent text-accent-foreground px-6 py-3 rounded-r-lg text-sm font-sans font-semibold hover:opacity-90 transition-opacity">
-              Subscribe
-            </button>
-          </div>
+          <NewsletterForm variant="hero" />
         </div>
       </section>
 
@@ -281,8 +273,8 @@ const Index = () => {
             <div key={title} className="flex items-center gap-3 text-foreground">
               <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
               <div>
-                <p className="text-sm font-sans font-semibold">{title}</p>
-                <p className="text-xs font-sans text-muted-foreground">{desc}</p>
+                <p className="text-xs sm:text-sm font-sans font-semibold whitespace-nowrap">{title}</p>
+                <p className="text-[10px] sm:text-xs font-sans text-muted-foreground hidden sm:block">{desc}</p>
               </div>
             </div>
           ))}

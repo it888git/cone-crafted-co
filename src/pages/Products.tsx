@@ -399,16 +399,40 @@ const Products = () => {
 
         {/* Main content */}
         <div className="flex-1 min-w-0">
+          {/* Mobile search bar */}
+          <div className="lg:hidden mb-4">
+            <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2">
+              <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="bg-transparent border-none outline-none text-sm font-sans text-foreground placeholder:text-muted-foreground/60 w-full"
+                value={localSearch}
+                onChange={(e) => setLocalSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearch();
+                }}
+              />
+              {localSearch && (
+                <button onClick={() => { setLocalSearch(""); navigate("/products"); }} className="p-0.5">
+                  <X className="w-4 h-4 text-muted-foreground" />
+                </button>
+              )}
+            </div>
+          </div>
+
           <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
             {searchQuery ? "Search results" : "All cone yarn"}
           </h1>
 
-          {/* Description banner */}
-          <div className="bg-muted/60 rounded-lg p-5 mb-6">
-            <p className="text-sm font-sans text-muted-foreground leading-relaxed">
-              Experience unrivaled Italian quality for your crafting endeavors! Our cone yarn selection provides the convenience of larger quantities, minimizing interruptions while maximizing cost-efficiency. Whether you're a wholesale cone yarn buyer or an individual crafter, our fast worldwide service ensures fulfilling crafting experience.
-            </p>
-          </div>
+          {/* Description banner - hide when search results showing on mobile */}
+          {!searchQuery && (
+            <div className="bg-muted/60 rounded-lg p-5 mb-6">
+              <p className="text-sm font-sans text-muted-foreground leading-relaxed">
+                Experience unrivaled Italian quality for your crafting endeavors! Our cone yarn selection provides the convenience of larger quantities, minimizing interruptions while maximizing cost-efficiency. Whether you're a wholesale cone yarn buyer or an individual crafter, our fast worldwide service ensures fulfilling crafting experience.
+              </p>
+            </div>
+          )}
 
           {/* Inline filter button for mobile/tablet - between description and sort */}
           <button
@@ -529,8 +553,8 @@ const Products = () => {
             <div key={title} className="flex items-center gap-3 text-foreground">
               <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
               <div>
-                <p className="text-sm font-sans font-semibold">{title}</p>
-                <p className="text-xs font-sans text-muted-foreground">{desc}</p>
+                <p className="text-xs sm:text-sm font-sans font-semibold whitespace-nowrap">{title}</p>
+                <p className="text-[10px] sm:text-xs font-sans text-muted-foreground hidden sm:block">{desc}</p>
               </div>
             </div>
           ))}

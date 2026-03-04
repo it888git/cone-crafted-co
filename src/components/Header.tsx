@@ -66,6 +66,22 @@ const Header = () => {
   const isProductsPage = location.pathname === "/products";
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const menuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mobileMenuRef = useRef<HTMLElement | null>(null);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      // If click is on the toggle button, let the toggle handler deal with it
+      if (target.closest('[aria-label="Toggle menu"]')) return;
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(target)) {
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -258,7 +274,7 @@ const Header = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <nav className="lg:hidden border-t border-border bg-background px-6 py-4 space-y-1 max-h-[70vh] overflow-y-auto">
+        <nav ref={mobileMenuRef} className="lg:hidden border-t border-border bg-background px-6 py-4 space-y-1 max-h-[70vh] overflow-y-auto">
           {navLinks.map((link) => (
             <MobileNavItem key={link.label} link={link} onClose={() => setMobileMenuOpen(false)} />
           ))}

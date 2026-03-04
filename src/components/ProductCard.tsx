@@ -69,16 +69,22 @@ const ProductCard = ({ product }: ProductCardProps) => {
               No image
             </div>
           )}
-          {/* NEW badge */}
-          {node.createdAt && (() => {
-            const created = new Date(node.createdAt);
-            const twoWeeksAgo = new Date();
-            twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-            return created >= twoWeeksAgo;
-          })() && (
+          {/* Sold Out badge (same style as NEW) – takes priority over NEW */}
+          {!available ? (
             <div className="absolute top-3 left-3 px-2 py-0.5 bg-background/90 backdrop-blur-sm rounded-full">
-              <span className="text-[10px] font-sans tracking-wider uppercase font-medium text-muted-foreground">NEW</span>
+              <span className="text-[10px] font-sans tracking-wider uppercase font-medium text-muted-foreground">Sold Out</span>
             </div>
+          ) : (
+            node.createdAt && (() => {
+              const created = new Date(node.createdAt);
+              const twoWeeksAgo = new Date();
+              twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+              return created >= twoWeeksAgo;
+            })() && (
+              <div className="absolute top-3 left-3 px-2 py-0.5 bg-background/90 backdrop-blur-sm rounded-full">
+                <span className="text-[10px] font-sans tracking-wider uppercase font-medium text-muted-foreground">NEW</span>
+              </div>
+            )
           )}
           {/* Favorite – always visible */}
           <div className="absolute top-3 right-3">
@@ -99,11 +105,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
             >
               <ShoppingBag className="w-4 h-4" />
             </button>
-          )}
-          {!available && (
-            <Badge variant="secondary" className="absolute top-3 left-3 text-[10px] font-sans tracking-wider uppercase px-2 py-0.5">
-              Sold Out
-            </Badge>
           )}
         </div>
         <div className="mt-3 space-y-0.5">
