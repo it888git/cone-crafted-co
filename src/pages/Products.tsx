@@ -399,9 +399,9 @@ const Products = () => {
 
         {/* Main content */}
         <div className="flex-1 min-w-0">
-          {/* Mobile search bar */}
-          <div className="lg:hidden mb-4">
-            <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2">
+          {/* Mobile search + filter row */}
+          <div className="lg:hidden flex items-center gap-2 mb-4">
+            <div className="flex-1 flex items-center gap-2 border border-border rounded-lg px-3 py-2.5">
               <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
               <input
                 type="text"
@@ -419,6 +419,13 @@ const Products = () => {
                 </button>
               )}
             </div>
+            <button
+              className="flex items-center gap-2 px-4 py-2.5 border border-border rounded-lg text-sm font-sans font-medium text-foreground whitespace-nowrap"
+              onClick={() => setMobileFiltersOpen(true)}
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              Filters
+            </button>
           </div>
 
           <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
@@ -433,15 +440,6 @@ const Products = () => {
               </p>
             </div>
           )}
-
-          {/* Inline filter button for mobile/tablet - between description and sort */}
-          <button
-            className="lg:hidden flex items-center gap-2 px-4 py-2.5 border border-border rounded-lg text-sm font-sans font-medium text-foreground mb-6"
-            onClick={() => setMobileFiltersOpen(true)}
-          >
-            <SlidersHorizontal className="w-4 h-4" />
-            Filters
-          </button>
 
           {/* Sort & count bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-2 pb-4 border-b border-border">
