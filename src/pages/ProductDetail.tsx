@@ -176,7 +176,7 @@ const ProductDetail = () => {
           {/* Details */}
           <div className="space-y-5">
             <div>
-              <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground tracking-tight">{node.title}</h1>
+              <h1 className="font-sans text-2xl md:text-3xl font-bold text-foreground tracking-tight">{node.title}</h1>
               {meterage && (
                 <p className="text-sm font-sans text-muted-foreground mt-1">{meterage}</p>
               )}
@@ -267,11 +267,13 @@ const ProductDetail = () => {
               )}
               <Button
                 className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-base font-sans font-semibold tracking-wide shadow-md border-0"
-                disabled={!canAddToCart}
-                onClick={handleAddToCart}
+                disabled={!canAddToCart && available}
+                onClick={available ? handleAddToCart : undefined}
               >
                 {cartLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
+                ) : !available && variantChosen ? (
+                  "Sold Out"
                 ) : (
                   <>
                     <ShoppingBag className="w-4 h-4 mr-2" />
@@ -309,7 +311,7 @@ const ProductDetail = () => {
       {/* Similar Yarns */}
       {similarProducts.length > 0 && (
         <section className="container pb-16">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-6">Similar Yarns</h2>
+          <h2 className="font-sans text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-6">Similar Yarns</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {similarProducts.map((p) => (
               <ProductCard key={p.node.handle} product={p} />
