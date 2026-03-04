@@ -365,9 +365,7 @@ const AnnouncementBar = () => {
       <div className="container flex justify-center">
         <div key={index} className="announcement-slide">
           <span className="px-4">
-            {"← "}
             {announcements[index]}
-            {" →"}
           </span>
         </div>
       </div>

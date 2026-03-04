@@ -48,7 +48,7 @@ const CartDrawer = () => {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-serif text-base font-semibold">{item.product.node.title}</h4>
+                    <h4 className="font-sans text-sm font-semibold">{item.product.node.title}</h4>
                     <p className="text-sm text-muted-foreground font-sans mt-0.5">
                       Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {parseFloat(item.price.amount).toFixed(0)}€
                     </p>
@@ -101,7 +101,7 @@ const CartDrawer = () => {
                 ) : (
                   <span className="flex items-center justify-center gap-2 text-base font-semibold">
                     <Lock className="w-4 h-4" />
-                    Secure Checkout
+                    Checkout
                   </span>
                 )}
               </Button>

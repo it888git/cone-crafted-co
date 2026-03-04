@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useShopifyProduct, useShopifyProducts } from "@/hooks/useShopifyProducts";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
-import { ShoppingBag, Heart, ChevronRight, Loader2, Package, Truck, RotateCcw, Scale } from "lucide-react";
+import { ShoppingBag, Heart, ChevronRight, Loader2, Package, Truck, RotateCcw, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -176,7 +176,7 @@ const ProductDetail = () => {
           {/* Details */}
           <div className="space-y-5">
             <div>
-              <h1 className="font-sans text-2xl md:text-3xl font-bold text-foreground tracking-tight">{node.title}</h1>
+              <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground tracking-tight">{node.title}</h1>
               {meterage && (
                 <p className="text-sm font-sans text-muted-foreground mt-1">{meterage}</p>
               )}
@@ -293,7 +293,7 @@ const ProductDetail = () => {
                   Quick order dispatch within 48 hours
                 </li>
                 <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
-                  <Truck className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
                   Order tracking available
                 </li>
                 <li className="flex items-start gap-2.5 text-sm font-sans text-muted-foreground">
@@ -309,7 +309,7 @@ const ProductDetail = () => {
       {/* Similar Yarns */}
       {similarProducts.length > 0 && (
         <section className="container pb-16">
-          <h2 className="font-sans text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-6">Similar Yarns</h2>
+          <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-6">Similar Yarns</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {similarProducts.map((p) => (
               <ProductCard key={p.node.handle} product={p} />
