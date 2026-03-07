@@ -180,8 +180,8 @@ const Header = () => {
       {/* Search bar – hides on scroll, on products page, or when mega menu is open */}
       {!isProductsPage && (
         <div
-          className={`border-t border-border overflow-hidden transition-all duration-300 ${
-            scrolled || activeMenu ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
+          className={`border-t border-border transition-all duration-300 ${
+            scrolled ? "max-h-0 opacity-0 overflow-hidden" : activeMenu ? "opacity-0 pointer-events-none max-h-16" : "max-h-16 opacity-100"
           }`}
         >
         <div className="container flex items-center justify-center py-2.5">
