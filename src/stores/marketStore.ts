@@ -70,7 +70,17 @@ export const useMarketStore = create<MarketStore>()(
     (set, get) => ({
       selectedCountry: MARKET_COUNTRIES[0], // Default: Lithuania
       hasAutoDetected: false,
-      setCountry: (country) => set({ selectedCountry: country, hasAutoDetected: true }),
+      setCountry: (country) => {
+        const prev = get().selectedCountry;
+        set({ selectedCountry: country, hasAutoDetected: true });
+        // Clear cart when region changes – Shopify carts are currency-specific
+        if (prev.code !== country.code) {
+          // Dynamic import to avoid circular dependency
+          import('@/stores/cartStore').then(({ useCartStore }) => {
+            useCartStore.getState().clearCart();
+          });
+        }
+      },
       autoDetectCountry: async () => {
         if (get().hasAutoDetected) return;
         try {
