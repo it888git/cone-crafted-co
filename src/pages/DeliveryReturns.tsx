@@ -67,17 +67,23 @@ const DeliveryReturns = () => (
 
                 {/* UNITED KINGDOM */}
                 <tr className="border-t-2 border-border">
-                  <td className="px-4 py-3 align-top" rowSpan={2}>
+                  <td className="px-4 py-3 align-top" rowSpan={3}>
                     <span className="font-semibold text-foreground">UNITED KINGDOM</span>
                   </td>
                   <td className="px-4 py-3">up to 1.9kg</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
                   <td className="px-4 py-3 text-center">8.50€</td>
                   <td className="px-4 py-3">4 – 7 working days</td>
-                  <td className="px-4 py-3" rowSpan={2}>—</td>
+                  <td className="px-4 py-3" rowSpan={3}>—</td>
                 </tr>
                 <tr className="border-t border-border">
                   <td className="px-4 py-3">2.0kg and more</td>
+                  <td className="px-4 py-3">Express Mail (Post Office)</td>
+                  <td className="px-4 py-3 text-center">15.50€</td>
+                  <td className="px-4 py-3">4 – 7 working days</td>
+                </tr>
+                <tr className="border-t border-border">
+                  <td className="px-4 py-3">ALL</td>
                   <td className="px-4 py-3">Home Delivery UPS Express</td>
                   <td className="px-4 py-3 text-center">17.50€</td>
                   <td className="px-4 py-3">4 – 7 working days</td>
@@ -85,14 +91,26 @@ const DeliveryReturns = () => (
 
                 {/* EUROPE */}
                 <tr className="border-t-2 border-border">
-                  <td className="px-4 py-3 align-top" rowSpan={2}>
+                  <td className="px-4 py-3 align-top" rowSpan={4}>
                     <span className="font-semibold text-foreground">EUROPE</span>
                   </td>
                   <td className="px-4 py-3">up to 1.9kg</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
                   <td className="px-4 py-3 text-center">6.50€</td>
                   <td className="px-4 py-3">4 – 8 working days</td>
-                  <td className="px-4 py-3" rowSpan={2}>—</td>
+                  <td className="px-4 py-3" rowSpan={4}>—</td>
+                </tr>
+                <tr className="border-t border-border">
+                  <td className="px-4 py-3">2.0kg and more</td>
+                  <td className="px-4 py-3">Express Mail (Post Office)</td>
+                  <td className="px-4 py-3 text-center">9.50€</td>
+                  <td className="px-4 py-3">4 – 8 working days</td>
+                </tr>
+                <tr className="border-t border-border">
+                  <td className="px-4 py-3">up to 1.9kg</td>
+                  <td className="px-4 py-3">Home Delivery DHL, GLS or UPS Express</td>
+                  <td className="px-4 py-3 text-center">8.50€</td>
+                  <td className="px-4 py-3">3 – 7 working days</td>
                 </tr>
                 <tr className="border-t border-border">
                   <td className="px-4 py-3">2.0kg and more</td>
@@ -103,14 +121,26 @@ const DeliveryReturns = () => (
 
                 {/* INTERNATIONAL */}
                 <tr className="border-t-2 border-border">
-                  <td className="px-4 py-3 align-top" rowSpan={2}>
+                  <td className="px-4 py-3 align-top" rowSpan={4}>
                     <span className="font-semibold text-foreground">INTERNATIONAL</span>
                   </td>
                   <td className="px-4 py-3">up to 1.9kg</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
                   <td className="px-4 py-3 text-center">16.50€</td>
                   <td className="px-4 py-3">4 – 12 working days</td>
-                  <td className="px-4 py-3" rowSpan={2}>—</td>
+                  <td className="px-4 py-3" rowSpan={4}>—</td>
+                </tr>
+                <tr className="border-t border-border">
+                  <td className="px-4 py-3">2.0kg and more</td>
+                  <td className="px-4 py-3">Express Mail (Post Office)</td>
+                  <td className="px-4 py-3 text-center">34.50€</td>
+                  <td className="px-4 py-3">4 – 12 working days</td>
+                </tr>
+                <tr className="border-t border-border">
+                  <td className="px-4 py-3">up to 1.9kg</td>
+                  <td className="px-4 py-3">FEDEX or UPS Express Delivery</td>
+                  <td className="px-4 py-3 text-center">35.50€</td>
+                  <td className="px-4 py-3">3 – 6 working days</td>
                 </tr>
                 <tr className="border-t border-border">
                   <td className="px-4 py-3">2.0kg and more</td>
