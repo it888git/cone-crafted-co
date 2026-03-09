@@ -1,0 +1,9 @@
+<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+  <defs><style>.cls-1{fill:none;stroke:#b2b2b2;stroke-miterlimit:10;}.cls-2{fill:#5d5d5d;}</style></defs>
+  <rect height="48" width="98" y="1" x="1" class="cls-1" rx="3"/>
+  <!-- Apple icon -->
+  <path d="M35,13c1.2-1.5,2-3.5,1.7-5.5-1.7,0.1-3.7,1.1-4.9,2.6-1.1,1.3-2,3.3-1.8,5.3C32,15.5,33.8,14.5,35,13z" transform="translate(10,10) scale(0.7)" fill="#5d5d5d"/>
+  <path d="M36.7,15.6c-2.7-0.2-5,1.5-6.3,1.5s-3.3-1.5-5.4-1.4c-2.8,0-5.4,1.6-6.8,4.1-2.9,5-0.8,12.5,2.1,16.6,1.4,2,3,4.3,5.2,4.2c2.1-0.1,2.9-1.3,5.4-1.3s3.2,1.3,5.4,1.3c2.2,0,3.7-2,5.1-4.1,1.6-2.3,2.2-4.5,2.3-4.7-0.1,0-4.4-1.7-4.4-6.6,0-4.2,3.4-6.2,3.6-6.3C39.5,16.3,36.8,15.6,36.7,15.6z" transform="translate(10,10) scale(0.7)" fill="#5d5d5d"/>
+  <!-- Pay text -->
+  <text x="62" y="32" font-family="Arial,sans-serif" font-size="14" fill="#5d5d5d">Pay</text>
+</svg>
