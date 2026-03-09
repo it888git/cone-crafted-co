@@ -82,6 +82,8 @@ const ProductDetail = () => {
   const firstVariant = variants[0]?.node;
   const currencyCode = firstVariant?.price.currencyCode || 'EUR';
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
+  const isInternational = useMarketStore.getState().selectedCountry.deliveryRegion === 'international';
+  const lowestVariant = getLowestVariantPrice(variants);
 
   // Similar yarns: match by first word of title (material keyword)
   const titleWords = node.title.toLowerCase().split(/\s+/);
