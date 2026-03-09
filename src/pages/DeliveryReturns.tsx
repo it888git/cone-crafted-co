@@ -130,7 +130,7 @@ const DeliveryReturns = () => (
                   </td>
                   <td className="px-4 py-3">ALL</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
-                  <td className="px-4 py-3 text-center font-semibold text-green-700">FREE</td>
+                  <td className="px-4 py-3 text-center">FREE</td>
                   <td className="px-4 py-3">4 – 12 working days</td>
                   <td className="px-4 py-3" rowSpan={3}>—</td>
                 </tr>
