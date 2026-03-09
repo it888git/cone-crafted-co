@@ -364,22 +364,12 @@ const AnnouncementBar = () => {
 
   return (
     <div className="bg-primary text-primary-foreground py-2 text-xs font-sans tracking-widest uppercase overflow-hidden">
-      <div className="container flex items-center justify-between">
-        <div className="hidden sm:block">
-          <CountrySelector />
+      <div className="container flex justify-center">
+        <div key={index} className="announcement-slide">
+          <span className="px-4">
+            {announcements[index]}
+          </span>
         </div>
-        <div className="flex-1 flex justify-center">
-          <div key={index} className="announcement-slide">
-            <span className="px-4">
-              {announcements[index]}
-            </span>
-          </div>
-        </div>
-        <div className="hidden sm:block w-[100px]" /> {/* Spacer for centering */}
-      </div>
-      {/* Mobile country selector */}
-      <div className="sm:hidden flex justify-center pt-1">
-        <CountrySelector />
       </div>
     </div>
   );
