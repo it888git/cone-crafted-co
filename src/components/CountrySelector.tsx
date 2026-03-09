@@ -31,17 +31,15 @@ const CountrySelector = () => {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 text-xs font-sans text-primary-foreground/90 hover:text-primary-foreground transition-colors"
+        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-border bg-background hover:bg-muted transition-colors text-foreground"
       >
-        <span className="text-sm">{selectedCountry.flag}</span>
-        <span>{selectedCountry.code}</span>
-        <span className="text-primary-foreground/60">·</span>
-        <span>{selectedCountry.currency}</span>
-        <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
+        <span className="text-base leading-none">{selectedCountry.flag}</span>
+        <span className="text-xs font-sans font-medium tracking-wide">{selectedCountry.currency}</span>
+        <ChevronDown className={`w-3 h-3 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-xl z-[100] max-h-80 overflow-y-auto">
+        <div className="absolute top-full right-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-xl z-[100] max-h-80 overflow-y-auto">
           {regions.map((region) => {
             const countries = MARKET_COUNTRIES.filter((c) => c.deliveryRegion === region.key);
             return (
