@@ -2,17 +2,9 @@ import { Link } from "react-router-dom";
 import { Instagram, Mail, MapPin } from "lucide-react";
 import NewsletterForm from "@/components/NewsletterForm";
 
-const ShippingPaymentLogos = () => (
+const PaymentLogos = () => (
   <div className="flex items-center gap-3 flex-wrap">
-    <img src="/icons/dhl.svg" alt="DHL" className="h-6 opacity-70" />
-    <img src="/icons/dpd.svg" alt="DPD" className="h-6 opacity-70" />
-    <img src="/icons/ups.svg" alt="UPS" className="h-6 opacity-70" />
-    <img src="/icons/fedex.svg" alt="FedEx" className="h-6 opacity-70" />
-    <img src="/icons/deutsche-post.svg" alt="Deutsche Post" className="h-6 opacity-70" />
-    <img src="/icons/postnl.svg" alt="PostNL" className="h-6 opacity-70" />
-    <img src="/icons/lietuvos-pastas.svg" alt="Lietuvos Paštas" className="h-6 opacity-70" />
-    <img src="/icons/royal-mail.svg" alt="Royal Mail" className="h-6 opacity-70" />
-    <img src="/icons/usps.svg" alt="USPS" className="h-6 opacity-70" />
+    <img src="/icons/payment-methods.png" alt="Visa, Mastercard, Amex, Apple Pay, Google Pay" className="h-6 opacity-70" />
   </div>
 );
 
