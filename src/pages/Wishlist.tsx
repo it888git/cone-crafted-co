@@ -9,7 +9,7 @@ const Wishlist = () => {
   return (
     <main className="bg-background">
       <div className="container py-8">
-        <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-tight mb-1">My Wishlist</h1>
+        <h1 className="font-sans text-2xl md:text-3xl font-bold tracking-tight mb-1">My Wishlist</h1>
         <p className="text-sm text-muted-foreground mb-6">
           {items.length} {items.length === 1 ? "item" : "items"} saved
         </p>
