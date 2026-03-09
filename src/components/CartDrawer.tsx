@@ -60,9 +60,9 @@ const CartDrawer = () => {
                         const price = parseFloat(item.price.amount);
                         if (grams && grams > 0) {
                           const perKg = (price / grams) * 1000;
-                          return `${perKg.toFixed(0).replace('.', ',')} €/kg`;
+                          return `${formatPrice(Math.round(perKg), item.price.currencyCode)}/kg`;
                         }
-                        return `${price.toFixed(2).replace('.', ',')} €`;
+                        return formatPrice(price, item.price.currencyCode);
                       })()}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
