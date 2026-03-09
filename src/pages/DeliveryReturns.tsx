@@ -108,7 +108,7 @@ const DeliveryReturns = () => (
                   <td className="px-4 py-3">4 – 8 working days</td>
                 </tr>
                 <tr className="border-t border-border">
-                  <td className="px-4 py-3">up to 1.9kg</td>
+                  <td className="px-4 py-3">up to 1.8kg</td>
                   <td className="px-4 py-3">Home Delivery DHL, GLS or UPS Express</td>
                   <td className="px-4 py-3 text-center">8.50€</td>
                   <td className="px-4 py-3">3 – 7 working days</td>
