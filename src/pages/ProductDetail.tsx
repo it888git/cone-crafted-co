@@ -184,7 +184,7 @@ const ProductDetail = () => {
 
             <div>
               <span className="font-sans text-2xl font-semibold text-foreground">
-                {Math.round(perKgPrice)} €/kg
+                {formatPrice(Math.round(perKgPrice), currencyCode)}/kg
               </span>
             </div>
 
