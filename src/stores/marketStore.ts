@@ -60,18 +60,42 @@ export const MARKET_COUNTRIES: MarketCountry[] = [
 
 interface MarketStore {
   selectedCountry: MarketCountry;
+  hasAutoDetected: boolean;
   setCountry: (country: MarketCountry) => void;
+  autoDetectCountry: () => Promise<void>;
 }
 
 export const useMarketStore = create<MarketStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       selectedCountry: MARKET_COUNTRIES[0], // Default: Lithuania
-      setCountry: (country) => set({ selectedCountry: country }),
+      hasAutoDetected: false,
+      setCountry: (country) => set({ selectedCountry: country, hasAutoDetected: true }),
+      autoDetectCountry: async () => {
+        if (get().hasAutoDetected) return;
+        try {
+          const res = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+          if (!res.ok) return;
+          const data = await res.json();
+          const code = data?.country_code;
+          if (!code) return;
+          const match = MARKET_COUNTRIES.find((c) => c.code === code);
+          if (match) {
+            set({ selectedCountry: match, hasAutoDetected: true });
+          } else {
+            // Unknown country → default to US (international)
+            const us = MARKET_COUNTRIES.find((c) => c.code === 'US')!;
+            set({ selectedCountry: us, hasAutoDetected: true });
+          }
+        } catch {
+          // Silently fail, keep default
+        }
+      },
     }),
     {
       name: 'market-country',
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ selectedCountry: state.selectedCountry, hasAutoDetected: state.hasAutoDetected }),
     }
   )
 );
