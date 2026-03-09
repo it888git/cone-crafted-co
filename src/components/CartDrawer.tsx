@@ -109,6 +109,9 @@ const CartDrawer = () => {
               <p className="text-[11px] text-muted-foreground text-center font-sans">
                 Shipping calculated at checkout
               </p>
+              <div className="flex justify-center mt-2">
+                <img src="/icons/payment-methods.png" alt="Visa, Mastercard, Amex, Apple Pay, Google Pay" className="h-8 opacity-60" />
+              </div>
             </div>
           </>
         )}

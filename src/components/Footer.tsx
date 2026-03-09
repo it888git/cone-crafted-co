@@ -61,7 +61,7 @@ const Footer = () => (
       <div className="border-t border-background/10 mt-12 pt-6 flex flex-col items-center gap-4 md:flex-row md:justify-between">
         <PaymentLogos />
         <p className="text-xs font-sans opacity-40 text-center">
-          © 2026 Yarneria. All rights reserved. Premium selected Italian yarn on cones.
+          © 2026 Yarneria. All rights reserved.
         </p>
       </div>
     </div>
