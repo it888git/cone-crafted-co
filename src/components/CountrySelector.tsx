@@ -31,12 +31,12 @@ const CountrySelector = () => {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="p-2 text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
+        className="flex items-center gap-2 px-3 py-1.5 border border-border rounded-md hover:bg-muted transition-colors"
         aria-label="Select country"
       >
         <span className="text-[15px] leading-none">{selectedCountry.flag}</span>
-        <span className="text-xs font-sans font-medium text-foreground tracking-wide">{selectedCountry.currency}</span>
-        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+        <span className="text-base font-sans font-medium text-foreground tracking-wide">{selectedCountry.currency}</span>
+        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open && (
