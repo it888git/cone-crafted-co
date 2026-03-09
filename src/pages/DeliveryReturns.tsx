@@ -125,6 +125,8 @@ const DeliveryReturns = () => (
                 <tr className="border-t-2 border-border">
                   <td className="px-4 py-3 align-top" rowSpan={4}>
                     <span className="font-semibold text-foreground">INTERNATIONAL</span>
+                    <br />
+                    <span className="text-xs leading-snug">USA, Canada, Australia, Japan, South Korea, Israel, Turkey, United Arab Emirates, Singapore, New Zealand &amp; Rest of the World</span>
                   </td>
                   <td className="px-4 py-3">up to 1.9kg</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
