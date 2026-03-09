@@ -76,7 +76,7 @@ const DeliveryReturns = () => (
                   <td className="px-4 py-3" rowSpan={3}>—</td>
                 </tr>
                 <tr className="border-t border-border">
-                  <td className="px-4 py-3">2.0kg and more</td>
+                  <td className="px-4 py-3">1.9kg and more</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
                   <td className="px-4 py-3 text-center">15.50€</td>
                   <td className="px-4 py-3">4 – 7 working days</td>
