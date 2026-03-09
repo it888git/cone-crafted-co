@@ -79,8 +79,8 @@ const ProductDetail = () => {
 
   // Per-kg price from first variant (always shown)
   const firstVariant = variants[0]?.node;
+  const currencyCode = firstVariant?.price.currencyCode || 'EUR';
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
-  // perKgPrice used directly below
 
   // Similar yarns: match by first word of title (material keyword)
   const titleWords = node.title.toLowerCase().split(/\s+/);
