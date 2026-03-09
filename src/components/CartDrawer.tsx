@@ -8,6 +8,7 @@ import { useMarketStore } from "@/stores/marketStore";
 
 const CartDrawer = () => {
   const { items, isOpen, setIsOpen, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
+  const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
 
