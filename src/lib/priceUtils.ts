@@ -1,6 +1,7 @@
+import { useMarketStore } from "@/stores/marketStore";
+
 /**
  * Extract weight in grams from a variant title like "300g", "400 g", etc.
- * Returns null if no weight found.
  */
 export function extractWeightGrams(variantTitle: string): number | null {
   const match = variantTitle.match(/(\d+)\s*g/i);
@@ -16,14 +17,30 @@ export function calcPricePerKg(priceAmount: string, weightGrams: number): number
 }
 
 /**
- * Format a number as Euro price: "75,00 €"
+ * Format a price with the given currency code using Intl.NumberFormat.
+ */
+export function formatPrice(amount: number, currencyCode: string = 'EUR'): string {
+  try {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currencyCode,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  } catch {
+    return `${amount.toFixed(2)} ${currencyCode}`;
+  }
+}
+
+/**
+ * Format a number as Euro price: "75,00 €" (kept for backward compat)
  */
 export function formatEuro(amount: number): string {
   return `${amount.toFixed(2).replace('.', ',')} €`;
 }
 
 /**
- * Get the per-kg price from a variant. Falls back to raw price if no weight found.
+ * Get the per-kg price from a variant.
  */
 export function getPerKgPrice(priceAmount: string, variantTitle: string): { perKg: number; hasWeight: boolean } {
   const grams = extractWeightGrams(variantTitle);
@@ -31,4 +48,12 @@ export function getPerKgPrice(priceAmount: string, variantTitle: string): { perK
     return { perKg: calcPricePerKg(priceAmount, grams), hasWeight: true };
   }
   return { perKg: parseFloat(priceAmount), hasWeight: false };
+}
+
+/**
+ * Format price per kg with currency from Shopify response.
+ */
+export function formatPricePerKg(priceAmount: string, variantTitle: string, currencyCode: string = 'EUR'): string {
+  const { perKg } = getPerKgPrice(priceAmount, variantTitle);
+  return `${formatPrice(perKg, currencyCode)}/kg`;
 }
