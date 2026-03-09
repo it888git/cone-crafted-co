@@ -1,0 +1,20 @@
+<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .cls-1 { fill: none; stroke: #b2b2b2; stroke-miterlimit: 10; }
+      .cls-2 { fill: #5d5d5d; }
+    </style>
+  </defs>
+  <rect height="48" width="98" y="1" x="1" class="cls-1"/>
+  <g class="cls-2">
+    <text x="28" y="30" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#5d5d5d">USPS</text>
+    <!-- Eagle head silhouette -->
+    <path d="M15,18 C15,14 20,12 24,14 L30,16 L26,18 C22,18 20,20 18,22 L15,22 Z" fill="#5d5d5d"/>
+    <!-- Stripes -->
+    <line x1="14" y1="28" x2="26" y2="28" stroke="#5d5d5d" stroke-width="1.2"/>
+    <line x1="14" y1="30.5" x2="26" y2="30.5" stroke="#5d5d5d" stroke-width="1.2"/>
+    <line x1="14" y1="33" x2="26" y2="33" stroke="#5d5d5d" stroke-width="1.2"/>
+    <!-- Star -->
+    <polygon points="20,24 20.8,26 23,26 21.2,27.2 21.8,29.2 20,28 18.2,29.2 18.8,27.2 17,26 19.2,26" fill="#5d5d5d"/>
+  </g>
+</svg>
