@@ -137,7 +137,7 @@ export const PRODUCTS_QUERY = `
 `;
 
 export const PRODUCT_BY_HANDLE_QUERY = `
-  query GetProductByHandle($handle: String!) {
+  query GetProductByHandle($handle: String!, $country: CountryCode) @inContext(country: $country) {
     product(handle: $handle) {
       id
       title
