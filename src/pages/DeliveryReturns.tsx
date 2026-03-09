@@ -127,7 +127,7 @@ const DeliveryReturns = () => (
                     <br />
                     <span className="text-xs leading-snug">USA, Canada, Australia, Japan, South Korea, Israel, Turkey, United Arab Emirates, Singapore, New Zealand &amp; Rest of the World</span>
                   </td>
-                  <td className="px-4 py-3">up to 1.9kg</td>
+                  <td className="px-4 py-3">up to 1.8kg</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
                   <td className="px-4 py-3 text-center">16.50€</td>
                   <td className="px-4 py-3">4 – 12 working days</td>
