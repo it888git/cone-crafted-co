@@ -90,7 +90,7 @@ const CartDrawer = () => {
             <div className="flex-shrink-0 border-t border-border pt-4 pb-8 space-y-3">
               <div className="flex justify-between font-sans text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-semibold">{items[0]?.price.currencyCode || '$'} {totalPrice.toFixed(2)}</span>
+                <span className="font-semibold">{formatPrice(totalPrice, items[0]?.price.currencyCode || 'EUR')}</span>
               </div>
               <Button
                 onClick={handleCheckout}
