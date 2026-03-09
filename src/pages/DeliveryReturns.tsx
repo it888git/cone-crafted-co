@@ -93,6 +93,8 @@ const DeliveryReturns = () => (
                 <tr className="border-t-2 border-border">
                   <td className="px-4 py-3 align-top" rowSpan={4}>
                     <span className="font-semibold text-foreground">EUROPE</span>
+                    <br />
+                    <span className="text-xs leading-snug">Austria, Belgium, Bulgaria, Croatia, Cyprus, Czech Republic, Denmark, Finland, France, Germany, Greece, Hungary, Iceland, Ireland, Italy, Luxembourg, Malta, Netherlands, Norway, Poland, Portugal, Romania, Slovakia, Slovenia, Spain, Sweden, Switzerland</span>
                   </td>
                   <td className="px-4 py-3">up to 1.9kg</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
@@ -123,6 +125,8 @@ const DeliveryReturns = () => (
                 <tr className="border-t-2 border-border">
                   <td className="px-4 py-3 align-top" rowSpan={4}>
                     <span className="font-semibold text-foreground">INTERNATIONAL</span>
+                    <br />
+                    <span className="text-xs leading-snug">USA, Canada, Australia, Japan, South Korea, Israel, Turkey, United Arab Emirates, Singapore, New Zealand &amp; Rest of the World</span>
                   </td>
                   <td className="px-4 py-3">up to 1.9kg</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
