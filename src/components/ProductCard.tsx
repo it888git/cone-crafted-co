@@ -4,7 +4,8 @@ import type { ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import { Badge } from "@/components/ui/badge";
-import { getPerKgPrice, formatPrice } from "@/lib/priceUtils";
+import { getPerKgPrice, formatPrice, getLowestVariantPrice } from "@/lib/priceUtils";
+import { useMarketStore } from "@/stores/marketStore";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -22,10 +23,22 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const firstVariant = node.variants.edges[0]?.node;
   const available = firstVariant?.availableForSale ?? false;
 
-  // Calculate price per kg from first variant weight
-  const { perKg } = getPerKgPrice(firstVariant?.price.amount || price.amount, firstVariant?.title || "");
-  const currencyCode = firstVariant?.price.currencyCode || price.currencyCode || 'EUR';
-  const formattedPrice = `${formatPrice(Math.round(perKg), currencyCode)}/kg`;
+  const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
+
+  // Price display: international = lowest variant price, others = per kg
+  let formattedPrice: string;
+  if (isInternational) {
+    const lowest = getLowestVariantPrice(node.variants.edges);
+    if (lowest) {
+      formattedPrice = `${formatPrice(lowest.amount, lowest.currencyCode)} / ${lowest.label}`;
+    } else {
+      formattedPrice = formatPrice(parseFloat(price.amount), price.currencyCode);
+    }
+  } else {
+    const { perKg } = getPerKgPrice(firstVariant?.price.amount || price.amount, firstVariant?.title || "");
+    const currencyCode = firstVariant?.price.currencyCode || price.currencyCode || 'EUR';
+    formattedPrice = `${formatPrice(Math.round(perKg), currencyCode)}/kg`;
+  }
 
   // Extract meterage from description if available (e.g. "+/- 800m/100g")
   const meterageMatch = node.description?.match(/\+?\/?-?\s*\d+\s*m\s*\/\s*\d+\s*g/i);

@@ -55,3 +55,29 @@ export function formatPricePerKg(priceAmount: string, variantTitle: string, curr
   const { perKg } = getPerKgPrice(priceAmount, variantTitle);
   return `${formatPrice(perKg, currencyCode)}/kg`;
 }
+
+/**
+ * For international markets: find the cheapest variant and return its price + weight label.
+ * E.g. "$59.95 / 400g cone"
+ */
+export function getLowestVariantPrice(
+  variants: Array<{ node: { title: string; price: { amount: string; currencyCode: string } } }>
+): { amount: number; currencyCode: string; label: string } | null {
+  if (!variants || variants.length === 0) return null;
+  
+  let lowest = variants[0];
+  for (const v of variants) {
+    if (parseFloat(v.node.price.amount) < parseFloat(lowest.node.price.amount)) {
+      lowest = v;
+    }
+  }
+  
+  const grams = extractWeightGrams(lowest.node.title);
+  const label = grams ? `${grams}g cone` : lowest.node.title;
+  
+  return {
+    amount: parseFloat(lowest.node.price.amount),
+    currencyCode: lowest.node.price.currencyCode,
+    label,
+  };
+}
