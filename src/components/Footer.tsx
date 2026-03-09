@@ -8,8 +8,11 @@ const ShippingPaymentLogos = () => (
     <img src="/icons/dpd.svg" alt="DPD" className="h-6 opacity-70" />
     <img src="/icons/ups.svg" alt="UPS" className="h-6 opacity-70" />
     <img src="/icons/fedex.svg" alt="FedEx" className="h-6 opacity-70" />
-    
-    
+    <img src="/icons/deutsche-post.svg" alt="Deutsche Post" className="h-6 opacity-70" />
+    <img src="/icons/postnl.svg" alt="PostNL" className="h-6 opacity-70" />
+    <img src="/icons/lietuvos-pastas.svg" alt="Lietuvos Paštas" className="h-6 opacity-70" />
+    <img src="/icons/royal-mail.svg" alt="Royal Mail" className="h-6 opacity-70" />
+    <img src="/icons/usps.svg" alt="USPS" className="h-6 opacity-70" />
   </div>
 );
 
