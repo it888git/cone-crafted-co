@@ -4,9 +4,11 @@ import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingBag, Lock } from "l
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { formatPrice } from "@/lib/priceUtils";
+import { useMarketStore } from "@/stores/marketStore";
 
 const CartDrawer = () => {
   const { items, isOpen, setIsOpen, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
+  const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
 
@@ -53,18 +55,20 @@ const CartDrawer = () => {
                     <p className="text-sm text-muted-foreground font-sans mt-0.5">
                       Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {formatPrice(parseFloat(item.price.amount), item.price.currencyCode)}
                     </p>
-                    <p className="text-sm font-sans font-bold mt-0.5">
-                      {(() => {
-                        const weightMatch = item.selectedOptions.map(o => o.value).join('').match(/(\d+)\s*g/i);
-                        const grams = weightMatch ? parseInt(weightMatch[1], 10) : null;
-                        const price = parseFloat(item.price.amount);
-                        if (grams && grams > 0) {
-                          const perKg = (price / grams) * 1000;
-                          return `${formatPrice(Math.round(perKg), item.price.currencyCode)}/kg`;
-                        }
-                        return formatPrice(price, item.price.currencyCode);
-                      })()}
-                    </p>
+                    {!isInternational && (
+                      <p className="text-sm font-sans font-bold mt-0.5">
+                        {(() => {
+                          const weightMatch = item.selectedOptions.map(o => o.value).join('').match(/(\d+)\s*g/i);
+                          const grams = weightMatch ? parseInt(weightMatch[1], 10) : null;
+                          const price = parseFloat(item.price.amount);
+                          if (grams && grams > 0) {
+                            const perKg = (price / grams) * 1000;
+                            return `${formatPrice(Math.round(perKg), item.price.currencyCode)}/kg`;
+                          }
+                          return formatPrice(price, item.price.currencyCode);
+                        })()}
+                      </p>
+                    )}
                     <div className="flex items-center gap-2 mt-2">
                       <button
                         onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
