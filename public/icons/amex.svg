@@ -1,0 +1,7 @@
+<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+  <defs><style>.cls-1{fill:none;stroke:#b2b2b2;stroke-miterlimit:10;}.cls-2{fill:#5d5d5d;}</style></defs>
+  <rect height="48" width="98" y="1" x="1" class="cls-1" rx="3"/>
+  <rect x="25" y="8" width="50" height="34" rx="2" fill="#9a9a9a"/>
+  <text x="50" y="24" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">AM</text>
+  <text x="50" y="37" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">EX</text>
+</svg>
