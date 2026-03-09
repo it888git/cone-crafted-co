@@ -24,8 +24,9 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
+  const autoDetect = useMarketStore((s) => s.autoDetectCountry);
   useCartSync();
-  return (
+  useEffect(() => { autoDetect(); }, [autoDetect]);
     <>
       <ScrollToTop />
       <Header />
