@@ -26,10 +26,11 @@ const DeliveryReturns = () => (
           </p>
 
           {/* Shipping table */}
-          <div className="border border-border rounded-lg overflow-x-auto mb-5">
-            <table className="w-full text-sm font-sans table-fixed     <thead>
+           <div className="border border-border rounded-lg overflow-x-auto mb-5">
+            <table className="w-full text-sm font-sans table-fixed">
+              <thead>
                 <tr className="bg-muted">
-                  <th className="text-left px-4 py-3 font-medium text-foreground w-[18%]">Destin24ion</th>
+                  <th className="text-left px-4 py-3 font-medium text-foreground w-[24%]">Destination</th>
                   <th className="text-left px-4 py-3 font-medium text-foreground">Order Weight</th>
                   <th className="text-left px-4 py-3 font-medium text-foreground">Delivery Method</th>
                   <th className="text-center px-4 py-3 font-medium text-foreground">Cost</th>
