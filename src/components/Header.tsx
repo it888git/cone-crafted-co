@@ -152,7 +152,9 @@ const Header = () => {
 
         {/* Right: Icons + Country */}
         <div className="flex items-center gap-1 sm:gap-3 justify-end flex-1">
-          <CountrySelector />
+          <div className="hidden lg:block">
+            <CountrySelector />
+          </div>
           <Link to="/wishlist" className="p-2 text-muted-foreground hover:text-foreground transition-colors relative" aria-label="Wishlist">
             <Heart className="w-6 h-6" />
             {wishlistCount > 0 && (
@@ -186,7 +188,7 @@ const Header = () => {
             scrolled ? "max-h-0 opacity-0 overflow-hidden" : activeMenu ? "opacity-0 pointer-events-none max-h-16" : "max-h-16 opacity-100"
           }`}
         >
-        <div className="container flex items-center justify-center py-2.5">
+        <div className="container flex items-center justify-center py-2.5 gap-3">
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/60 border border-border/60 w-full max-w-md">
             <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
             <input
@@ -207,6 +209,9 @@ const Header = () => {
                 }
               }}
             />
+          </div>
+          <div className="lg:hidden flex-shrink-0">
+            <CountrySelector />
           </div>
         </div>
       </div>
