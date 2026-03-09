@@ -85,7 +85,7 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
 
 // Queries
 export const PRODUCTS_QUERY = `
-  query GetProducts($first: Int!, $query: String) {
+  query GetProducts($first: Int!, $query: String, $country: CountryCode) @inContext(country: $country) {
     products(first: $first, query: $query) {
       edges {
         node {
