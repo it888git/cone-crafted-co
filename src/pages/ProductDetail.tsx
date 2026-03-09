@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 import { useState } from "react";
-import { getPerKgPrice, formatEuro, extractWeightGrams } from "@/lib/priceUtils";
+import { getPerKgPrice, formatPrice, extractWeightGrams } from "@/lib/priceUtils";
 import ProductCard from "@/components/ProductCard";
 
 const isNewProduct = (createdAt: string): boolean => {
