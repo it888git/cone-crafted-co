@@ -222,8 +222,20 @@ const ProductDetail = () => {
                 })}
               </div>
 
-              {/* Selected variant price */}
-              {variantChosen && selectedVariant && (
+              {/* Selected variant price – hide for international since main price already shows per-cone */}
+              {variantChosen && selectedVariant && !isInternational && (
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="font-sans text-xl font-semibold text-foreground">
+                    {formatPrice(parseFloat(selectedVariant.price.amount), selectedVariant.price.currencyCode)}
+                  </span>
+                  <span className="text-sm font-sans text-muted-foreground">
+                    / {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g cone` : selectedVariant.title}
+                  </span>
+                </div>
+              )}
+              {/* International: show selected variant price only if different from lowest */}
+              {variantChosen && selectedVariant && isInternational && lowestVariant && 
+                parseFloat(selectedVariant.price.amount) !== lowestVariant.amount && (
                 <div className="mt-3 flex items-baseline gap-2">
                   <span className="font-sans text-xl font-semibold text-foreground">
                     {formatPrice(parseFloat(selectedVariant.price.amount), selectedVariant.price.currencyCode)}
