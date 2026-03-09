@@ -27,6 +27,7 @@ const AppContent = () => {
   const autoDetect = useMarketStore((s) => s.autoDetectCountry);
   useCartSync();
   useEffect(() => { autoDetect(); }, [autoDetect]);
+  return (
     <>
       <ScrollToTop />
       <Header />
