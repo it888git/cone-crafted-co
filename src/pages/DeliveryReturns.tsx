@@ -30,7 +30,7 @@ const DeliveryReturns = () => (
             <table className="w-full text-sm font-sans table-fixed table-fixed">
               <thead>
                 <tr className="bg-muted">
-                  <th className="text-left px-4 py-3 font-medium tex w-[12%]t-foreground">Destination</th>
+                  <th className="text-left px-4 py-3 font-medium text-foreground w-[18%]">Destination</th>
                   <th className="text-left px-4 py-3 font-medium text-foreground">Order Weight</th>
                   <th className="text-left px-4 py-3 font-medium text-foreground">Delivery Method</th>
                   <th className="text-center px-4 py-3 font-medium text-foreground">Cost</th>
