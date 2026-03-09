@@ -85,7 +85,7 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
 
 // Queries
 export const PRODUCTS_QUERY = `
-  query GetProducts($first: Int!, $query: String) {
+  query GetProducts($first: Int!, $query: String, $country: CountryCode) @inContext(country: $country) {
     products(first: $first, query: $query) {
       edges {
         node {
@@ -137,7 +137,7 @@ export const PRODUCTS_QUERY = `
 `;
 
 export const PRODUCT_BY_HANDLE_QUERY = `
-  query GetProductByHandle($handle: String!) {
+  query GetProductByHandle($handle: String!, $country: CountryCode) @inContext(country: $country) {
     product(handle: $handle) {
       id
       title

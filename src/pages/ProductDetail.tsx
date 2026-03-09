@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 import { useState } from "react";
-import { getPerKgPrice, formatEuro, extractWeightGrams } from "@/lib/priceUtils";
+import { getPerKgPrice, formatPrice, extractWeightGrams } from "@/lib/priceUtils";
 import ProductCard from "@/components/ProductCard";
 
 const isNewProduct = (createdAt: string): boolean => {
@@ -79,8 +79,8 @@ const ProductDetail = () => {
 
   // Per-kg price from first variant (always shown)
   const firstVariant = variants[0]?.node;
+  const currencyCode = firstVariant?.price.currencyCode || 'EUR';
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
-  // perKgPrice used directly below
 
   // Similar yarns: match by first word of title (material keyword)
   const titleWords = node.title.toLowerCase().split(/\s+/);
@@ -184,7 +184,7 @@ const ProductDetail = () => {
 
             <div>
               <span className="font-sans text-2xl font-semibold text-foreground">
-                {Math.round(perKgPrice)} €/kg
+                {formatPrice(Math.round(perKgPrice), currencyCode)}/kg
               </span>
             </div>
 
@@ -220,7 +220,7 @@ const ProductDetail = () => {
               {variantChosen && selectedVariant && (
                 <div className="mt-3 flex items-baseline gap-2">
                   <span className="font-sans text-xl font-semibold text-foreground">
-                    {parseFloat(selectedVariant.price.amount).toFixed(0)} €
+                    {formatPrice(parseFloat(selectedVariant.price.amount), selectedVariant.price.currencyCode)}
                   </span>
                   <span className="text-sm font-sans text-muted-foreground">
                     / {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g cone` : selectedVariant.title}

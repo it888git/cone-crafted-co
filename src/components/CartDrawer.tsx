@@ -3,6 +3,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingBag, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { formatPrice } from "@/lib/priceUtils";
 
 const CartDrawer = () => {
   const { items, isOpen, setIsOpen, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
@@ -50,7 +51,7 @@ const CartDrawer = () => {
                   <div className="flex-1 min-w-0">
                     <h4 className="font-sans text-sm font-semibold text-foreground">{item.product.node.title}</h4>
                     <p className="text-sm text-muted-foreground font-sans mt-0.5">
-                      Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {parseFloat(item.price.amount).toFixed(0)}€
+                      Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {formatPrice(parseFloat(item.price.amount), item.price.currencyCode)}
                     </p>
                     <p className="text-sm font-sans font-bold mt-0.5">
                       {(() => {
@@ -59,9 +60,9 @@ const CartDrawer = () => {
                         const price = parseFloat(item.price.amount);
                         if (grams && grams > 0) {
                           const perKg = (price / grams) * 1000;
-                          return `${perKg.toFixed(0).replace('.', ',')} €/kg`;
+                          return `${formatPrice(Math.round(perKg), item.price.currencyCode)}/kg`;
                         }
-                        return `${price.toFixed(2).replace('.', ',')} €`;
+                        return formatPrice(price, item.price.currencyCode);
                       })()}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
@@ -89,7 +90,7 @@ const CartDrawer = () => {
             <div className="flex-shrink-0 border-t border-border pt-4 pb-8 space-y-3">
               <div className="flex justify-between font-sans text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-semibold">{items[0]?.price.currencyCode || '$'} {totalPrice.toFixed(2)}</span>
+                <span className="font-semibold">{formatPrice(totalPrice, items[0]?.price.currencyCode || 'EUR')}</span>
               </div>
               <Button
                 onClick={handleCheckout}
