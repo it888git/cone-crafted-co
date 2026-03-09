@@ -274,7 +274,7 @@ const Index = () => {
               <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
               <div>
                 <p className="text-xs sm:text-sm font-sans font-semibold whitespace-nowrap">{title}</p>
-                <p className="text-[10px] sm:text-xs font-sans text-muted-foreground hidden sm:block">{desc}</p>
+                <p className="text-[10px] sm:text-xs font-sans text-muted-foreground">{desc}</p>
               </div>
             </div>
           ))}
