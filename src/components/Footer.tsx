@@ -4,11 +4,7 @@ import NewsletterForm from "@/components/NewsletterForm";
 
 const PaymentLogos = () => (
   <div className="flex items-center gap-3 flex-wrap">
-    <img src="/icons/visa.svg" alt="Visa" className="h-6 opacity-70" />
-    <img src="/icons/mastercard.svg" alt="Mastercard" className="h-6 opacity-70" />
-    <img src="/icons/amex.svg" alt="American Express" className="h-6 opacity-70" />
-    <img src="/icons/apple-pay.svg" alt="Apple Pay" className="h-6 opacity-70" />
-    <img src="/icons/gpay.svg" alt="Google Pay" className="h-6 opacity-70" />
+    <img src="/icons/payment-methods.png" alt="Visa, Mastercard, Amex, Apple Pay, Google Pay" className="h-6 opacity-70" />
   </div>
 );
 
