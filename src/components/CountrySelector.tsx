@@ -31,10 +31,11 @@ const CountrySelector = () => {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="p-2 text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+        className="p-2 text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
         aria-label="Select country"
       >
-        <span className="text-base leading-none">{selectedCountry.flag}</span>
+        <span className="text-[15px] leading-none">{selectedCountry.flag}</span>
+        <span className="text-xs font-sans font-medium text-foreground tracking-wide">{selectedCountry.currency}</span>
         <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
