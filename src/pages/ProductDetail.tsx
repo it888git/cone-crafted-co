@@ -41,6 +41,7 @@ const ProductDetail = () => {
   const [selectedVariantIdx, setSelectedVariantIdx] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
+  const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
 
   // Fetch all products for "similar yarns"
   const { data: allProducts } = useShopifyProducts(50);
@@ -82,7 +83,6 @@ const ProductDetail = () => {
   const firstVariant = variants[0]?.node;
   const currencyCode = firstVariant?.price.currencyCode || 'EUR';
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
-  const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
   const lowestVariant = getLowestVariantPrice(variants);
 
   // Similar yarns: match by first word of title (material keyword)
