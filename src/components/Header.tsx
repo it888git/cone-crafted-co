@@ -150,8 +150,9 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Right: Icons */}
+        {/* Right: Icons + Country */}
         <div className="flex items-center gap-1 sm:gap-3 justify-end flex-1">
+          <CountrySelector />
           <Link to="/wishlist" className="p-2 text-muted-foreground hover:text-foreground transition-colors relative" aria-label="Wishlist">
             <Heart className="w-6 h-6" />
             {wishlistCount > 0 && (
