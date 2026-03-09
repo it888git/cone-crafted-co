@@ -4,6 +4,7 @@ import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingBag, Lock } from "l
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { formatPrice } from "@/lib/priceUtils";
+import { useMarketStore } from "@/stores/marketStore";
 
 const CartDrawer = () => {
   const { items, isOpen, setIsOpen, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
