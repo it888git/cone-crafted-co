@@ -1,5 +1,3 @@
-import { useMarketStore } from "@/stores/marketStore";
-
 /**
  * Extract weight in grams from a variant title like "300g", "400 g", etc.
  */
