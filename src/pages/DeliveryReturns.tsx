@@ -95,7 +95,7 @@ const DeliveryReturns = () => (
                     <br />
                     <span className="text-xs leading-snug">Austria, Belgium, Bulgaria, Croatia, Cyprus, Czech Republic, Denmark, Finland, France, Germany, Greece, Hungary, Iceland, Ireland, Italy, Luxembourg, Malta, Netherlands, Norway, Poland, Portugal, Romania, Slovakia, Slovenia, Spain, Sweden, Switzerland</span>
                   </td>
-                  <td className="px-4 py-3">up to 1.9kg</td>
+                  <td className="px-4 py-3">up to 1.8kg</td>
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
                   <td className="px-4 py-3 text-center">6.50€</td>
                   <td className="px-4 py-3">4 – 8 working days</td>
