@@ -4,7 +4,7 @@ import type { ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import { Badge } from "@/components/ui/badge";
-import { getPerKgPrice, formatEuro } from "@/lib/priceUtils";
+import { getPerKgPrice, formatPrice } from "@/lib/priceUtils";
 
 interface ProductCardProps {
   product: ShopifyProduct;
