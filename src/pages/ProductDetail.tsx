@@ -41,6 +41,7 @@ const ProductDetail = () => {
   const [selectedVariantIdx, setSelectedVariantIdx] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
+  const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
 
   // Fetch all products for "similar yarns"
   const { data: allProducts } = useShopifyProducts(50);
