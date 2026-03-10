@@ -260,10 +260,7 @@ const ProductDetail = () => {
                 ) : (
                   <p className="text-sm font-sans text-muted-foreground flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-                    {selectedVariant?.quantityAvailable != null
-                      ? (selectedVariant.quantityAvailable >= 5 ? "5+" : String(selectedVariant.quantityAvailable))
-                      : "Available"
-                    } in stock
+                    In stock
                   </p>
                 )}
               </div>
