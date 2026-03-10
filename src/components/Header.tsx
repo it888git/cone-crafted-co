@@ -12,6 +12,12 @@ const announcements = [
   "Easy & Simple Ordering",
 ];
 
+const internationalAnnouncements = [
+  "Easy & Simple Ordering",
+  "Free Express Mail Delivery",
+  "Italian Yarn Selection",
+];
+
 const yarnsMegaMenu = {
   composition1: {
     title: "Shop by composition",
