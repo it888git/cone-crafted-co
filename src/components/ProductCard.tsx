@@ -101,8 +101,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </button>
           </div>
           {isInternational && available && (
-            <div className="absolute bottom-3 left-3 px-2 py-0.5 bg-accent text-accent-foreground rounded-full">
-              <span className="text-[10px] font-sans tracking-wider uppercase font-medium">Free Delivery</span>
+            <div className="absolute bottom-2 left-2 px-1.5 py-px bg-accent text-accent-foreground rounded-full">
+              <span className="text-[8px] font-sans tracking-wider uppercase font-medium">Free Delivery</span>
             </div>
           )}
           {available && (
