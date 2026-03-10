@@ -144,6 +144,11 @@ const ProductDetail = () => {
                   <span className="text-xs font-sans tracking-wider uppercase font-medium text-muted-foreground">NEW</span>
                 </div>
               ) : null}
+              {isInternational && node.variants.edges.some((v: any) => v.node.availableForSale) && (
+                <div className="absolute bottom-4 left-4 px-3 py-1 bg-accent text-accent-foreground rounded-full">
+                  <span className="text-xs font-sans tracking-wider uppercase font-medium">Free Delivery</span>
+                </div>
+              )}
               <button
                 onClick={() => toggleWishlist(product)}
                 className="absolute top-4 right-4 p-2.5 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors shadow-sm"

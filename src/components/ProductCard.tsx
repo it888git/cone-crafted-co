@@ -100,6 +100,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
               <Heart className="w-4 h-4" fill={isInWishlist ? "currentColor" : "none"} />
             </button>
           </div>
+          {isInternational && available && (
+            <div className="absolute bottom-3 left-3 px-2 py-0.5 bg-accent text-accent-foreground rounded-full">
+              <span className="text-[10px] font-sans tracking-wider uppercase font-medium">Free Delivery</span>
+            </div>
+          )}
           {available && (
             <button
               onClick={handleAddToCart}
