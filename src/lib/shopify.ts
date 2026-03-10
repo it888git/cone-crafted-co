@@ -119,6 +119,7 @@ export const PRODUCTS_QUERY = `
                   currencyCode
                 }
                 availableForSale
+                quantityAvailable
                 selectedOptions {
                   name
                   value
