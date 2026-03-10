@@ -282,7 +282,10 @@ const ProductDetail = () => {
                   <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[2rem] text-center">{quantity}</span>
                   <button
                     className="px-3 py-2 text-sm font-sans text-foreground hover:bg-muted transition-colors"
-                    onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                    onClick={() => {
+                      const maxQty = selectedVariant?.quantityAvailable != null ? Math.min(selectedVariant.quantityAvailable, 10) : 10;
+                      setQuantity(Math.min(maxQty, quantity + 1));
+                    }}
                   >
                     +
                   </button>

@@ -40,6 +40,7 @@ export interface ShopifyProduct {
           };
            availableForSale: boolean;
            
+          quantityAvailable?: number | null;
           selectedOptions: Array<{
             name: string;
             value: string;
