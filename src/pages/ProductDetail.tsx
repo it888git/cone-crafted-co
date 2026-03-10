@@ -259,9 +259,9 @@ const ProductDetail = () => {
                   <p className="text-sm font-sans text-destructive">Sold out</p>
                 ) : (
                   <p className="text-sm font-sans text-muted-foreground flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-accent inline-block" />
-                    {selectedVariant && (selectedVariant as any).quantityAvailable != null
-                      ? ((selectedVariant as any).quantityAvailable >= 6 ? "5+" : String((selectedVariant as any).quantityAvailable))
+                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                    {selectedVariant?.quantityAvailable != null
+                      ? (selectedVariant.quantityAvailable >= 5 ? "5+" : String(selectedVariant.quantityAvailable))
                       : "Available"
                     } in stock
                   </p>
@@ -282,7 +282,10 @@ const ProductDetail = () => {
                   <span className="px-3 py-2 text-sm font-sans text-foreground min-w-[2rem] text-center">{quantity}</span>
                   <button
                     className="px-3 py-2 text-sm font-sans text-foreground hover:bg-muted transition-colors"
-                    onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                    onClick={() => {
+                      const maxQty = selectedVariant?.quantityAvailable != null ? Math.min(selectedVariant.quantityAvailable, 10) : 10;
+                      setQuantity(Math.min(maxQty, quantity + 1));
+                    }}
                   >
                     +
                   </button>
