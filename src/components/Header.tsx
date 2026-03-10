@@ -5,6 +5,7 @@ import { useWishlistStore } from "@/stores/wishlistStore";
 import { useEffect, useRef, useState } from "react";
 import logo from "@/assets/yarneria-logo.png";
 import CountrySelector from "@/components/CountrySelector";
+import { useMarketStore } from "@/stores/marketStore";
 
 const announcements = [
   "Free Delivery from 60€",
