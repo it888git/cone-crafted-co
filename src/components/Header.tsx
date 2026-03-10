@@ -363,22 +363,28 @@ const MobileNavItem = ({ link, onClose }: { link: NavItem; onClose: () => void }
 };
 
 const AnnouncementBar = () => {
+  const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
+  const items = isInternational ? internationalAnnouncements : announcements;
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    setIndex(0);
+  }, [isInternational]);
+
+  useEffect(() => {
     const interval = setInterval(
-      () => setIndex((prev) => (prev + 1) % announcements.length),
+      () => setIndex((prev) => (prev + 1) % items.length),
       4000
     );
     return () => clearInterval(interval);
-  }, []);
+  }, [items]);
 
   return (
     <div className="bg-primary text-primary-foreground py-2 text-xs font-sans tracking-widest uppercase overflow-hidden">
       <div className="container flex justify-center">
-        <div key={index} className="announcement-slide">
+        <div key={`${isInternational}-${index}`} className="announcement-slide">
           <span className="px-4">
-            {announcements[index]}
+            {items[index]}
           </span>
         </div>
       </div>
