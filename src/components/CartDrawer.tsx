@@ -115,7 +115,7 @@ const CartDrawer = () => {
                 <img src="/icons/payment-methods.png" alt="Visa, Mastercard, Amex, Apple Pay, Google Pay" className="h-10 opacity-60" />
               </div>
               <p className="text-[11px] text-muted-foreground text-center font-sans mt-2">
-                Shipping calculated at checkout
+                {isInternational ? 'Free Express Mail Delivery Included' : 'Shipping calculated at checkout'}
               </p>
             </div>
           </>
