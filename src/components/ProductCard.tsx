@@ -41,7 +41,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   }
 
   // Extract meterage from description if available (e.g. "+/- 800m/100g")
-  const meterageMatch = node.description?.match(/\+?\/?-?\s*\d+\s*m\s*\/\s*\d+\s*g/i);
+  const meterageMatch = node.description?.match(/\+?\/?-?\s*\d+\s*m(?:\s*\([^)]*\))?\s*(?:\/|per)\s*\d+\s*g/i);
   const meterage = meterageMatch ? meterageMatch[0] : null;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
