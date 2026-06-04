@@ -10,6 +10,8 @@ export function useShopifyProducts(first = 50, searchQuery?: string) {
       const data = await storefrontApiRequest(PRODUCTS_QUERY, { first, query: searchQuery || null, country: countryCode });
       return (data?.data?.products?.edges || []) as ShopifyProduct[];
     },
+    refetchInterval: 15000,
+    refetchIntervalInBackground: true,
   });
 }
 
@@ -23,5 +25,7 @@ export function useShopifyProduct(handle: string) {
       return { node: data.data.product } as ShopifyProduct;
     },
     enabled: !!handle,
+    refetchInterval: 15000,
+    refetchIntervalInBackground: true,
   });
 }
