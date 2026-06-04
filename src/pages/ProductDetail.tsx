@@ -134,7 +134,7 @@ const ProductDetail = () => {
                 </div>
               )}
               {/* Sold out takes priority over NEW */}
-              {!node.variants.edges.some((v: any) => v.node.availableForSale) ? (
+              {!node.variants.edges.some((v) => v.node.availableForSale) ? (
                 <div className="absolute top-4 left-4 px-3 py-1 bg-background/90 backdrop-blur-sm rounded-full">
                   <span className="text-xs font-sans tracking-wider uppercase font-medium text-muted-foreground">Sold Out</span>
                 </div>
@@ -143,7 +143,7 @@ const ProductDetail = () => {
                   <span className="text-xs font-sans tracking-wider uppercase font-medium text-muted-foreground">NEW</span>
                 </div>
               ) : null}
-              {isInternational && node.variants.edges.some((v: any) => v.node.availableForSale) && (
+              {isInternational && node.variants.edges.some((v) => v.node.availableForSale) && (
                 <div className="absolute bottom-4 left-4 px-3 py-1 bg-accent text-accent-foreground rounded-full">
                   <span className="text-xs font-sans tracking-wider uppercase font-medium">Free Delivery</span>
                 </div>
