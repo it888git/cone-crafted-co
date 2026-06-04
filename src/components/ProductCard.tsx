@@ -6,6 +6,7 @@ import { useWishlistStore } from "@/stores/wishlistStore";
 import { Badge } from "@/components/ui/badge";
 import { getPerKgPrice, formatPrice, getLowestVariantPrice } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
+import { getProductDescriptionText } from "@/lib/productDescription";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -40,9 +41,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     formattedPrice = `${formatPrice(Math.round(perKg), currencyCode)}/kg`;
   }
 
-  // Extract meterage from description if available (e.g. "+/- 800m/100g")
-  const meterageMatch = node.description?.match(/\+?\/?-?\s*\d+\s*m(?:\s*\([^)]*\))?\s*(?:\/|per)\s*\d+\s*g/i);
-  const meterage = meterageMatch ? meterageMatch[0] : null;
+  const descriptionText = getProductDescriptionText(node.description, node.descriptionHtml);
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -115,9 +114,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <h3 className="font-sans text-sm font-medium text-foreground leading-snug line-clamp-2">
             {node.title}
           </h3>
-          {meterage && (
-            <p className="font-sans text-xs text-muted-foreground">
-              {meterage}
+          {descriptionText && (
+            <p className="font-sans text-xs text-muted-foreground whitespace-pre-line line-clamp-3">
+              {descriptionText}
             </p>
           )}
           <p className="font-sans text-sm font-semibold text-foreground pt-0.5">
