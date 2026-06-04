@@ -21,7 +21,16 @@ import FAQ from "./pages/FAQ";
 import Sale from "./pages/Sale";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+      refetchOnMount: 'always',
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+    },
+  },
+});
 
 const AppContent = () => {
   const autoDetect = useMarketStore((s) => s.autoDetectCountry);
