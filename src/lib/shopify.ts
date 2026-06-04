@@ -12,6 +12,7 @@ export interface ShopifyProduct {
     id: string;
     title: string;
     description: string;
+    descriptionHtml: string;
     handle: string;
     tags: string[];
     createdAt: string;
@@ -39,6 +40,7 @@ export interface ShopifyProduct {
             currencyCode: string;
           };
            availableForSale: boolean;
+          quantityAvailable: number | null;
           selectedOptions: Array<{
             name: string;
             value: string;
@@ -92,6 +94,7 @@ export const PRODUCTS_QUERY = `
           id
           title
           description
+          descriptionHtml
           handle
           tags
           createdAt
@@ -119,6 +122,7 @@ export const PRODUCTS_QUERY = `
                   currencyCode
                 }
                 availableForSale
+                quantityAvailable
                 selectedOptions {
                   name
                   value
@@ -142,6 +146,7 @@ export const PRODUCT_BY_HANDLE_QUERY = `
       id
       title
       description
+      descriptionHtml
       handle
       tags
       createdAt
@@ -169,6 +174,7 @@ export const PRODUCT_BY_HANDLE_QUERY = `
               currencyCode
             }
             availableForSale
+            quantityAvailable
             selectedOptions {
               name
               value
