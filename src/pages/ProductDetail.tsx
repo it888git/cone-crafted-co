@@ -10,6 +10,7 @@ import { useState } from "react";
 import { getPerKgPrice, formatPrice, extractWeightGrams, getLowestVariantPrice } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
 import ProductCard from "@/components/ProductCard";
+import { getProductDescriptionText } from "@/lib/productDescription";
 
 const isNewProduct = (createdAt: string): boolean => {
   const created = new Date(createdAt);
@@ -75,9 +76,7 @@ const ProductDetail = () => {
   const variantChosen = selectedVariant !== null;
   const wishlisted = isInWishlist(node.handle);
 
-  // Extract meterage from description
-  const meterageMatch = node.description.match(/[\+\-\/]*\s*(\d+)\s*m\s*\/\s*100\s*g/i);
-  const meterage = meterageMatch ? `+/- ${meterageMatch[1]}m / 100g` : null;
+  const descriptionText = getProductDescriptionText(node.description, node.descriptionHtml);
 
   // Per-kg price from first variant (always shown)
   const firstVariant = variants[0]?.node;
@@ -185,8 +184,8 @@ const ProductDetail = () => {
           <div className="space-y-5">
             <div>
               <h1 className="font-sans text-2xl md:text-3xl font-bold text-foreground tracking-tight">{node.title}</h1>
-              {meterage && (
-                <p className="text-sm font-sans text-muted-foreground mt-1">{meterage}</p>
+              {descriptionText && (
+                <p className="text-sm font-sans text-muted-foreground mt-1 whitespace-pre-line">{descriptionText}</p>
               )}
             </div>
 
