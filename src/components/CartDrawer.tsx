@@ -78,12 +78,26 @@ const CartDrawer = () => {
                         <Minus className="w-3 h-3" />
                       </button>
                       <span className="text-sm font-sans w-6 text-center">{item.quantity}</span>
-                      <button
-                        onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
-                        className="p-1 rounded border border-border hover:bg-muted transition-colors"
-                      >
-                        <Plus className="w-3 h-3" />
-                      </button>
+                      {(() => {
+                        const maxAvailable = getVariantQuantityAvailable(item.variantId, item.product);
+                        const atMax = maxAvailable !== null && item.quantity >= maxAvailable;
+                        return (
+                          <>
+                            <button
+                              onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
+                              disabled={atMax}
+                              className="p-1 rounded border border-border hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                            {maxAvailable !== null && (
+                              <span className={`text-xs font-sans ${atMax ? 'text-accent' : 'text-muted-foreground'}`}>
+                                {atMax ? 'Max available' : `${maxAvailable} available`}
+                              </span>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                   </div>
                   <button onClick={() => removeItem(item.variantId)} className="text-muted-foreground hover:text-foreground flex-shrink-0">
