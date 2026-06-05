@@ -258,8 +258,18 @@ const ProductDetail = () => {
                   <p className="text-sm font-sans text-destructive">Sold out</p>
                 ) : (
                   <p className="text-sm font-sans text-muted-foreground flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-                    In stock
+                    <span className={`w-2 h-2 rounded-full inline-block ${
+                      selectedVariant?.quantityAvailable != null && selectedVariant.quantityAvailable <= 3
+                        ? "bg-accent"
+                        : "bg-green-500"
+                    }`} />
+                    {selectedVariant?.quantityAvailable != null
+                      ? selectedVariant.quantityAvailable > 10
+                        ? `In stock (${selectedVariant.quantityAvailable} cones available)`
+                        : selectedVariant.quantityAvailable === 1
+                          ? "Only 1 cone left"
+                          : `Only ${selectedVariant.quantityAvailable} cones left`
+                      : "In stock"}
                   </p>
                 )}
               </div>
