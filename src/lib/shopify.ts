@@ -40,6 +40,7 @@ export interface ShopifyProduct {
             currencyCode: string;
           };
            availableForSale: boolean;
+          quantityAvailable: number | null;
           selectedOptions: Array<{
             name: string;
             value: string;
@@ -121,6 +122,7 @@ export const PRODUCTS_QUERY = `
                   currencyCode
                 }
                 availableForSale
+                quantityAvailable
                 selectedOptions {
                   name
                   value
@@ -174,6 +176,7 @@ export const BASE_PRODUCTS_QUERY = `
                   currencyCode
                 }
                 availableForSale
+                quantityAvailable
                 selectedOptions {
                   name
                   value
@@ -225,6 +228,7 @@ export const PRODUCT_BY_HANDLE_QUERY = `
               currencyCode
             }
             availableForSale
+            quantityAvailable
             selectedOptions {
               name
               value
@@ -274,6 +278,7 @@ export const BASE_PRODUCT_BY_HANDLE_QUERY = `
               currencyCode
             }
             availableForSale
+            quantityAvailable
             selectedOptions {
               name
               value
