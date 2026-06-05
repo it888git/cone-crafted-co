@@ -369,6 +369,11 @@ export interface CartItem {
   selectedOptions: Array<{ name: string; value: string }>;
 }
 
+export function getVariantQuantityAvailable(variantId: string, product: ShopifyProduct): number | null {
+  const variant = product.node.variants.edges.find((e) => e.node.id === variantId)?.node;
+  return variant?.quantityAvailable ?? null;
+}
+
 export async function createShopifyCart(item: CartItem): Promise<{ cartId: string; checkoutUrl: string; lineId: string } | null> {
   const data = await storefrontApiRequest(CART_CREATE_MUTATION, {
     input: { lines: [{ quantity: item.quantity, merchandiseId: item.variantId }] },
