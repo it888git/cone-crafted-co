@@ -44,29 +44,33 @@ export const useCartStore = create<CartStore>()(
       addItem: async (item) => {
         const { items, cartId, clearCart } = get();
         const existingItem = items.find(i => i.variantId === item.variantId);
+        const maxAvailable = getVariantQuantityAvailable(item.variantId, item.product);
         set({ isLoading: true });
         try {
           if (!cartId) {
-            const result = await createShopifyCart({ ...item, lineId: null });
+            const qty = maxAvailable !== null ? Math.min(item.quantity, maxAvailable) : item.quantity;
+            const result = await createShopifyCart({ ...item, lineId: null, quantity: qty });
             if (result) {
               set({
                 cartId: result.cartId,
                 checkoutUrl: result.checkoutUrl,
-                items: [{ ...item, lineId: result.lineId }],
+                items: [{ ...item, lineId: result.lineId, quantity: qty }],
                 isOpen: true,
               });
             }
           } else if (existingItem) {
-            const newQuantity = existingItem.quantity + item.quantity;
+            const requestedQty = existingItem.quantity + item.quantity;
+            const newQuantity = maxAvailable !== null ? Math.min(requestedQty, maxAvailable) : requestedQty;
             if (!existingItem.lineId) return;
             const result = await updateShopifyCartLine(cartId, existingItem.lineId, newQuantity);
             if (result.success) {
               set({ items: get().items.map(i => i.variantId === item.variantId ? { ...i, quantity: newQuantity } : i), isOpen: true });
             } else if (result.cartNotFound) clearCart();
           } else {
-            const result = await addLineToShopifyCart(cartId, { ...item, lineId: null });
+            const qty = maxAvailable !== null ? Math.min(item.quantity, maxAvailable) : item.quantity;
+            const result = await addLineToShopifyCart(cartId, { ...item, lineId: null, quantity: qty });
             if (result.success) {
-              set({ items: [...get().items, { ...item, lineId: result.lineId ?? null }], isOpen: true });
+              set({ items: [...get().items, { ...item, lineId: result.lineId ?? null, quantity: qty }], isOpen: true });
             } else if (result.cartNotFound) clearCart();
           }
         } catch (error) {
