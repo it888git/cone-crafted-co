@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { formatPrice } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
+import { getVariantQuantityAvailable } from "@/lib/shopify";
 
 const CartDrawer = () => {
   const { items, isOpen, setIsOpen, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
