@@ -9,6 +9,7 @@ import {
   removeLineFromShopifyCart,
   storefrontApiRequest,
   CART_QUERY,
+  getVariantQuantityAvailable,
 } from '@/lib/shopify';
 
 interface CartStore {
