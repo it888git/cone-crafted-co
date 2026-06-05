@@ -85,11 +85,14 @@ export const useCartStore = create<CartStore>()(
         const { items, cartId, clearCart } = get();
         const item = items.find(i => i.variantId === variantId);
         if (!item?.lineId || !cartId) return;
+        const maxAvailable = getVariantQuantityAvailable(variantId, item.product);
+        const cappedQty = maxAvailable !== null ? Math.min(quantity, maxAvailable) : quantity;
+        if (cappedQty <= 0) { await get().removeItem(variantId); return; }
         set({ isLoading: true });
         try {
-          const result = await updateShopifyCartLine(cartId, item.lineId, quantity);
+          const result = await updateShopifyCartLine(cartId, item.lineId, cappedQty);
           if (result.success) {
-            set({ items: get().items.map(i => i.variantId === variantId ? { ...i, quantity } : i) });
+            set({ items: get().items.map(i => i.variantId === variantId ? { ...i, quantity: cappedQty } : i) });
           } else if (result.cartNotFound) clearCart();
         } catch (error) { console.error('Failed to update quantity:', error); }
         finally { set({ isLoading: false }); }
