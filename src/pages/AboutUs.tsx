@@ -35,11 +35,12 @@ const AboutUs = () => (
       </div>
     </section>
 
-    <section className="container py-12 md:py-16">
-      <div className="max-w-6xl mx-auto">
+    <section className="container py-10">
+      <div className="max-w-2xl mx-auto">
         <CustomerCreations />
       </div>
     </section>
+
 
     <section className="container pb-20">
       <div className="max-w-2xl mx-auto">
