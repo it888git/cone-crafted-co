@@ -14,6 +14,7 @@ export interface ShopifyProduct {
     description: string;
     descriptionHtml: string;
     handle: string;
+    productType: string;
     tags: string[];
     createdAt: string;
     priceRange: {
