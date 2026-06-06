@@ -217,6 +217,9 @@ const Header = () => {
               }}
             />
           </div>
+          <div className="lg:hidden">
+            <CountrySelector />
+          </div>
         </div>
       </div>
       )}
