@@ -81,6 +81,7 @@ const FilterSidebar = ({
   activeFeatures, toggleFeature,
   activeColors, toggleColor,
   products,
+  onFilterSelect,
 }: {
   localSearch: string; setLocalSearch: (v: string) => void; handleSearch: () => void;
   activeCategory: string; setActiveCategory: (v: string) => void;
@@ -88,6 +89,7 @@ const FilterSidebar = ({
   activeFeatures: string[]; toggleFeature: (f: string) => void;
   activeColors: string[]; toggleColor: (c: string) => void;
   products?: any[];
+  onFilterSelect?: () => void;
 }) => {
   const countFor = (keyword: string) => {
     if (!products) return 0;
