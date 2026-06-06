@@ -516,18 +516,18 @@ const Products = () => {
         <div className="space-y-6">
           <div>
             <h3 className="font-sans text-sm font-bold text-foreground mb-2">
-              Is it possible to place an order for a specific quantity, such as 400 grams, instead of the full quantity available for the cone yarn?
+              How do I place an order?
             </h3>
             <p className="text-sm font-sans text-muted-foreground leading-relaxed">
-              Absolutely! You can order the exact quantity you need. Each unit corresponds to 100 grams.
+              Browse our newest Italian yarn collections and choose the exact quantity you need for your project. Most of our yarns are available in smaller cones ranging from 200g to 400g, allowing you to order only what you need or work with multiple plies at once for your preferred yarn thickness.
             </p>
           </div>
           <div>
             <h3 className="font-sans text-sm font-bold text-foreground mb-2">
-              Do you also do wholesale cone yarn business?
+              Do you ship worldwide?
             </h3>
             <p className="text-sm font-sans text-muted-foreground leading-relaxed">
-              Although our primary focus is serving individual retail customers, we are delighted to provide amazing offers for wholesale cone yarn business as well! Please contact us to discuss your specific wholesale needs and explore the possibilities of partnering with us.
+              Yes! We ship worldwide using a variety of trusted courier and postal services. Thanks to our extensive experience shipping globally, we are able to offer competitive shipping rates to many destinations. Please see our Delivery & Returns Policy for more information.
             </p>
           </div>
         </div>
