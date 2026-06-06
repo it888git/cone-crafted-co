@@ -84,11 +84,15 @@ const ProductDetail = () => {
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
   const lowestVariant = getLowestVariantPrice(variants);
 
-  // Similar yarns: match by first word of title (material keyword)
-  const titleWords = node.title.toLowerCase().split(/\s+/);
-  const similarProducts = (allProducts || []).filter(
-    (p) => p.node.handle !== node.handle && titleWords.some((w) => w.length > 3 && p.node.title.toLowerCase().includes(w))
-  ).slice(0, 4);
+  // Similar yarns: match by product category (productType), fallback to title keyword
+  const similarProducts = (allProducts || []).filter((p) => {
+    if (p.node.handle === node.handle) return false;
+    if (node.productType && p.node.productType) {
+      return p.node.productType.toLowerCase() === node.productType.toLowerCase();
+    }
+    const titleWords = node.title.toLowerCase().split(/\s+/);
+    return titleWords.some((w) => w.length > 3 && p.node.title.toLowerCase().includes(w));
+  }).slice(0, 4);
 
   const canAddToCart = variantChosen && available && !cartLoading;
 
