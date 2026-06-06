@@ -9,31 +9,29 @@ const yarnCategoryTags: Record<string, string[]> = {
   "All cone yarn": [],
   "Wool yarn": ["wool"],
   "Wool blend yarn": ["wool blend"],
-  "Alpaca blend yarn": ["alpaca", "alpaca blend"],
+  "Alpaca blend yarn": ["alpaca"],
   "Cashmere yarn": ["cashmere"],
   "Mohair yarn": ["mohair"],
   "Cotton yarn": ["cotton"],
   "Viscose yarn": ["viscose"],
   "Linen yarn": ["linen"],
-  "Silk blend yarn": ["silk", "silk blend"],
-  "Acrylic yarn (Synthetic)": ["acrylic", "synthetic"],
+  "Silk blend yarn": ["silk"],
+  "Acrylic yarn (Synthetic)": ["synthetic"],
 };
 
 const yarnCategories = Object.keys(yarnCategoryTags);
 
+// Weight filters – the label IS the exact Shopify tag
 const weightFilters = [
-  "0 Lace weight",
-  "1 Fingering weight",
-  "2 Sport weight",
-  "3 DK/Light worsted weight",
-  "4 Aran/Worsted weight",
-  "5 Chunky/Bulky weight",
+  "#0 Lace",
+  "#1 Fingering",
+  "#2 Sport",
+  "#3 DK/Light Worsted",
+  "#4 Aran/Worsted",
+  "#5 Chunky/Bulky",
 ];
 
-const featureFilters = [
-  "Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby",
-  "Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille",
-];
+const featureFilters = ["Tweed", "Sequin", "Boucle", "Kidsilk"];
 
 const colorFilters = [
   { name: "White", hex: "#FFFFFF" },
@@ -122,7 +120,9 @@ const FilterSidebar = ({
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Weight</h3>
       <ul className="space-y-2">
         {weightFilters.map((w) => {
-          const wKey = w.replace(/^\d\s*/, '').replace(/ weight yarn$/i, '').replace(/ yarn$/i, '');
+          const count = products
+            ? products.filter((p) => productHasExactTag(p, [w])).length
+            : 0;
           return (
             <li key={w} className="flex items-center gap-2">
               <input
@@ -132,7 +132,7 @@ const FilterSidebar = ({
                 onChange={() => toggleWeight(w)}
               />
               <span className={`text-sm font-sans ${activeWeights.includes(w) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
-                {w} <span className="text-muted-foreground/60">({countFor(wKey)})</span>
+                {w} <span className="text-muted-foreground/60">({count})</span>
               </span>
             </li>
           );
@@ -144,8 +144,9 @@ const FilterSidebar = ({
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Feature</h3>
       <ul className="space-y-2">
       {featureFilters.map((f) => {
-          const count = countFor(f);
-          if (count === 0) return null;
+          const count = products
+            ? products.filter((p) => productHasExactTag(p, [f])).length
+            : 0;
           return (
             <li key={f} className="flex items-center gap-2">
               <input
@@ -268,21 +269,14 @@ const Products = () => {
       result = result.filter(p => productHasExactTag(p, catTags));
     }
 
-    // Weight filters (OR within group)
+    // Weight filters (OR within group, exact tag match)
     if (activeWeights.length > 0) {
-      result = result.filter(p =>
-        activeWeights.some(w => {
-          const wKey = w.replace(/^\d\s*/, '').replace(/ weight yarn$/i, '').replace(/ yarn$/i, '');
-          return productMatchesTag(p, wKey);
-        })
-      );
+      result = result.filter(p => productHasExactTag(p, activeWeights));
     }
 
-    // Feature filters (OR within group)
+    // Feature filters (OR within group, exact tag match)
     if (activeFeatures.length > 0) {
-      result = result.filter(p =>
-        activeFeatures.some(f => productMatchesTag(p, f))
-      );
+      result = result.filter(p => productHasExactTag(p, activeFeatures));
     }
 
     // Color filters (OR within group)
