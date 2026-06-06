@@ -46,7 +46,7 @@ const AboutUs = () => (
         <div className="border-t border-border pt-8">
           <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Let's Stay Connected</h2>
           <p className="text-lg font-sans text-muted-foreground leading-relaxed">
-            Also find us on{" "}
+            Also find us on Etsy{" "}
             <a
               href="https://www.etsy.com/shop/YarneriaShop"
               target="_blank"
@@ -55,7 +55,7 @@ const AboutUs = () => (
             >
               YarneriaShop
             </a>
-            {" "}or{" "}
+            {" "}or Instagram{" "}
             <a
               href="https://www.instagram.com/yarneria/"
               target="_blank"
