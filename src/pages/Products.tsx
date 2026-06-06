@@ -370,6 +370,7 @@ const Products = () => {
                 activeColors={activeColors}
                 toggleColor={toggleColor}
                 products={products}
+                onFilterSelect={() => setMobileFiltersOpen(false)}
               />
             </aside>
           </div>
