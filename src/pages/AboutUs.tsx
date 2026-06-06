@@ -79,7 +79,7 @@ const AboutUs = () => (
       <div className="max-w-2xl mx-auto">
         <div className="border-t border-border pt-8">
           <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Legal Information</h2>
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm font-sans">
+          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-lg font-sans">
             <div>
               <dt className="text-muted-foreground">Business Certificate</dt>
               <dd className="text-foreground font-medium">Nr.: 910017</dd>
