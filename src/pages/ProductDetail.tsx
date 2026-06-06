@@ -269,7 +269,7 @@ const ProductDetail = () => {
                     }`} />
                     {selectedVariant?.quantityAvailable != null
                       ? selectedVariant.quantityAvailable >= 5
-                        ? "5+ cones available"
+                        ? "5+ Cones available"
                         : selectedVariant.quantityAvailable === 1
                           ? "Only 1 cone left"
                           : `Only ${selectedVariant.quantityAvailable} cones left`
