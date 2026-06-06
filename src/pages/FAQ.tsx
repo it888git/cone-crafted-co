@@ -9,34 +9,39 @@ import {
 
 const faqs = [
   {
-    question: "How to order?",
+    question: "How do I place an order?",
     answer:
-      "Select the yarns you want using different categories and product filters. Choose how many grams you want (for example, 4 units means 400 grams on a single cone) or if it is available, buy full yarn on a cone. Mostly, we give our customers the opportunity to order as much as they need to implement the desired project!",
+      "Browse our newest Italian yarn collections and choose the exact quantity you need for your project. Most of our yarns are available in smaller cones ranging from 200g to 400g, allowing you to order only what you need or work with multiple plies at once for your preferred yarn thickness.",
   },
   {
     question: "Do you ship worldwide?",
     answer:
-      'Yes! We ship worldwide using Postal or DPD courier services! We also ship via FedEx, DHL and other couriers upon request. See "Delivery & Returns Policy" for more information.',
+      "Yes! We ship worldwide using a variety of trusted courier and postal services. Thanks to our extensive experience shipping globally, we are able to offer competitive shipping rates to many destinations. Please see our Delivery & Returns Policy for more information.",
   },
   {
     question: "Is free shipping available?",
     answer:
-      'Of course! See "Delivery & Returns Policy" for more information.',
+      "Yes! We offer free shipping to selected destinations and for qualifying orders. Please refer to our Delivery & Returns Policy for detailed information about current shipping offers.",
   },
   {
-    question: "Do you do wholesale business?",
+    question: "Do you offer wholesale pricing?",
     answer:
-      "Yes, please contact hello@yarneria.com regarding this matter. Buy in bulk for even better prices and cheaper shipping!",
+      'Absolutely. If you are interested in wholesale purchases or larger quantities, please contact us at <a href="mailto:hello@yarneria.com" class="text-primary underline">hello@yarneria.com</a>. We offer attractive bulk pricing and more economical shipping options for larger orders.',
   },
   {
-    question: "What are the available payment methods?",
+    question: "What payment methods do you accept?",
     answer:
-      "In cooperation with the popular payment collection system Stripe it is possible to pay with bank cards Visa, Mastercard, Maestro, American Express, etc. You can also pay by Apple Pay, PayPal or a simple bank transfer.",
+      "We use Shopify Payments, one of the world's most trusted and secure payment platforms. Customers can choose from a variety of popular payment methods, including major credit and debit cards, digital wallets, and local payment options where available.",
   },
   {
     question: "How long does it take to prepare an order?",
     answer:
-      "Our dedicated team is working around the clock to pack and ship all orders from our warehouse within 48 hours. The customer receives tracking details via e-mail after the shipping confirmation.",
+      "Our team works hard to prepare and dispatch orders as quickly as possible. Most orders are packed and shipped within 48 hours. Once your order has been dispatched, you will receive a shipping confirmation email containing your tracking information.",
+  },
+  {
+    question: "Why choose yarn on cones?",
+    answer:
+      "Cone yarn offers excellent value and convenience for both hand knitting and machine knitting. With continuous lengths of yarn, fewer joins, and the ability to choose your exact quantity, cone yarn is ideal for projects of all sizes.",
   },
 ];
 
