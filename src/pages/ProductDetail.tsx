@@ -199,7 +199,7 @@ const ProductDetail = () => {
               <span className="font-sans text-2xl font-semibold text-foreground">
                 {isInternational && lowestVariant
                   ? `${formatPrice(lowestVariant.amount, lowestVariant.currencyCode)} / ${lowestVariant.label}`
-                  : `${formatPrice(Math.round(perKgPrice), currencyCode)}/kg`
+                  : formatPricePer100g(perKgPrice, currencyCode)
                 }
               </span>
             </div>

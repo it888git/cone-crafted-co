@@ -38,7 +38,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   } else {
     const { perKg } = getPerKgPrice(firstVariant?.price.amount || price.amount, firstVariant?.title || "");
     const currencyCode = firstVariant?.price.currencyCode || price.currencyCode || 'EUR';
-    formattedPrice = `${formatPrice(Math.round(perKg), currencyCode)}/kg`;
+    formattedPrice = formatPricePer100g(perKg, currencyCode);
   }
 
   const descriptionText = getProductDescriptionText(node.description, node.descriptionHtml);

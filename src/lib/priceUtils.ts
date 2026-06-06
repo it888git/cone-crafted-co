@@ -51,9 +51,19 @@ export function getPerKgPrice(priceAmount: string, variantTitle: string): { perK
 /**
  * Format price per kg with currency from Shopify response.
  */
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  EUR: '€', USD: '$', GBP: '£', JPY: '¥', AUD: 'A$', CAD: 'C$', CHF: 'CHF',
+};
+
+export function formatPricePer100g(perKg: number, currencyCode: string = 'EUR'): string {
+  const per100 = perKg / 10;
+  const symbol = CURRENCY_SYMBOLS[currencyCode] || currencyCode;
+  return `${per100.toFixed(2)} ${symbol}/100g`;
+}
+
 export function formatPricePerKg(priceAmount: string, variantTitle: string, currencyCode: string = 'EUR'): string {
   const { perKg } = getPerKgPrice(priceAmount, variantTitle);
-  return `${formatPrice(perKg, currencyCode)}/kg`;
+  return formatPricePer100g(perKg, currencyCode);
 }
 
 /**
