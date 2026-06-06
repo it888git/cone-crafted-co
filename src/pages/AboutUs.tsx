@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ChevronRight, Mail, MapPin } from "lucide-react";
+import CustomerCreations from "@/components/CustomerCreations";
 
 const AboutUs = () => (
   <main>
@@ -11,7 +12,7 @@ const AboutUs = () => (
       </nav>
     </div>
 
-    <section className="container pb-20">
+    <section className="container">
       <div className="max-w-2xl mx-auto space-y-10">
         <div className="text-center space-y-3">
           <h1 className="font-serif text-4xl md:text-5xl font-semibold text-foreground">About Us</h1>
@@ -31,7 +32,17 @@ const AboutUs = () => (
             Best wishes,<br />Yarneria
           </p>
         </div>
+      </div>
+    </section>
 
+    <section className="container py-12 md:py-16">
+      <div className="max-w-6xl mx-auto">
+        <CustomerCreations />
+      </div>
+    </section>
+
+    <section className="container pb-20">
+      <div className="max-w-2xl mx-auto">
         <div className="border-t border-border pt-8">
           <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Legal Information</h2>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm font-sans">
