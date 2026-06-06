@@ -155,7 +155,7 @@ const FilterSidebar = ({
                 type="checkbox"
                 className="rounded border-border accent-[hsl(var(--primary))]"
                 checked={activeFeatures.includes(f)}
-                onChange={() => toggleFeature(f)}
+                onChange={() => { toggleFeature(f); onFilterSelect?.(); }}
               />
               <span className={`text-sm font-sans ${activeFeatures.includes(f) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
                 {f} <span className="text-muted-foreground/60">({count})</span>
