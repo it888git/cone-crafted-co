@@ -175,7 +175,7 @@ const FilterSidebar = ({
             <button
               key={c.name}
               title={`${c.name} (${count})`}
-              onClick={() => toggleColor(c.name)}
+              onClick={() => { toggleColor(c.name); onFilterSelect?.(); }}
               className={`w-8 h-8 rounded-full border-2 transition-colors hover:scale-110 relative flex items-center justify-center ${activeColors.includes(c.name) ? "border-primary ring-2 ring-primary/30" : "border-border hover:border-foreground"}`}
               style={{ background: c.hex }}
             >
