@@ -21,14 +21,14 @@ const yarnCategoryTags: Record<string, string[]> = {
 
 const yarnCategories = Object.keys(yarnCategoryTags);
 
-// Weight filters with exact tag mapping
-const weightFilters: { label: string; tag: string }[] = [
-  { label: "#0 Lace", tag: "#0 Lace" },
-  { label: "#1 Fingering", tag: "#1 Fingering" },
-  { label: "#2 Sport", tag: "#2 Sport" },
-  { label: "#3 DK/Light Worsted", tag: "#3 DK/Light Worsted" },
-  { label: "#4 Aran/Worsted", tag: "#4 Aran/Worsted" },
-  { label: "#5 Chunky/Bulky", tag: "#5 Chunky/Bulky" },
+// Weight filters – the label IS the exact Shopify tag
+const weightFilters = [
+  "#0 Lace",
+  "#1 Fingering",
+  "#2 Sport",
+  "#3 DK/Light Worsted",
+  "#4 Aran/Worsted",
+  "#5 Chunky/Bulky",
 ];
 
 const featureFilters = ["Tweed", "Sequin", "Boucle", "Kidsilk"];
