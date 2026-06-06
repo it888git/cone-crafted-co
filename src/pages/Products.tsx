@@ -131,7 +131,7 @@ const FilterSidebar = ({
                 type="checkbox"
                 className="rounded border-border accent-[hsl(var(--primary))]"
                 checked={activeWeights.includes(w)}
-                onChange={() => toggleWeight(w)}
+                onChange={() => { toggleWeight(w); onFilterSelect?.(); }}
               />
               <span className={`text-sm font-sans ${activeWeights.includes(w) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
                 {w} <span className="text-muted-foreground/60">({count})</span>
