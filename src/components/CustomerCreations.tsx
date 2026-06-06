@@ -1,4 +1,3 @@
-import { Instagram } from "lucide-react";
 import c1 from "@/assets/creations-v2/c1.jpeg.asset.json";
 import c2 from "@/assets/creations-v2/c2.jpg.asset.json";
 import c3 from "@/assets/creations-v2/c3.jpg.asset.json";
@@ -13,21 +12,18 @@ const images = [c1.url, c2.url, c3.url, c4.url, c5.url, c6.url, c7.url, c8.url];
 const CustomerCreations = () => {
   return (
     <section className="w-full">
-      <div className="flex items-center justify-center gap-3 py-8">
-        <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-foreground text-background">
-          <Instagram className="w-5 h-5" />
-        </span>
-        <a
-          href="https://www.instagram.com/yarneria/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-base font-sans text-foreground hover:text-primary transition-colors"
-        >
-          @yarneria
-        </a>
+      <div className="container">
+        <div className="max-w-2xl mx-auto space-y-3 text-center pb-8">
+          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
+            Knitting connects ✨
+          </h2>
+          <p className="text-lg font-sans text-muted-foreground leading-relaxed">
+            We are happy to receive your results from around the globe.
+          </p>
+        </div>
       </div>
 
-      <div className="w-screen relative left-1/2 -translate-x-1/2 grid grid-cols-4 md:grid-cols-8 gap-0">
+      <div className="w-screen relative left-1/2 -translate-x-1/2 grid grid-cols-2 md:grid-cols-4 gap-0">
         {images.map((src, i) => (
           <img
             key={i}
