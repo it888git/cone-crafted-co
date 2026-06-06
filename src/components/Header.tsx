@@ -420,7 +420,7 @@ const AnnouncementBar = () => {
   };
 
   return (
-    <div className="bg-primary text-primary-foreground py-2.5 text-sm md:text-base font-sans overflow-hidden">
+    <div className="bg-primary text-primary-foreground py-2 text-xs md:text-sm font-sans overflow-hidden">
       <div className="container flex justify-center text-center">
         <div key={index} className="animate-slide-in-right">
           {renderItem(messages[index])}

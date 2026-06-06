@@ -42,9 +42,6 @@ const ProductDetail = () => {
   const [selectedVariantIdx, setSelectedVariantIdx] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
-  const [zoomActive, setZoomActive] = useState(false);
-  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
-  const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
 
   // Fetch all products for "similar yarns"
@@ -130,36 +127,12 @@ const ProductDetail = () => {
           <div className="space-y-3">
             <div className="relative">
               {mainImage ? (
-                <div
-                  ref={imageContainerRef}
-                  className="relative w-full rounded-2xl overflow-hidden aspect-square cursor-zoom-in"
-                  onMouseEnter={() => setZoomActive(true)}
-                  onMouseLeave={() => setZoomActive(false)}
-                  onMouseMove={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = ((e.clientX - rect.left) / rect.width) * 100;
-                    const y = ((e.clientY - rect.top) / rect.height) * 100;
-                    setZoomPos({ x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) });
-                  }}
-                >
+                <div className="relative w-full rounded-2xl overflow-hidden aspect-square">
                   <img
                     src={mainImage.url}
                     alt={mainImage.altText || node.title}
                     className="w-full h-full object-cover"
                   />
-                  {zoomActive && (
-                    <div
-                      className="hidden md:block pointer-events-none absolute w-40 h-40 rounded-full border-2 border-background shadow-xl ring-1 ring-foreground/10"
-                      style={{
-                        left: `calc(${zoomPos.x}% - 80px)`,
-                        top: `calc(${zoomPos.y}% - 80px)`,
-                        backgroundImage: `url(${mainImage.url})`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: '180% 180%',
-                        backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
-                      }}
-                    />
-                  )}
                 </div>
               ) : (
                 <div className="w-full rounded-2xl bg-muted aspect-square flex items-center justify-center text-muted-foreground">
