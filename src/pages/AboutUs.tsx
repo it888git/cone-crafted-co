@@ -51,7 +51,7 @@ const AboutUs = () => (
               href="https://www.etsy.com/shop/YarneriaShop"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-foreground font-medium hover:text-primary transition-colors"
+              className="font-bold text-foreground hover:text-primary transition-colors"
             >
               YarneriaShop
             </a>
@@ -60,12 +60,12 @@ const AboutUs = () => (
               href="https://www.instagram.com/yarneria/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-foreground font-medium hover:text-primary transition-colors"
+              className="font-bold text-foreground hover:text-primary transition-colors"
             >
               @YARNERIA
             </a>
             . Or just contact us at{" "}
-            <a href="mailto:hello@yarneria.com" className="text-foreground font-medium hover:text-primary transition-colors">
+            <a href="mailto:hello@yarneria.com" className="font-bold text-foreground hover:text-primary transition-colors">
               hello@yarneria.com
             </a>
             .
