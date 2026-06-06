@@ -30,7 +30,7 @@ const CustomerCreations = () => {
             src={src}
             alt={`Customer creation ${i + 1}`}
             loading="lazy"
-            className="w-full aspect-square object-cover object-center block"
+            className="w-full aspect-[4/5] object-cover object-center block"
           />
         ))}
       </div>
