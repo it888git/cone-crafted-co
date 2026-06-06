@@ -8,13 +8,13 @@ import CountrySelector from "@/components/CountrySelector";
 import { useMarketStore } from "@/stores/marketStore";
 
 const announcements = [
+  "reviews",
   "Free Delivery from 60€",
   "Italian Yarn Selection",
-  "Easy & Simple Ordering",
 ];
 
 const internationalAnnouncements = [
-  "Easy & Simple Ordering",
+  "reviews",
   "Free Express Mail Delivery",
   "Italian Yarn Selection",
 ];
