@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import NewsletterForm from "@/components/NewsletterForm";
-import { ArrowRight, Star, Truck, Shield, RotateCcw, Globe, Lock, ChevronLeft, ChevronRight, MapPin, Repeat2 } from "lucide-react";
+import { ArrowRight, Globe, Lock, ChevronLeft, ChevronRight, MapPin, Repeat2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
 import heroImage from "@/assets/hero-yarneria-cutout.png";
 import { Loader2 } from "lucide-react";
-import review1 from "@/assets/review-1.png";
-import review2 from "@/assets/review-2.png";
-import review3 from "@/assets/review-3.png";
+import EtsyReviews from "@/components/EtsyReviews";
 import categoryCashmere from "@/assets/category-cashmere.jpg";
 import categoryMerino from "@/assets/category-merino.webp";
 import categoryMohair from "@/assets/category-mohair.webp";
@@ -90,40 +88,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Social proof / Reviews */}
-      <section className="container pt-8 pb-3 lg:pt-10 lg:pb-4">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="flex justify-center -space-x-3 mb-5">
-            {[
-              { src: review1, alt: "Customer review photo 1" },
-              { src: review2, alt: "Customer review photo 2" },
-              { src: review3, alt: "Customer review photo 3" },
-            ].map((img) => (
-              <img
-                key={img.alt}
-                src={img.src}
-                alt={img.alt}
-                className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover ring-2 ring-background shadow-sm"
-                loading="lazy"
-              />
-            ))}
-          </div>
+      {/* Etsy Reviews */}
+      <EtsyReviews />
 
-          <p className="font-serif text-lg md:text-2xl leading-snug text-foreground">
-            "This was delivered faster than expected! The yarn is beautiful. This is a very good seller. I've ordered before."
-          </p>
-
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm font-sans">
-            <div className="flex items-center gap-0.5 text-accent">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="w-4 h-4" fill="currentColor" />
-              ))}
-            </div>
-            <span className="font-semibold text-foreground">4.8/5</span>
-            <a href="https://www.etsy.com/shop/YarneriaShop" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors">based on 700+ Etsy reviews</a>
-          </div>
-        </div>
-      </section>
 
       {/* Categories - Shop Our Selection */}
       <section className="container py-10 lg:py-14">
