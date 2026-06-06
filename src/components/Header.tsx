@@ -377,7 +377,7 @@ const AnnouncementBar = () => {
   }, [messages.length]);
 
   const renderItem = (msg: string) => {
-    if (msg.toLowerCase().includes('etsy') || msg.toLowerCase().includes('review')) {
+    if (msg === 'reviews') {
       return (
         <span className="inline-flex items-center gap-2">
           <span className="flex items-center gap-0.5 text-accent">
