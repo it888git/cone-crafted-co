@@ -74,8 +74,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
           )}
           {/* Sold Out badge (same style as NEW) – takes priority over NEW */}
           {!available ? (
-            <div className="absolute top-3 left-3 px-2 py-0.5 bg-background/90 backdrop-blur-sm rounded-full">
-              <span className="text-[10px] font-sans tracking-wider uppercase font-medium text-muted-foreground">Sold Out</span>
+            <div className="absolute top-3 left-3 inline-flex items-center justify-center px-2 h-5 bg-background/90 backdrop-blur-sm rounded-full">
+              <span className="text-[10px] leading-none font-sans tracking-wider uppercase font-medium text-muted-foreground">Sold Out</span>
             </div>
           ) : (
             node.createdAt && (() => {
@@ -84,8 +84,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
               twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
               return created >= twoWeeksAgo;
             })() && (
-              <div className="absolute top-3 left-3 px-2 py-0.5 bg-background/90 backdrop-blur-sm rounded-full">
-                <span className="text-[10px] font-sans tracking-wider uppercase font-medium text-muted-foreground">NEW</span>
+              <div className="absolute top-3 left-3 inline-flex items-center justify-center px-2 h-5 bg-background/90 backdrop-blur-sm rounded-full">
+                <span className="text-[10px] leading-none font-sans tracking-wider uppercase font-medium text-muted-foreground">NEW</span>
               </div>
             )
           )}

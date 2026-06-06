@@ -14,6 +14,7 @@ export interface ShopifyProduct {
     description: string;
     descriptionHtml: string;
     handle: string;
+    productType: string;
     tags: string[];
     createdAt: string;
     priceRange: {
@@ -96,6 +97,7 @@ export const PRODUCTS_QUERY = `
           description
           descriptionHtml
           handle
+          productType
           tags
           createdAt
           priceRange {
@@ -150,6 +152,7 @@ export const BASE_PRODUCTS_QUERY = `
           description
           descriptionHtml
           handle
+          productType
           tags
           createdAt
           priceRange {
@@ -202,6 +205,7 @@ export const PRODUCT_BY_HANDLE_QUERY = `
       description
       descriptionHtml
       handle
+      productType
       tags
       createdAt
       priceRange {
@@ -252,6 +256,7 @@ export const BASE_PRODUCT_BY_HANDLE_QUERY = `
       description
       descriptionHtml
       handle
+      productType
       tags
       createdAt
       priceRange {
