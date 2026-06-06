@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 import { useState } from "react";
-import { getPerKgPrice, formatPrice, extractWeightGrams, getLowestVariantPrice } from "@/lib/priceUtils";
+import { getPerKgPrice, formatPrice, extractWeightGrams, getLowestVariantPrice, formatPricePer100g } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
 import ProductCard from "@/components/ProductCard";
 import { getProductDescriptionText } from "@/lib/productDescription";
@@ -199,7 +199,7 @@ const ProductDetail = () => {
               <span className="font-sans text-2xl font-semibold text-foreground">
                 {isInternational && lowestVariant
                   ? `${formatPrice(lowestVariant.amount, lowestVariant.currencyCode)} / ${lowestVariant.label}`
-                  : `${formatPrice(Math.round(perKgPrice), currencyCode)}/kg`
+                  : formatPricePer100g(perKgPrice, currencyCode)
                 }
               </span>
             </div>
