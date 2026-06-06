@@ -5,6 +5,7 @@ import { useWishlistStore } from "@/stores/wishlistStore";
 import { useEffect, useRef, useState } from "react";
 import logo from "@/assets/yarneria-logo.png";
 import CountrySelector from "@/components/CountrySelector";
+import AuthModal from "@/components/AuthModal";
 import { useMarketStore } from "@/stores/marketStore";
 
 const announcements = [
@@ -69,6 +70,7 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [authOpen, setAuthOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const isProductsPage = location.pathname === "/products";
@@ -170,7 +172,11 @@ const Header = () => {
               </span>
             )}
           </Link>
-          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex" aria-label="Account">
+          <button
+            onClick={() => setAuthOpen(true)}
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex"
+            aria-label="Account"
+          >
             <User className="w-6 h-6" />
           </button>
           <button
@@ -292,8 +298,16 @@ const Header = () => {
           {navLinks.map((link) => (
             <MobileNavItem key={link.label} link={link} onClose={() => setMobileMenuOpen(false)} />
           ))}
+          <button
+            onClick={() => { setMobileMenuOpen(false); setAuthOpen(true); }}
+            className="block w-full text-left text-sm font-sans tracking-wide text-muted-foreground hover:text-foreground py-2.5 border-b border-border/50"
+          >
+            Account
+          </button>
         </nav>
       )}
+
+      <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
     </header>
   );
 };
@@ -406,9 +420,9 @@ const AnnouncementBar = () => {
   };
 
   return (
-    <div className="bg-primary text-primary-foreground py-2 text-xs font-sans">
+    <div className="bg-primary text-primary-foreground py-2.5 text-sm md:text-base font-sans overflow-hidden">
       <div className="container flex justify-center text-center">
-        <div key={index} className="animate-fade-in">
+        <div key={index} className="animate-slide-in-right">
           {renderItem(messages[index])}
         </div>
       </div>
