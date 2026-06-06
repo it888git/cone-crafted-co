@@ -1,39 +1,40 @@
-import r1 from "@/assets/creations/result-1.jpg.asset.json";
-import r2 from "@/assets/creations/result-2.jpg.asset.json";
-import r3 from "@/assets/creations/result-3.jpg.asset.json";
-import r4 from "@/assets/creations/result-4.jpg.asset.json";
-import r5 from "@/assets/creations/result-5.jpg.asset.json";
-import r6 from "@/assets/creations/result-6.jpg.asset.json";
-import r7 from "@/assets/creations/result-7.jpg.asset.json";
+import { Instagram } from "lucide-react";
+import c1 from "@/assets/creations-v2/c1.jpeg.asset.json";
+import c2 from "@/assets/creations-v2/c2.jpg.asset.json";
+import c3 from "@/assets/creations-v2/c3.jpg.asset.json";
+import c4 from "@/assets/creations-v2/c4.jpg.asset.json";
+import c5 from "@/assets/creations-v2/c5.webp.asset.json";
+import c6 from "@/assets/creations-v2/c6.jpg.asset.json";
+import c7 from "@/assets/creations-v2/c7.jpg.asset.json";
+import c8 from "@/assets/creations-v2/c8.jpg.asset.json";
 
-const images = [r1.url, r2.url, r3.url, r4.url, r5.url, r6.url, r7.url];
+const images = [c1.url, c2.url, c3.url, c4.url, c5.url, c6.url, c7.url, c8.url];
 
 const CustomerCreations = () => {
   return (
-    <section>
-      <div className="text-center space-y-3 mb-8">
-        <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold">
-          KNITTING CONNECTS GLOBALLY
-        </p>
-        <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
-          Your Results ✨
-        </h2>
-        <p className="text-lg font-sans text-muted-foreground leading-relaxed max-w-xl mx-auto">
-          We are always thrilled to receive your finished project photos from every corner around the globe!
-        </p>
+    <section className="w-full">
+      <div className="flex items-center justify-center gap-3 py-8">
+        <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-foreground text-background">
+          <Instagram className="w-5 h-5" />
+        </span>
+        <a
+          href="https://www.instagram.com/yarneria/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-base font-sans text-foreground hover:text-primary transition-colors"
+        >
+          @yarneria
+        </a>
       </div>
 
-      <div
-        className="flex gap-1 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
+      <div className="w-screen relative left-1/2 -translate-x-1/2 grid grid-cols-4 md:grid-cols-8 gap-0">
         {images.map((src, i) => (
           <img
             key={i}
             src={src}
-            alt={`Customer result ${i + 1}`}
+            alt={`Customer creation ${i + 1}`}
             loading="lazy"
-            className="snap-start flex-shrink-0 w-[180px] h-[240px] sm:w-[220px] sm:h-[290px] object-cover object-center"
+            className="w-full aspect-square object-cover object-center block"
           />
         ))}
       </div>

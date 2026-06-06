@@ -121,8 +121,9 @@ const EtsyReviews = () => {
               src={r.image}
               alt={`Review by ${r.name}`}
               loading="lazy"
-              className="w-full aspect-square object-cover"
+              className="w-full aspect-square object-cover object-center"
             />
+
             <div className="p-4 flex flex-col gap-2 flex-1">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-sans font-semibold text-foreground">{r.name}</span>
