@@ -120,7 +120,9 @@ const FilterSidebar = ({
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Weight</h3>
       <ul className="space-y-2">
         {weightFilters.map((w) => {
-          const wKey = w.replace(/^\d\s*/, '').replace(/ weight yarn$/i, '').replace(/ yarn$/i, '');
+          const count = products
+            ? products.filter((p) => productHasExactTag(p, [w])).length
+            : 0;
           return (
             <li key={w} className="flex items-center gap-2">
               <input
@@ -130,7 +132,7 @@ const FilterSidebar = ({
                 onChange={() => toggleWeight(w)}
               />
               <span className={`text-sm font-sans ${activeWeights.includes(w) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
-                {w} <span className="text-muted-foreground/60">({countFor(wKey)})</span>
+                {w} <span className="text-muted-foreground/60">({count})</span>
               </span>
             </li>
           );
@@ -142,8 +144,9 @@ const FilterSidebar = ({
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Filter by Feature</h3>
       <ul className="space-y-2">
       {featureFilters.map((f) => {
-          const count = countFor(f);
-          if (count === 0) return null;
+          const count = products
+            ? products.filter((p) => productHasExactTag(p, [f])).length
+            : 0;
           return (
             <li key={f} className="flex items-center gap-2">
               <input
@@ -266,21 +269,14 @@ const Products = () => {
       result = result.filter(p => productHasExactTag(p, catTags));
     }
 
-    // Weight filters (OR within group)
+    // Weight filters (OR within group, exact tag match)
     if (activeWeights.length > 0) {
-      result = result.filter(p =>
-        activeWeights.some(w => {
-          const wKey = w.replace(/^\d\s*/, '').replace(/ weight yarn$/i, '').replace(/ yarn$/i, '');
-          return productMatchesTag(p, wKey);
-        })
-      );
+      result = result.filter(p => productHasExactTag(p, activeWeights));
     }
 
-    // Feature filters (OR within group)
+    // Feature filters (OR within group, exact tag match)
     if (activeFeatures.length > 0) {
-      result = result.filter(p =>
-        activeFeatures.some(f => productMatchesTag(p, f))
-      );
+      result = result.filter(p => productHasExactTag(p, activeFeatures));
     }
 
     // Color filters (OR within group)
