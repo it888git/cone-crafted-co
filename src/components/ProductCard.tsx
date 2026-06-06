@@ -22,7 +22,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const image2 = node.images.edges[1]?.node;
   const price = node.priceRange.minVariantPrice;
   const firstVariant = node.variants.edges[0]?.node;
-  const available = firstVariant?.availableForSale ?? false;
+  const available = node.variants.edges.some((e) => e.node.availableForSale);
 
   const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
 
