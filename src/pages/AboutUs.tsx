@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { ChevronRight, MapPin } from "lucide-react";
 import CustomerCreations from "@/components/CustomerCreations";
-import etsyLogo from "@/assets/social/etsy.jpg.asset.json";
-import instagramLogo from "@/assets/social/instagram.avif.asset.json";
+
 
 const AboutUs = () => (
   <main>
@@ -37,10 +36,8 @@ const AboutUs = () => (
       </div>
     </section>
 
-    <section className="container py-10">
-      <div className="max-w-5xl mx-auto">
-        <CustomerCreations />
-      </div>
+    <section className="py-10">
+      <CustomerCreations />
     </section>
 
 
@@ -50,7 +47,6 @@ const AboutUs = () => (
           <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Let's Stay Connected</h2>
           <p className="text-lg font-sans text-muted-foreground leading-relaxed">
             Also find us on{" "}
-            <img src={etsyLogo.url} alt="Etsy" className="inline-block w-5 h-5 align-text-bottom rounded-sm" />{" "}
             <a
               href="https://www.etsy.com/shop/YarneriaShop"
               target="_blank"
@@ -60,8 +56,14 @@ const AboutUs = () => (
               YarneriaShop
             </a>
             {" "}or{" "}
-            <img src={instagramLogo.url} alt="Instagram" className="inline-block w-5 h-5 align-text-bottom rounded-sm" />{" "}
-            <span className="text-foreground font-medium">@YARNERIA</span>
+            <a
+              href="https://www.instagram.com/yarneria/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground font-medium hover:text-primary transition-colors"
+            >
+              @YARNERIA
+            </a>
             . Or just contact us at{" "}
             <a href="mailto:hello@yarneria.com" className="text-foreground font-medium hover:text-primary transition-colors">
               hello@yarneria.com
@@ -71,6 +73,7 @@ const AboutUs = () => (
         </div>
       </div>
     </section>
+
 
     <section className="container pb-20 pt-10">
       <div className="max-w-2xl mx-auto">
