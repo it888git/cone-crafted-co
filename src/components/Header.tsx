@@ -366,16 +366,31 @@ const MobileNavItem = ({ link, onClose }: { link: NavItem; onClose: () => void }
 const AnnouncementBar = () => {
   return (
     <div className="bg-primary text-primary-foreground py-2 text-xs font-sans">
-      <div className="container flex justify-center items-center gap-2">
-        <div className="flex items-center gap-0.5 text-accent">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <svg key={i} className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20" aria-hidden="true">
-              <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.79L10 14.77l-5.2 2.74.99-5.79L1.58 7.62l5.82-.85L10 1.5z" />
-            </svg>
-          ))}
+      <div className="container grid grid-cols-3 items-center gap-2">
+        <div className="flex justify-start">
+          <CountrySelector />
         </div>
-        <span className="font-semibold">4.8/5</span>
-        <span className="underline underline-offset-2">based on 700+ Etsy reviews</span>
+        <div className="flex justify-center text-center">
+          <span>Free Delivery from 60€</span>
+        </div>
+        <div className="hidden sm:flex justify-end items-center gap-2">
+          <div className="flex items-center gap-0.5 text-accent">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <svg key={i} className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.79L10 14.77l-5.2 2.74.99-5.79L1.58 7.62l5.82-.85L10 1.5z" />
+              </svg>
+            ))}
+          </div>
+          <span className="font-semibold">4.8/5</span>
+          <a
+            href="https://www.etsy.com/shop/YarneriaShop"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:opacity-80"
+          >
+            based on 700+ Etsy reviews
+          </a>
+        </div>
       </div>
     </div>
   );
