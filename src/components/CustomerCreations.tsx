@@ -1,3 +1,5 @@
+import { useRef, useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import a1 from "@/assets/creations/avatar-1.png.asset.json";
 import a2 from "@/assets/creations/avatar-2.png.asset.json";
 import a3 from "@/assets/creations/avatar-3.png.asset.json";
@@ -38,51 +40,112 @@ const creations: Creation[] = [
   { name: "Jolie", avatar: a7.url, result: r7.url, yarn: y7.url, yarnName: "Gray Virgin Wool" },
 ];
 
-const CustomerCreations = () => (
-  <section className="border-t border-border pt-10">
-    <div className="text-center mb-8">
-      <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold mb-2">
-        Knitting Connects Globally
-      </p>
-      <h2 className="font-serif text-2xl font-semibold text-foreground mb-3">
-        Our Customers Results
-      </h2>
-      <p className="text-base font-sans text-muted-foreground leading-relaxed">
-        We are always thrilled to receive your finished project photos from every corner around the globe!
-      </p>
-    </div>
+const CustomerCreations = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(true);
 
-    <ul className="divide-y divide-border border-y border-border">
-      {creations.map((c, i) => (
-        <li key={i} className="flex items-center gap-3 py-3">
-          <img
-            src={c.avatar}
-            alt={c.name}
-            loading="lazy"
-            className="w-8 h-8 rounded-full object-cover bg-muted flex-shrink-0"
-          />
-          <span className="text-sm font-sans font-medium text-foreground w-20 flex-shrink-0 truncate">
-            {c.name}
-          </span>
-          <img
-            src={c.result}
-            alt={`Created by ${c.name}`}
-            loading="lazy"
-            className="w-14 h-14 rounded-md object-cover flex-shrink-0"
-          />
-          <img
-            src={c.yarn}
-            alt={c.yarnName}
-            loading="lazy"
-            className="w-10 h-10 rounded-md object-cover flex-shrink-0"
-          />
-          <span className="text-xs font-sans text-muted-foreground truncate flex-1">
-            {c.yarnName}
-          </span>
-        </li>
-      ))}
-    </ul>
-  </section>
-);
+  const update = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+
+  const scrollBy = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const w = el.querySelector("article")?.clientWidth || 220;
+    el.scrollBy({ left: dir === "left" ? -(w + 12) : w + 12, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => el.removeEventListener("scroll", update);
+  }, []);
+
+  return (
+    <section className="border-t border-border pt-10">
+      <div className="flex items-end justify-between mb-6 gap-4">
+        <div className="min-w-0">
+          <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold mb-2">
+            Knitting Connects Globally
+          </p>
+          <h2 className="font-serif text-2xl md:text-3xl font-semibold text-foreground">
+            Our Customers Results
+          </h2>
+          <p className="text-sm font-sans text-muted-foreground mt-2 max-w-lg">
+            We are always thrilled to receive your finished project photos from every corner around the globe!
+          </p>
+        </div>
+        <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
+          <button
+            onClick={() => scrollBy("left")}
+            disabled={!canLeft}
+            aria-label="Previous"
+            className="p-2 rounded-full border border-border bg-background text-foreground hover:bg-muted transition-colors disabled:opacity-30"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => scrollBy("right")}
+            disabled={!canRight}
+            aria-label="Next"
+            className="p-2 rounded-full border border-border bg-background text-foreground hover:bg-muted transition-colors disabled:opacity-30"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      <div
+        ref={scrollRef}
+        className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 scrollbar-hide"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {creations.map((c, i) => (
+          <article
+            key={i}
+            className="snap-start flex-shrink-0 w-[200px] bg-background border border-border rounded-xl overflow-hidden flex flex-col"
+          >
+            <img
+              src={c.result}
+              alt={`Created by ${c.name}`}
+              loading="lazy"
+              className="w-full aspect-square object-cover"
+            />
+            <div className="p-3 flex flex-col gap-2.5">
+              <div className="flex items-center gap-2 min-w-0">
+                <img
+                  src={c.avatar}
+                  alt={c.name}
+                  loading="lazy"
+                  className="w-7 h-7 rounded-full object-cover bg-muted flex-shrink-0"
+                />
+                <span className="text-sm font-sans font-semibold text-foreground truncate">
+                  {c.name}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 pt-2 border-t border-border min-w-0">
+                <img
+                  src={c.yarn}
+                  alt={c.yarnName}
+                  loading="lazy"
+                  className="w-9 h-9 rounded-md object-cover flex-shrink-0"
+                />
+                <span className="text-xs font-sans text-muted-foreground leading-snug line-clamp-2">
+                  {c.yarnName}
+                </span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+};
 
 export default CustomerCreations;
