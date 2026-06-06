@@ -402,14 +402,11 @@ const AnnouncementBar = () => {
     return <span>{msg}</span>;
   };
 
-  // Insert reviews item as a rotating message alongside the existing ones
-  const rotation = [...messages, 'reviews'];
-
   return (
     <div className="bg-primary text-primary-foreground py-2 text-xs font-sans">
       <div className="container flex justify-center text-center">
         <div key={index} className="animate-fade-in">
-          {renderItem(rotation[index % rotation.length])}
+          {renderItem(messages[index])}
         </div>
       </div>
     </div>
