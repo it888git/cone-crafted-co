@@ -38,9 +38,9 @@ const Sale = () => {
           </div>
         ) : (
           <div className="text-center py-20">
-            <p className="font-serif text-xl text-muted-foreground">No sale items found</p>
+            <p className="font-serif text-xl text-muted-foreground">No sale products at the moment</p>
             <p className="text-sm font-sans text-muted-foreground mt-2">
-              Sale products will appear here when tagged in your store.
+              Keep checking back — new deals drop here regularly.
             </p>
           </div>
         )}
