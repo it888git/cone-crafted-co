@@ -74,7 +74,7 @@ const ProductDetail = () => {
   const mainImage = images[selectedImageIdx]?.node || images[0]?.node;
   const available = selectedVariant?.availableForSale ?? false;
   const variantChosen = selectedVariant !== null;
-  const wishlisted = isInWishlist(node.handle);
+  const wishlisted = wishlistItems.some((i) => i.node.handle === node.handle);
 
   const descriptionText = getProductDescriptionText(node.description, node.descriptionHtml);
 
