@@ -90,9 +90,9 @@ const CartDrawer = () => {
                             >
                               <Plus className="w-3 h-3" />
                             </button>
-                            {maxAvailable !== null && (
-                              <span className={`text-xs font-sans ${atMax ? 'text-accent' : 'text-muted-foreground'}`}>
-                                {atMax ? 'Max available' : `${maxAvailable} available`}
+                            {atMax && (
+                              <span className="text-xs font-sans text-accent">
+                                Max available reached
                               </span>
                             )}
                           </>
