@@ -81,6 +81,7 @@ const FilterSidebar = ({
   activeFeatures, toggleFeature,
   activeColors, toggleColor,
   products,
+  onFilterSelect,
 }: {
   localSearch: string; setLocalSearch: (v: string) => void; handleSearch: () => void;
   activeCategory: string; setActiveCategory: (v: string) => void;
@@ -88,6 +89,7 @@ const FilterSidebar = ({
   activeFeatures: string[]; toggleFeature: (f: string) => void;
   activeColors: string[]; toggleColor: (c: string) => void;
   products?: any[];
+  onFilterSelect?: () => void;
 }) => {
   const countFor = (keyword: string) => {
     if (!products) return 0;
@@ -111,7 +113,7 @@ const FilterSidebar = ({
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Yarn Categories</h3>
       <ul className="space-y-1.5">
         {yarnCategories.map((cat) => (
-          <li key={cat}><button onClick={() => setActiveCategory(activeCategory === cat ? "All cone yarn" : cat)} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat !== "All cone yarn" ? "pl-4" : ""}`}>{cat}{cat !== "All cone yarn" && <span className="text-muted-foreground/60 ml-1">({countForCategory(cat)})</span>}</button></li>
+          <li key={cat}><button onClick={() => { setActiveCategory(activeCategory === cat ? "All cone yarn" : cat); onFilterSelect?.(); }} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat !== "All cone yarn" ? "pl-4" : ""}`}>{cat}{cat !== "All cone yarn" && <span className="text-muted-foreground/60 ml-1">({countForCategory(cat)})</span>}</button></li>
         ))}
       </ul>
     </div>
@@ -129,7 +131,7 @@ const FilterSidebar = ({
                 type="checkbox"
                 className="rounded border-border accent-[hsl(var(--primary))]"
                 checked={activeWeights.includes(w)}
-                onChange={() => toggleWeight(w)}
+                onChange={() => { toggleWeight(w); onFilterSelect?.(); }}
               />
               <span className={`text-sm font-sans ${activeWeights.includes(w) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
                 {w} <span className="text-muted-foreground/60">({count})</span>
@@ -153,7 +155,7 @@ const FilterSidebar = ({
                 type="checkbox"
                 className="rounded border-border accent-[hsl(var(--primary))]"
                 checked={activeFeatures.includes(f)}
-                onChange={() => toggleFeature(f)}
+                onChange={() => { toggleFeature(f); onFilterSelect?.(); }}
               />
               <span className={`text-sm font-sans ${activeFeatures.includes(f) ? "text-foreground font-medium" : "text-muted-foreground"}`}>
                 {f} <span className="text-muted-foreground/60">({count})</span>
@@ -173,7 +175,7 @@ const FilterSidebar = ({
             <button
               key={c.name}
               title={`${c.name} (${count})`}
-              onClick={() => toggleColor(c.name)}
+              onClick={() => { toggleColor(c.name); onFilterSelect?.(); }}
               className={`w-8 h-8 rounded-full border-2 transition-colors hover:scale-110 relative flex items-center justify-center ${activeColors.includes(c.name) ? "border-primary ring-2 ring-primary/30" : "border-border hover:border-foreground"}`}
               style={{ background: c.hex }}
             >
@@ -368,6 +370,7 @@ const Products = () => {
                 activeColors={activeColors}
                 toggleColor={toggleColor}
                 products={products}
+                onFilterSelect={() => setMobileFiltersOpen(false)}
               />
             </aside>
           </div>
