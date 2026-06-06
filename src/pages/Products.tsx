@@ -113,7 +113,7 @@ const FilterSidebar = ({
       <h3 className="font-sans text-sm font-bold uppercase tracking-wider text-foreground mb-4">Yarn Categories</h3>
       <ul className="space-y-1.5">
         {yarnCategories.map((cat) => (
-          <li key={cat}><button onClick={() => setActiveCategory(activeCategory === cat ? "All cone yarn" : cat)} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat !== "All cone yarn" ? "pl-4" : ""}`}>{cat}{cat !== "All cone yarn" && <span className="text-muted-foreground/60 ml-1">({countForCategory(cat)})</span>}</button></li>
+          <li key={cat}><button onClick={() => { setActiveCategory(activeCategory === cat ? "All cone yarn" : cat); onFilterSelect?.(); }} className={`text-sm font-sans w-full text-left py-1 transition-colors ${activeCategory === cat ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"} ${cat !== "All cone yarn" ? "pl-4" : ""}`}>{cat}{cat !== "All cone yarn" && <span className="text-muted-foreground/60 ml-1">({countForCategory(cat)})</span>}</button></li>
         ))}
       </ul>
     </div>
