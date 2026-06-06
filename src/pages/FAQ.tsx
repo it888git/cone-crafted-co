@@ -26,7 +26,7 @@ const faqs = [
   {
     question: "Do you offer wholesale pricing?",
     answer:
-      'Absolutely. If you are interested in wholesale purchases or larger quantities, please contact us at <a href="mailto:hello@yarneria.com" class="text-primary underline">hello@yarneria.com</a>. We offer attractive bulk pricing and more economical shipping options for larger orders.',
+      "Absolutely. If you are interested in wholesale purchases or larger quantities, please contact us at hello@yarneria.com. We offer attractive bulk pricing and more economical shipping options for larger orders.",
   },
   {
     question: "What payment methods do you accept?",
