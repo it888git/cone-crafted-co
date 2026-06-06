@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import logo from "@/assets/yarneria-logo.png";
 import CountrySelector from "@/components/CountrySelector";
 import AuthModal from "@/components/AuthModal";
+import { useAuthModalStore } from "@/stores/authModalStore";
 import { useMarketStore } from "@/stores/marketStore";
 
 const announcements = [
@@ -70,7 +71,8 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [authOpen, setAuthOpen] = useState(false);
+  const authOpen = useAuthModalStore((s) => s.open);
+  const setAuthOpen = useAuthModalStore((s) => s.setOpen);
   const navigate = useNavigate();
   const location = useLocation();
   const isProductsPage = location.pathname === "/products";
