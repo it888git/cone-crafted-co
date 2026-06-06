@@ -263,13 +263,13 @@ const ProductDetail = () => {
                 ) : (
                   <p className="text-sm font-sans text-muted-foreground flex items-center gap-1.5">
                     <span className={`w-2 h-2 rounded-full inline-block ${
-                      selectedVariant?.quantityAvailable != null && selectedVariant.quantityAvailable <= 3
+                      selectedVariant?.quantityAvailable != null && selectedVariant.quantityAvailable < 5
                         ? "bg-accent"
                         : "bg-green-500"
                     }`} />
                     {selectedVariant?.quantityAvailable != null
-                      ? selectedVariant.quantityAvailable > 10
-                        ? `In stock (${selectedVariant.quantityAvailable} cones available)`
+                      ? selectedVariant.quantityAvailable >= 5
+                        ? "5+ cones available"
                         : selectedVariant.quantityAvailable === 1
                           ? "Only 1 cone left"
                           : `Only ${selectedVariant.quantityAvailable} cones left`
