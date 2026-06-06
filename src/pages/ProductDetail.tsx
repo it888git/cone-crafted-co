@@ -323,6 +323,29 @@ const ProductDetail = () => {
               </Button>
             </div>
 
+            {/* Product tags as features */}
+            {node.tags && node.tags.length > 0 && (
+              <div className="border-t border-border pt-5">
+                <p className="text-xs font-sans uppercase tracking-widest text-muted-foreground mb-3">Features</p>
+                <ul className="flex flex-wrap gap-2">
+                  {parseProductTags(node.tags).map((t, i) => (
+                    <li
+                      key={`${t.label}-${i}`}
+                      className="px-3 py-1.5 rounded-full border border-border bg-muted/40 text-xs font-sans text-foreground"
+                    >
+                      {t.value ? (
+                        <>
+                          <span className="text-muted-foreground">{t.label}:</span> <span className="font-medium">{t.value}</span>
+                        </>
+                      ) : (
+                        <span className="font-medium capitalize">{t.label}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {/* Info section below ATC */}
             <div className="border-t border-border pt-5 space-y-2.5">
               <ul className="space-y-2">
