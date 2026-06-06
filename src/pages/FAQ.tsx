@@ -52,7 +52,7 @@ const FAQ = () => (
 
     <section className="container pb-16 max-w-3xl">
       <p className="text-xs font-sans tracking-[0.2em] uppercase text-muted-foreground mb-2">Questions?</p>
-      <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-8">Most Frequent Questions</h1>
+      <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-8">Frequently Asked Questions</h1>
 
       <Accordion type="single" collapsible className="w-full">
         {faqs.map((faq, idx) => (
