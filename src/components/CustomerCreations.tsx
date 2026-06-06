@@ -72,10 +72,10 @@ const CustomerCreations = () => {
       <div className="flex items-end justify-between mb-6 gap-4">
         <div className="min-w-0">
           <p className="text-xs font-sans tracking-[0.3em] uppercase text-accent font-semibold mb-2">
-            Knitting Connects Globally
+            KNITTING CONNECTS GLOBALLY
           </p>
           <h2 className="font-serif text-2xl md:text-3xl font-semibold text-foreground">
-            Our Customers Results
+            Your Results ✨
           </h2>
           <p className="text-sm font-sans text-muted-foreground mt-2 max-w-lg">
             We are always thrilled to receive your finished project photos from every corner around the globe!
@@ -115,7 +115,7 @@ const CustomerCreations = () => {
               src={c.result}
               alt={`Created by ${c.name}`}
               loading="lazy"
-              className="w-full aspect-square object-cover"
+              className="w-full aspect-square object-cover object-center"
             />
             <div className="p-3 flex flex-col gap-2.5">
               <div className="flex items-center gap-2 min-w-0">
@@ -123,7 +123,7 @@ const CustomerCreations = () => {
                   src={c.avatar}
                   alt={c.name}
                   loading="lazy"
-                  className="w-7 h-7 rounded-full object-cover bg-muted flex-shrink-0"
+                  className="w-7 h-7 rounded-full object-cover object-center bg-muted flex-shrink-0"
                 />
                 <span className="text-sm font-sans font-semibold text-foreground truncate">
                   {c.name}
