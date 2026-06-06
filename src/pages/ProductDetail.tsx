@@ -38,7 +38,7 @@ const ProductDetail = () => {
   const addItem = useCartStore((s) => s.addItem);
   const cartLoading = useCartStore((s) => s.isLoading);
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
-  const isInWishlist = useWishlistStore((s) => s.isInWishlist);
+  const wishlistItems = useWishlistStore((s) => s.items);
   const [selectedVariantIdx, setSelectedVariantIdx] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
@@ -74,7 +74,7 @@ const ProductDetail = () => {
   const mainImage = images[selectedImageIdx]?.node || images[0]?.node;
   const available = selectedVariant?.availableForSale ?? false;
   const variantChosen = selectedVariant !== null;
-  const wishlisted = isInWishlist(node.handle);
+  const wishlisted = wishlistItems.some((i) => i.node.handle === node.handle);
 
   const descriptionText = getProductDescriptionText(node.description, node.descriptionHtml);
 
