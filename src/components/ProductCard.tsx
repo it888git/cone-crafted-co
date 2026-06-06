@@ -4,7 +4,7 @@ import type { ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import { Badge } from "@/components/ui/badge";
-import { getPerKgPrice, formatPrice, getLowestVariantPrice } from "@/lib/priceUtils";
+import { getPerKgPrice, formatPrice, getLowestVariantPrice, formatPricePer100g } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
 import { getProductDescriptionText } from "@/lib/productDescription";
 

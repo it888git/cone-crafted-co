@@ -3,7 +3,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { Minus, Plus, Trash2, ExternalLink, Loader2, ShoppingBag, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
-import { formatPrice } from "@/lib/priceUtils";
+import { formatPrice, formatPricePer100g } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
 import { getVariantQuantityAvailable } from "@/lib/shopify";
 
