@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import NewsletterForm from "@/components/NewsletterForm";
-import { ArrowRight, Star, Truck, Shield, RotateCcw, Globe, Lock, ChevronLeft, ChevronRight, MapPin, Repeat2 } from "lucide-react";
+import { ArrowRight, Globe, Lock, ChevronLeft, ChevronRight, MapPin, Repeat2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import ProductCard from "@/components/ProductCard";
