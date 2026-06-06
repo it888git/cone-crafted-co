@@ -26,8 +26,8 @@ const DeliveryReturns = () => (
           </p>
 
           {/* Shipping table */}
-           <div className="border border-border rounded-lg overflow-x-auto mb-5">
-            <table className="w-full text-sm font-sans table-fixed">
+           <div className="border border-border rounded-lg overflow-x-auto mb-5 -mx-4 sm:mx-0 sm:rounded-lg">
+            <table className="w-full min-w-[820px] text-sm font-sans">
               <thead>
                 <tr className="bg-muted">
                   <th className="text-left px-4 py-3 font-medium text-foreground w-[24%]">Destination</th>
