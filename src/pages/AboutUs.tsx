@@ -16,10 +16,10 @@ const AboutUs = () => (
     <section className="container">
       <div className="max-w-2xl mx-auto space-y-10">
         <div className="text-center space-y-3">
-          <h1 className="font-serif text-4xl md:text-5xl font-semibold text-foreground">About Us</h1>
+          <h1 className="font-serif text-3xl md:text-5xl font-semibold text-foreground">About Us</h1>
         </div>
 
-        <div className="space-y-5 text-lg font-sans text-muted-foreground leading-relaxed">
+        <div className="space-y-5 text-base md:text-lg font-sans text-muted-foreground leading-relaxed">
           <p>
             We are locally providing the broadest selection of yarn for all the passionate knitters, weavers and crocheters in Lithuania and Latvia. Our family works in this industry for over 25 years. The end of 2019, we began our journey on Etsy and now we are expanding worldwide!
           </p>
@@ -29,7 +29,7 @@ const AboutUs = () => (
           <p>
             We are always truly happy to receive your beautiful pictures of completed projects! Therefore, if you want to share them please do not hesitate to reach out to us. Hope that our shop will broaden knitters, weavers and crocheters circle around the globe and this hobby (or a profession) will further spread happiness and keep others warm!
           </p>
-          <p className="font-serif text-lg text-foreground italic">
+          <p className="font-serif text-base md:text-lg text-foreground italic">
             Best wishes,<br />Yarneria
           </p>
         </div>
@@ -44,8 +44,8 @@ const AboutUs = () => (
     <section className="container">
       <div className="max-w-2xl mx-auto">
         <div className="border-t border-border pt-8">
-          <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Let's Stay Connected</h2>
-          <p className="text-lg font-sans text-muted-foreground leading-relaxed">
+          <h2 className="font-serif text-xl md:text-2xl font-semibold text-foreground mb-4">Let's Stay Connected</h2>
+          <p className="text-base md:text-lg font-sans text-muted-foreground leading-relaxed">
             Also find us on Etsy{" "}
             <a
               href="https://www.etsy.com/shop/YarneriaShop"
@@ -78,8 +78,8 @@ const AboutUs = () => (
     <section className="container pb-20 pt-10">
       <div className="max-w-2xl mx-auto">
         <div className="border-t border-border pt-8">
-          <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Legal Information</h2>
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-lg font-sans">
+          <h2 className="font-serif text-xl md:text-2xl font-semibold text-foreground mb-4">Legal Information</h2>
+          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-base md:text-lg font-sans">
             <div>
               <dt className="text-muted-foreground">Business Certificate</dt>
               <dd className="text-foreground font-medium">Nr.: 910017</dd>

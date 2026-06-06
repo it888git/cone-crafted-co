@@ -14,16 +14,16 @@ const CustomerCreations = () => {
     <section className="w-full">
       <div className="container">
         <div className="max-w-2xl mx-auto space-y-3 text-center pb-8">
-          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
+          <h2 className="font-serif text-2xl md:text-3xl font-semibold text-foreground">
             Knitting connects ✨
           </h2>
-          <p className="text-lg font-sans text-muted-foreground leading-relaxed">
+          <p className="text-base md:text-lg font-sans text-muted-foreground leading-relaxed">
             We are happy to receive your results from around the globe.
           </p>
         </div>
       </div>
 
-      <div className="w-screen relative left-1/2 -translate-x-1/2 grid grid-cols-8 gap-0">
+      <div className="w-screen relative left-1/2 -translate-x-1/2 grid grid-cols-4 md:grid-cols-8 gap-0">
         {images.map((src, i) => (
           <img
             key={i}
