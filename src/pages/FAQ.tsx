@@ -26,7 +26,7 @@ const faqs = [
   {
     question: "Do you offer wholesale pricing?",
     answer:
-      'Absolutely. If you are interested in wholesale purchases or larger quantities, please contact us at <a href="mailto:hello@yarneria.com" class="text-primary underline">hello@yarneria.com</a>. We offer attractive bulk pricing and more economical shipping options for larger orders.',
+      "Absolutely. If you are interested in wholesale purchases or larger quantities, please contact us at hello@yarneria.com. We offer attractive bulk pricing and more economical shipping options for larger orders.",
   },
   {
     question: "What payment methods do you accept?",
@@ -37,11 +37,6 @@ const faqs = [
     question: "How long does it take to prepare an order?",
     answer:
       "Our team works hard to prepare and dispatch orders as quickly as possible. Most orders are packed and shipped within 48 hours. Once your order has been dispatched, you will receive a shipping confirmation email containing your tracking information.",
-  },
-  {
-    question: "Why choose yarn on cones?",
-    answer:
-      "Cone yarn offers excellent value and convenience for both hand knitting and machine knitting. With continuous lengths of yarn, fewer joins, and the ability to choose your exact quantity, cone yarn is ideal for projects of all sizes.",
   },
 ];
 
