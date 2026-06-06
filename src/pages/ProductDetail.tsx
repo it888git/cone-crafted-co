@@ -6,7 +6,7 @@ import { ShoppingBag, Heart, ChevronRight, Loader2, Package, Truck, RotateCcw, M
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { getPerKgPrice, formatPrice, extractWeightGrams, getLowestVariantPrice } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
 import ProductCard from "@/components/ProductCard";
