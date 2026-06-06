@@ -23,7 +23,7 @@ const CustomerCreations = () => {
         </div>
       </div>
 
-      <div className="w-screen relative left-1/2 -translate-x-1/2 grid grid-cols-2 md:grid-cols-4 gap-0">
+      <div className="w-screen relative left-1/2 -translate-x-1/2 grid grid-cols-8 gap-0">
         {images.map((src, i) => (
           <img
             key={i}
