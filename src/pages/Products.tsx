@@ -9,31 +9,29 @@ const yarnCategoryTags: Record<string, string[]> = {
   "All cone yarn": [],
   "Wool yarn": ["wool"],
   "Wool blend yarn": ["wool blend"],
-  "Alpaca blend yarn": ["alpaca", "alpaca blend"],
+  "Alpaca blend yarn": ["alpaca"],
   "Cashmere yarn": ["cashmere"],
   "Mohair yarn": ["mohair"],
   "Cotton yarn": ["cotton"],
   "Viscose yarn": ["viscose"],
   "Linen yarn": ["linen"],
-  "Silk blend yarn": ["silk", "silk blend"],
-  "Acrylic yarn (Synthetic)": ["acrylic", "synthetic"],
+  "Silk blend yarn": ["silk"],
+  "Acrylic yarn (Synthetic)": ["synthetic"],
 };
 
 const yarnCategories = Object.keys(yarnCategoryTags);
 
-const weightFilters = [
-  "0 Lace weight",
-  "1 Fingering weight",
-  "2 Sport weight",
-  "3 DK/Light worsted weight",
-  "4 Aran/Worsted weight",
-  "5 Chunky/Bulky weight",
+// Weight filters with exact tag mapping
+const weightFilters: { label: string; tag: string }[] = [
+  { label: "#0 Lace", tag: "#0 Lace" },
+  { label: "#1 Fingering", tag: "#1 Fingering" },
+  { label: "#2 Sport", tag: "#2 Sport" },
+  { label: "#3 DK/Light Worsted", tag: "#3 DK/Light Worsted" },
+  { label: "#4 Aran/Worsted", tag: "#4 Aran/Worsted" },
+  { label: "#5 Chunky/Bulky", tag: "#5 Chunky/Bulky" },
 ];
 
-const featureFilters = [
-  "Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby",
-  "Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille",
-];
+const featureFilters = ["Tweed", "Sequin", "Boucle", "Kidsilk"];
 
 const colorFilters = [
   { name: "White", hex: "#FFFFFF" },
