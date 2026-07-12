@@ -10,6 +10,8 @@ import r7 from "@/assets/reviews/review-7.jpg.asset.json";
 import r8 from "@/assets/reviews/review-8.jpg.asset.json";
 import r9 from "@/assets/reviews/review-9.jpg.asset.json";
 import r10 from "@/assets/reviews/review-10.jpg.asset.json";
+import rKim from "@/assets/reviews/review-kim.png.asset.json";
+import rDulce from "@/assets/reviews/review-dulce.png.asset.json";
 
 type Review = {
   name: string;
@@ -21,6 +23,8 @@ type Review = {
 
 // Sorted: most recent first
 const reviews: Review[] = [
+  { name: "Kim", date: "Jul 12, 2026", text: "Holding this double. Searching now and will wash to see how if feel's & blooms", product: "Lace Cashmere Yarn — Merino Wool Cone Yarn", image: rKim.url },
+  { name: "Dulce", date: "Jun 16, 2026", text: "Beautiful Linen, exactly the foto, beautiful colours and received in a few days, very fast shipment, very professional 🤩 Very much pleased with this company!", product: "100% Linen Yarn", image: rDulce.url },
   { name: "Natalia", date: "May 16, 2026", text: "Incredibly soft and luxurious premium yarn.", product: "Silk Cashmere Wool Yarn", image: r1.url },
   { name: "Natalia", date: "May 16, 2026", text: "Beautiful yarn, thank you so much.", product: "Silk Cashmere Wool Yarn – Gray", image: r2.url },
   { name: "Elena", date: "Mar 13, 2026", text: "I'm very happy with my order. The thread is a shiny silver color, and the 2mm sequins sparkle like diamonds. Very pretty.", product: "Cotton Sequin Yarn", image: r3.url },
