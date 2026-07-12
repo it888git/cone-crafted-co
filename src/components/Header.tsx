@@ -137,6 +137,12 @@ const Header = () => {
               >
                 <Link
                   to={link.to}
+                  onClick={(e) => {
+                    if (link.mega) {
+                      e.preventDefault();
+                      setActiveMenu(activeMenu === link.label ? null : link.label);
+                    }
+                  }}
                   className={`text-base font-sans font-medium tracking-wide transition-colors py-2 border-b-2 ${
                     activeMenu === link.label
                       ? "text-foreground border-foreground"
