@@ -10,8 +10,8 @@ import r7 from "@/assets/reviews/review-7.jpg.asset.json";
 import r8 from "@/assets/reviews/review-8.jpg.asset.json";
 import r9 from "@/assets/reviews/review-9.jpg.asset.json";
 import r10 from "@/assets/reviews/review-10.jpg.asset.json";
-import rKim from "@/assets/reviews/review-kim.png.asset.json";
-import rDulce from "@/assets/reviews/review-dulce.png.asset.json";
+import rKim from "@/assets/reviews/review-kim.jpg.asset.json";
+import rDulce from "@/assets/reviews/review-dulce.avif.asset.json";
 
 type Review = {
   name: string;
