@@ -122,7 +122,7 @@ const EtsyReviews = () => {
                 src={r.image}
                 alt={`Review by ${r.name}`}
                 loading="lazy"
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-center scale-[1.35]"
               />
             </div>
 
