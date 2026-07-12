@@ -115,14 +115,14 @@ const EtsyReviews = () => {
         {reviews.map((r, i) => (
           <article
             key={i}
-            className="snap-start flex-shrink-0 w-[280px] sm:w-[300px] md:w-[320px] bg-background border border-border rounded-2xl overflow-hidden flex flex-col"
+            className="snap-start flex-shrink-0 w-[220px] sm:w-[240px] md:w-[260px] bg-background border border-border rounded-2xl overflow-hidden flex flex-col"
           >
             <div className="w-full aspect-square overflow-hidden">
               <img
                 src={r.image}
                 alt={`Review by ${r.name}`}
                 loading="lazy"
-                className="w-full h-full object-cover object-center scale-125"
+                className="w-full h-full object-cover object-center"
               />
             </div>
 
