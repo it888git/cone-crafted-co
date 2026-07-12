@@ -406,14 +406,14 @@ const AnnouncementBar = () => {
               </svg>
             ))}
           </span>
-          <span className="font-semibold">4.8/5</span>
+          <span className="font-semibold">4.9/5</span>
           <a
             href="https://www.etsy.com/shop/YarneriaShop"
             target="_blank"
             rel="noopener noreferrer"
             className="underline underline-offset-2 hover:opacity-80"
           >
-            based on 700+ Etsy reviews
+            based on 750+ Etsy reviews
           </a>
         </span>
       );
