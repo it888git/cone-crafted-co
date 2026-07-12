@@ -71,12 +71,12 @@ const FAQ = () => (
       <div className="border-t border-border mt-10 pt-8 text-center">
         <p className="text-xs font-sans tracking-[0.2em] uppercase text-muted-foreground mb-2">Still have questions?</p>
         <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Contact Us!</h2>
-        <div className="space-y-2 text-sm font-sans text-muted-foreground">
+        <div className="space-y-2 text-base font-sans text-muted-foreground">
           <p className="flex items-center justify-center gap-2">
             <Mail className="w-4 h-4" />
             <a href="mailto:hello@yarneria.com" className="text-primary underline">hello@yarneria.com</a>
           </p>
-          <div className="mt-4 text-xs text-muted-foreground/70 space-y-0.5">
+          <div className="mt-4 text-base text-muted-foreground/70 space-y-0.5">
             <p className="font-medium text-muted-foreground">Legal information: „YARNERIA"</p>
             <p>Business Certificate Nr.: 910017</p>
             <p>Bank: SWEDBANK AB</p>
