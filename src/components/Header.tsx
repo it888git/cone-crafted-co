@@ -138,7 +138,7 @@ const Header = () => {
                 <Link
                   to={link.to}
                   onClick={(e) => {
-                    if (link.mega) {
+                    if (link.mega && link.label === "Knitters") {
                       e.preventDefault();
                       setActiveMenu(activeMenu === link.label ? null : link.label);
                     }
