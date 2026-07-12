@@ -328,20 +328,25 @@ const ProductDetail = () => {
               <div className="border-t border-border pt-5">
                 <p className="text-xs font-sans uppercase tracking-widest text-muted-foreground mb-3">Features</p>
                 <ul className="flex flex-wrap gap-2">
-                  {parseProductTags(node.tags).map((t, i) => (
-                    <li
-                      key={`${t.label}-${i}`}
-                      className="px-3 py-1.5 rounded-full border border-border bg-muted/40 text-xs font-sans text-foreground"
-                    >
-                      {t.value ? (
-                        <>
-                          <span className="text-muted-foreground">{t.label}:</span> <span className="font-medium">{t.value}</span>
-                        </>
-                      ) : (
-                        <span className="font-medium capitalize">{t.label}</span>
-                      )}
-                    </li>
-                  ))}
+                  {parseProductTags(node.tags).map((t, i) => {
+                    const term = (t.value || t.label).toLowerCase();
+                    return (
+                      <li key={`${t.label}-${i}`}>
+                        <Link
+                          to={`/products?feature=${encodeURIComponent(term)}`}
+                          className="inline-block px-3 py-1.5 rounded-full border border-border bg-muted/40 text-xs font-sans text-foreground hover:bg-muted hover:border-foreground/40 transition-colors"
+                        >
+                          {t.value ? (
+                            <>
+                              <span className="text-muted-foreground">{t.label}:</span> <span className="font-medium">{t.value}</span>
+                            </>
+                          ) : (
+                            <span className="font-medium capitalize">{t.label}</span>
+                          )}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             )}
