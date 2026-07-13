@@ -1,17 +1,18 @@
 import { useRef, useState, useEffect } from "react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
-import r1 from "@/assets/reviews/review-1.jpg.asset.json";
-import r2 from "@/assets/reviews/review-2.jpg.asset.json";
-import r3 from "@/assets/reviews/review-3.jpg.asset.json";
-import r4 from "@/assets/reviews/review-4.jpg.asset.json";
-import r5 from "@/assets/reviews/review-5.jpg.asset.json";
-import r6 from "@/assets/reviews/review-6.jpg.asset.json";
-import r7 from "@/assets/reviews/review-7.jpg.asset.json";
-import r8 from "@/assets/reviews/review-8.jpg.asset.json";
-import r9 from "@/assets/reviews/review-9.jpg.asset.json";
-import r10 from "@/assets/reviews/review-10.jpg.asset.json";
-import rKim from "@/assets/reviews/review-kim.jpg.asset.json";
-import rDulce from "@/assets/reviews/review-dulce.avif.asset.json";
+
+const r1 = "https://i.ibb.co/ycyLkWfb/review-1.jpg";
+const r2 = "https://i.ibb.co/k2Gk7kyW/review-2.jpg";
+const r3 = "https://i.ibb.co/YFQV9NXM/review-3.jpg";
+const r4 = "https://i.ibb.co/cK4yGpcS/review-4.jpg";
+const r5 = "https://i.ibb.co/9kj88frV/review-5.jpg";
+const r6 = "https://i.ibb.co/0pH603nT/review-6.jpg";
+const r7 = "https://i.ibb.co/NgdSYQxM/review-7.jpg";
+const r8 = "https://i.ibb.co/27X8p5K8/review-8.jpg";
+const r9 = "https://i.ibb.co/0j04Yfwh/review-9.jpg";
+const r10 = "https://i.ibb.co/gMXBWstc/review-10.jpg";
+const rKim = "https://i.ibb.co/2LPx4b2/review-kim.jpg";
+const rDulce = "https://i.ibb.co/ccKn5BXV/review-dulce.avif";
 
 type Review = {
   name: string;
@@ -23,18 +24,18 @@ type Review = {
 
 // Sorted: most recent first
 const reviews: Review[] = [
-  { name: "Kim", date: "Jul 12, 2026", text: "Holding this double. Searching now and will wash to see how if feel's & blooms", product: "Lace Cashmere Yarn — Merino Wool Cone Yarn", image: rKim.url },
-  { name: "Dulce", date: "Jun 16, 2026", text: "Beautiful Linen, exactly the foto, beautiful colours and received in a few days, very fast shipment, very professional 🤩 Very much pleased with this company!", product: "100% Linen Yarn", image: rDulce.url },
-  { name: "Natalia", date: "May 16, 2026", text: "Incredibly soft and luxurious premium yarn.", product: "Silk Cashmere Wool Yarn", image: r1.url },
-  { name: "Natalia", date: "May 16, 2026", text: "Beautiful yarn, thank you so much.", product: "Silk Cashmere Wool Yarn – Gray", image: r2.url },
-  { name: "Elena", date: "Mar 13, 2026", text: "I'm very happy with my order. The thread is a shiny silver color, and the 2mm sequins sparkle like diamonds. Very pretty.", product: "Cotton Sequin Yarn", image: r3.url },
-  { name: "Etsy buyer", date: "Feb 26, 2026", text: "The customer service was very good and the yarn is better than my expectations!", product: "Organic Cotton Yarn Cone", image: r4.url },
-  { name: "Dávid", date: "Jan 5, 2026", text: "Wonderful yarn of truly great quality, has a beautiful sheen, super soft and NOT SCRATCHY AT ALL. Definitely would recommend and will be buying from this shop again 🙌", product: "Merino Wool Yarn — Sport Weight", image: r5.url },
-  { name: "Etsy buyer", date: "Oct 2, 2025", text: "The yarn is WOW!! Gorgeous 💖", product: "Tweed Mohair Merino Wool Silk", image: r6.url },
-  { name: "Irina", date: "May 4, 2025", text: "Very good service and quality.", product: "100% White Linen Yarn", image: r8.url },
-  { name: "Marina", date: "Apr 30, 2025", text: "Excellent quality, I recommend to buy.", product: "100% Bourette Silk Yarn", image: r7.url },
-  { name: "Elel", date: "Jun 30, 2024", text: "Thank you very much, soft beautiful yarn, I'm ordering for the second time ❤️", product: "Socks Yarn — Fingering Weight", image: r9.url },
-  { name: "Nancy", date: "Jan 9, 2024", text: "My Addi circular knitting machine loves this yarn.", product: "Mohair Wool Yarn — Light Blue", image: r10.url },
+  { name: "Kim", date: "Jul 12, 2026", text: "Holding this double. Searching now and will wash to see how if feel's & blooms", product: "Lace Cashmere Yarn — Merino Wool Cone Yarn", image: rKim },
+  { name: "Dulce", date: "Jun 16, 2026", text: "Beautiful Linen, exactly the foto, beautiful colours and received in a few days, very fast shipment, very professional 🤩 Very much pleased with this company!", product: "100% Linen Yarn", image: rDulce },
+  { name: "Natalia", date: "May 16, 2026", text: "Incredibly soft and luxurious premium yarn.", product: "Silk Cashmere Wool Yarn", image: r1 },
+  { name: "Natalia", date: "May 16, 2026", text: "Beautiful yarn, thank you so much.", product: "Silk Cashmere Wool Yarn – Gray", image: r2 },
+  { name: "Elena", date: "Mar 13, 2026", text: "I'm very happy with my order. The thread is a shiny silver color, and the 2mm sequins sparkle like diamonds. Very pretty.", product: "Cotton Sequin Yarn", image: r3 },
+  { name: "Etsy buyer", date: "Feb 26, 2026", text: "The customer service was very good and the yarn is better than my expectations!", product: "Organic Cotton Yarn Cone", image: r4 },
+  { name: "Dávid", date: "Jan 5, 2026", text: "Wonderful yarn of truly great quality, has a beautiful sheen, super soft and NOT SCRATCHY AT ALL. Definitely would recommend and will be buying from this shop again 🙌", product: "Merino Wool Yarn — Sport Weight", image: r5 },
+  { name: "Etsy buyer", date: "Oct 2, 2025", text: "The yarn is WOW!! Gorgeous 💖", product: "Tweed Mohair Merino Wool Silk", image: r6 },
+  { name: "Irina", date: "May 4, 2025", text: "Very good service and quality.", product: "100% White Linen Yarn", image: r8 },
+  { name: "Marina", date: "Apr 30, 2025", text: "Excellent quality, I recommend to buy.", product: "100% Bourette Silk Yarn", image: r7 },
+  { name: "Elel", date: "Jun 30, 2024", text: "Thank you very much, soft beautiful yarn, I'm ordering for the second time ❤️", product: "Socks Yarn — Fingering Weight", image: r9 },
+  { name: "Nancy", date: "Jan 9, 2024", text: "My Addi circular knitting machine loves this yarn.", product: "Mohair Wool Yarn — Light Blue", image: r10 },
 ];
 
 const EtsyReviews = () => {
