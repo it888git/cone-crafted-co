@@ -1,58 +1,31 @@
-## Scope
+## Problem
 
-### 1. Country → market filtering
-- Currency/prices jau keičiasi per Shopify `@inContext(country)` – patikrinsiu.
-- **Slėpti produktus kurie nepristatomi**: konvencija per Shopify tag'us. Produktas su tag'u `no-ship:<region>` (pvz. `no-ship:international`, `no-ship:uk`, `no-ship:europe`, `no-ship:baltic`) nebus rodomas user'iams iš to regiono. Tai veiks visur: homepage carousel, Products archive, Sale, ProductDetail similar yarns.
-- Patikrinimas atliekamas frontend'e per `useMarketStore().selectedCountry.deliveryRegion`.
+- `src/pages/Index.tsx` hero and category images are `import`-ed from `src/assets/*` → Vite bundles them into `/assets/*.jpg|png|webp` on the deployed site. These work without any subscription.
+- `src/components/EtsyReviews.tsx` and `src/components/CustomerCreations.tsx` use `https://i.ibb.co/<code>/<filename>` URLs that were constructed from your `https://ibb.co/<code>` share links. Those short codes are the ibb.co **page** IDs, not the direct-image IDs, so the URLs 404 in production.
 
-### 2. Top announcement bar
-- Pakeisti vertical fade → horizontal slide (translateX) left→right.
-- Font dydis padidintas iki `text-sm md:text-base` (kaip homepage trust strip).
-- 5 žvaigždžių + "4.8/5 based on 700+ Etsy reviews" išlieka su Etsy nuoroda.
+Two clean fixes are possible. Pick one:
 
-### 3. Tag-based filters (Products archive)
-Atnaujinti mapping (`src/pages/Products.tsx`):
+### Option A — Resolve the real direct URLs from ibb.co (keep external hosting, zero repo weight)
+For every `https://ibb.co/<code>` share link you gave me, fetch the page, read the `<meta property="og:image">` (or the `#image-viewer-container img[src]`), and swap in that real `https://i.ibb.co/.../<hash>/<name>.<ext>` URL in:
+- `src/components/EtsyReviews.tsx` (12 review images)
+- `src/components/CustomerCreations.tsx` (8 About-Us / creations images)
 
-**Categories:**
-```
-Wool          → tag "Wool"
-Wool blend    → tag "Wool blend"
-Alpaca blend  → tag "Alpaca"
-Cashmere      → tag "Cashmere"
-Mohair        → tag "Mohair"
-Viscose       → tag "Viscose"
-Linen         → tag "Linen"
-Silk blend    → tag "Silk"
-Acrylic       → tag "Synthetic"
-```
+Pros: no files added to the repo, no build size increase.
+Cons: still depends on a third party (ibb.co) staying up and not changing URLs.
 
-**Weights:**
-```
-#0 Lace, #1 Fingering, #2 Sport, #3 DK/Light Worsted,
-#4 Aran/Worsted, #5 Chunky/Bulky
-```
+### Option B — Bundle the images into the app (fully self-hosted, no external deps)
+Download each image once, place them under `src/assets/reviews/` and `src/assets/creations/`, `import` them in the two components. They ship inside the deployed static bundle just like the hero image.
 
-**Features:** Tweed, Sequin, Boucle, Kidsilk
+Pros: images load as long as the site is deployed, no third-party dependency, works offline of ibb.co.
+Cons: ~1–3 MB added to the repo (depending on original sizes).
 
-### 4. Product page image zoom
-- Hover → rodyti zoom circle (magnifier lens) su 1.8× zoom (ne per stipriai).
-- Implementuoju savo komponentą – cursor follow + clip-path circle overlay.
+### Files that will change either way
+- `src/components/EtsyReviews.tsx` — replace the 12 `r1…r10 / rKim / rDulce` URL constants.
+- `src/components/CustomerCreations.tsx` — replace the 8 entries in the `images` array.
 
-### 5. Auth modal (UI only)
-- `Profile` icon header'yje atidaro `AuthModal` (Sheet/Dialog).
-- Tabs: Sign In / Register.
-- Email + password input'ai, Submit mygtukas → tik `toast.info("Authentication coming soon")`.
-- Jokio Lovable Cloud setup, jokio realaus auth – grynas mockup, kaip prašei.
+No other files touched. No layout, no logic changes.
 
-### Files
-- `src/components/Header.tsx` – banner swipe, Profile icon → AuthModal
-- `src/components/AuthModal.tsx` – naujas
-- `src/pages/Products.tsx` – tag mapping
-- `src/pages/Index.tsx` – category buttons → naujos kategorijos
-- `src/lib/marketFilter.ts` – naujas helper `isProductAvailableInRegion`
-- `src/hooks/useShopifyProducts.ts` arba filtravimas vietoj filter component'uose – pritaikyti `isProductAvailableInRegion`
-- `src/pages/ProductDetail.tsx` – image hover zoom + similar yarns filtering
+### Verification
+After the swap I'll load `/`, `/about-us` (and wherever `EtsyReviews` renders) with Playwright against `localhost:8080`, listen for any `4xx/5xx` responses on `.jpg/.png/.webp/.avif`, and screenshot both sections to confirm the images visibly render before you republish.
 
-### Notes (skip)
-- "Price per kg near products and variants only on product page as it is now" – pranešei "kaip yra dabar", todėl nieko nekeisiu šiame žingsnyje.
-- Realios autentifikacijos (DB, session) nedarau – tik UI mockup.
+**Which option do you want — A (fix ibb.co URLs, keep external) or B (bundle into the app, self-hosted)?**
