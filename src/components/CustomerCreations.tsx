@@ -1,12 +1,12 @@
 const images = [
-  "https://i.ibb.co/sJvJCb3b/c1.jpg",
-  "https://i.ibb.co/JjYcSntG/c2.jpg",
-  "https://i.ibb.co/PzFXjf0q/c3.jpg",
-  "https://i.ibb.co/wZzHyRkG/c4.jpg",
-  "https://i.ibb.co/mVPW5cyR/c5.webp",
-  "https://i.ibb.co/wFFPrnVf/c6.jpg",
-  "https://i.ibb.co/SDPm3MDm/c7.jpg",
-  "https://i.ibb.co/Rpr3yz5v/c8.jpg",
+  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c1.jpg?v=1783932815",
+  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c2.jpg?v=1783932815",
+  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c3.jpg?v=1783932815",
+  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c4.jpg?v=1783932814",
+  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c5.webp?v=1783932814",
+  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c6.jpg?v=1783932814",
+  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c7.jpg?v=1783932813",
+  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c8.jpg?v=1783932814",
 ];
 
 const CustomerCreations = () => {
