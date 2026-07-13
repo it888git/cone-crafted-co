@@ -1,13 +1,13 @@
-const images = [
-  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c1.jpg?v=1783932815",
-  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c2.jpg?v=1783932815",
-  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c3.jpg?v=1783932815",
-  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c4.jpg?v=1783932814",
-  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c5.webp?v=1783932814",
-  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c6.jpg?v=1783932814",
-  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c7.jpg?v=1783932813",
-  "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/c8.jpg?v=1783932814",
-];
+import c1 from "@/assets/creations/c1.jpg";
+import c2 from "@/assets/creations/c2.jpg";
+import c3 from "@/assets/creations/c3.jpg";
+import c4 from "@/assets/creations/c4.jpg";
+import c5 from "@/assets/creations/c5.webp";
+import c6 from "@/assets/creations/c6.jpg";
+import c7 from "@/assets/creations/c7.jpg";
+import c8 from "@/assets/creations/c8.jpg";
+
+const images = [c1, c2, c3, c4, c5, c6, c7, c8];
 
 const CustomerCreations = () => {
   return (

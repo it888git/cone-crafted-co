@@ -1,18 +1,18 @@
 import { useRef, useState, useEffect } from "react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
-const r1 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-1.jpg?v=1783932912";
-const r2 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-2.jpg?v=1783932911";
-const r3 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-3.jpg?v=1783932911";
-const r4 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-4.jpg?v=1783932913";
-const r5 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-5.jpg?v=1783932911";
-const r6 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-6.jpg?v=1783932912";
-const r7 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-7.jpg?v=1783932912";
-const r8 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-8.jpg?v=1783932911";
-const r9 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-9.jpg?v=1783932911";
-const r10 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-10.jpg?v=1783932911";
-const rKim = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-kim.jpg?v=1783932912";
-const rDulce = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-dulce.avif?v=1783932911";
+import r1 from "@/assets/reviews/review-1.jpg";
+import r2 from "@/assets/reviews/review-2.jpg";
+import r3 from "@/assets/reviews/review-3.jpg";
+import r4 from "@/assets/reviews/review-4.jpg";
+import r5 from "@/assets/reviews/review-5.jpg";
+import r6 from "@/assets/reviews/review-6.jpg";
+import r7 from "@/assets/reviews/review-7.jpg";
+import r8 from "@/assets/reviews/review-8.jpg";
+import r9 from "@/assets/reviews/review-9.jpg";
+import r10 from "@/assets/reviews/review-10.jpg";
+import rKim from "@/assets/reviews/review-kim.jpg";
+import rDulce from "@/assets/reviews/review-dulce.avif";
 
 type Review = {
   name: string;
