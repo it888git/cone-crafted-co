@@ -1,18 +1,18 @@
 import { useRef, useState, useEffect } from "react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
-const r1 = "https://i.ibb.co/ycyLkWfb/review-1.jpg";
-const r2 = "https://i.ibb.co/k2Gk7kyW/review-2.jpg";
-const r3 = "https://i.ibb.co/YFQV9NXM/review-3.jpg";
-const r4 = "https://i.ibb.co/cK4yGpcS/review-4.jpg";
-const r5 = "https://i.ibb.co/9kj88frV/review-5.jpg";
-const r6 = "https://i.ibb.co/0pH603nT/review-6.jpg";
-const r7 = "https://i.ibb.co/NgdSYQxM/review-7.jpg";
-const r8 = "https://i.ibb.co/27X8p5K8/review-8.jpg";
-const r9 = "https://i.ibb.co/0j04Yfwh/review-9.jpg";
-const r10 = "https://i.ibb.co/gMXBWstc/review-10.jpg";
-const rKim = "https://i.ibb.co/2LPx4b2/review-kim.jpg";
-const rDulce = "https://i.ibb.co/ccKn5BXV/review-dulce.avif";
+const r1 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-1.jpg?v=1783932912";
+const r2 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-2.jpg?v=1783932911";
+const r3 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-3.jpg?v=1783932911";
+const r4 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-4.jpg?v=1783932913";
+const r5 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-5.jpg?v=1783932911";
+const r6 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-6.jpg?v=1783932912";
+const r7 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-7.jpg?v=1783932912";
+const r8 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-8.jpg?v=1783932911";
+const r9 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-9.jpg?v=1783932911";
+const r10 = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-10.jpg?v=1783932911";
+const rKim = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-kim.jpg?v=1783932912";
+const rDulce = "https://cdn.shopify.com/s/files/1/0995/9122/5691/files/review-dulce.avif?v=1783932911";
 
 type Review = {
   name: string;
