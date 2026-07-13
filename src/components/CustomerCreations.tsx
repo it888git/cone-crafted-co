@@ -1,13 +1,13 @@
-import c1 from "@/assets/creations-v2/c1.jpeg.asset.json";
-import c2 from "@/assets/creations-v2/c2.jpg.asset.json";
-import c3 from "@/assets/creations-v2/c3.jpg.asset.json";
-import c4 from "@/assets/creations-v2/c4.jpg.asset.json";
-import c5 from "@/assets/creations-v2/c5.webp.asset.json";
-import c6 from "@/assets/creations-v2/c6.jpg.asset.json";
-import c7 from "@/assets/creations-v2/c7.jpg.asset.json";
-import c8 from "@/assets/creations-v2/c8.jpg.asset.json";
-
-const images = [c1.url, c2.url, c3.url, c4.url, c5.url, c6.url, c7.url, c8.url];
+const images = [
+  "https://i.ibb.co/sJvJCb3b/c1.jpg",
+  "https://i.ibb.co/JjYcSntG/c2.jpg",
+  "https://i.ibb.co/PzFXjf0q/c3.jpg",
+  "https://i.ibb.co/wZzHyRkG/c4.jpg",
+  "https://i.ibb.co/mVPW5cyR/c5.webp",
+  "https://i.ibb.co/wFFPrnVf/c6.jpg",
+  "https://i.ibb.co/SDPm3MDm/c7.jpg",
+  "https://i.ibb.co/Rpr3yz5v/c8.jpg",
+];
 
 const CustomerCreations = () => {
   return (
