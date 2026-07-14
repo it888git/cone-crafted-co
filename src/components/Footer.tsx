@@ -56,7 +56,7 @@ const Footer = () => {
         {/* Newsletter */}
         <div>
           <h4 className="font-sans text-xs tracking-[0.2em] uppercase mb-5 opacity-50">Newsletter</h4>
-          <p className="text-sm opacity-70 font-sans mb-3 leading-relaxed">New fibers, limited runs, and 10% off your first order.</p>
+          <p className="text-sm opacity-70 font-sans mb-3 leading-relaxed">Be the first to know about new collections, best deals and other updates.</p>
           <NewsletterForm variant="footer" />
         </div>
       </div>
