@@ -202,8 +202,16 @@ const Products = () => {
   // Resolve category param to matching yarnCategory key
   const resolvedCategory = useMemo(() => {
     if (!categoryParam) return "All cone yarn";
-    const kw = categoryParam.toLowerCase();
-    const match = yarnCategories.find(cat => cat.toLowerCase().includes(kw));
+    const kw = categoryParam.toLowerCase().trim();
+    // Try direct match first (category label contains param)
+    let match = yarnCategories.find(cat => cat.toLowerCase().includes(kw));
+    // Fallback: match by any of the category's tag keywords appearing in the param
+    if (!match) {
+      match = yarnCategories.find(cat => {
+        const tags = yarnCategoryTags[cat] || [];
+        return tags.some(t => kw.includes(t.toLowerCase()));
+      });
+    }
     return match || "All cone yarn";
   }, [categoryParam]);
 
