@@ -140,6 +140,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <p className="font-sans text-sm font-semibold text-foreground pt-0.5">
             {formattedPrice}
           </p>
+          {isInternational && (
+            <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-accent text-accent-foreground text-[10px] font-sans font-semibold tracking-wider uppercase">
+              Free Delivery
+            </span>
+          )}
         </div>
       </Link>
     </div>
