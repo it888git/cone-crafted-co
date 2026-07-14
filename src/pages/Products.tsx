@@ -313,6 +313,18 @@ const Products = () => {
       result.sort((a, b) => new Date(b.node.createdAt).getTime() - new Date(a.node.createdAt).getTime());
     }
 
+    // When any filter/search is active, push sold-out items to the end
+    const hasActiveFilter =
+      !!searchQuery ||
+      activeCategory !== "All cone yarn" ||
+      activeWeights.length > 0 ||
+      activeFeatures.length > 0 ||
+      activeColors.length > 0;
+    if (hasActiveFilter) {
+      const isAvailable = (p: any) => p.node.variants.edges.some((v: any) => v.node.availableForSale);
+      result.sort((a, b) => Number(isAvailable(b)) - Number(isAvailable(a)));
+    }
+
     return result;
   }, [products, searchQuery, activeCategory, activeWeights, activeFeatures, activeColors, sortBy]);
 
