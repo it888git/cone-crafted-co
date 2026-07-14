@@ -12,13 +12,13 @@ import { useMarketStore } from "@/stores/marketStore";
 const announcements = [
   "New store refresh — welcome 🎉",
   "reviews",
-  "15% opening discount with code OPEN15",
+  "15% off with code OPEN15",
 ];
 
 const internationalAnnouncements = [
   "New store refresh — welcome 🎉",
   "reviews",
-  "15% opening discount with code OPEN15",
+  "15% off with code OPEN15",
 ];
 
 const yarnsMegaMenu = {
