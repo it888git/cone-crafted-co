@@ -70,7 +70,7 @@ const CartDrawer = () => {
                       if (grams && grams > 0) {
                         const perKg = (price / grams) * 1000;
                         return (
-                          <p className="text-sm font-sans font-bold mt-0.5">
+                          <p className="text-sm font-sans text-muted-foreground mt-0.5">
                             {formatPricePer100g(perKg, item.price.currencyCode)}
                           </p>
                         );
