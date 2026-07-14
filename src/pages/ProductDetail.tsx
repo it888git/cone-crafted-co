@@ -214,21 +214,8 @@ const ProductDetail = () => {
 
             <div>
               <span className="font-sans text-2xl font-semibold text-foreground">
-                {isInternational && lowestVariant
-                  ? `${formatPrice(lowestVariant.amount, lowestVariant.currencyCode)} / ${lowestVariant.label}`
-                  : formatPricePer100g(perKgPrice, currencyCode)
-                }
+                {formatPricePer100g(perKgPrice, currencyCode)}
               </span>
-              {isInternational && lowestVariant && (() => {
-                const grams = extractWeightGrams(lowestVariant.label);
-                if (!grams) return null;
-                const perKg = (lowestVariant.amount / grams) * 1000;
-                return (
-                  <span className="ml-2 font-sans text-base text-muted-foreground">
-                    · {formatPricePer100g(perKg, lowestVariant.currencyCode)}
-                  </span>
-                );
-              })()}
             </div>
 
             {/* Cone weight selection */}
