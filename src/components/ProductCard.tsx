@@ -54,7 +54,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     const hasMultiplePrices = per100gValues.length > 1 && Math.min(...per100gValues) !== Math.max(...per100gValues);
     const lowestPer100g = per100gValues.length > 0 ? Math.min(...per100gValues) : null;
     formattedPrice = lowestPer100g !== null
-      ? `${hasMultiplePrices ? 'from ' : ''}${lowestPer100g.toFixed(2)} ${symbol}/100g`
+      ? `${lowestPer100g.toFixed(2)} ${symbol}/100g`
       : formatPrice(parseFloat(price.amount), currencyCode);
   }
 

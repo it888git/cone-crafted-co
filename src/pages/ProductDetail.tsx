@@ -125,7 +125,7 @@ const ProductDetail = () => {
     const lowestPer100gPD = per100gVals.length > 0 ? Math.min(...per100gVals) : null;
     const hasMultiplePricesPD = per100gVals.length > 1 && Math.min(...per100gVals) !== Math.max(...per100gVals);
     headlinePrice = lowestPer100gPD !== null
-      ? `${hasMultiplePricesPD ? 'from ' : ''}${lowestPer100gPD.toFixed(2)} ${symbolPD}/100g`
+      ? `${lowestPer100gPD.toFixed(2)} ${symbolPD}/100g`
       : formatPricePer100g(perKgPrice, currencyCode);
   }
 
