@@ -60,9 +60,6 @@ const CartDrawer = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-sans text-sm font-semibold text-foreground">{item.product.node.title}</h4>
-                    <p className={`text-sm font-sans mt-0.5 ${isInternational ? 'text-muted-foreground' : 'text-foreground font-bold'}`}>
-                      Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {formatPrice(parseFloat(item.price.amount), item.price.currencyCode)}
-                    </p>
                     {(() => {
                       const weightMatch = item.selectedOptions.map(o => o.value).join('').match(/(\d+)\s*g/i);
                       const grams = weightMatch ? parseInt(weightMatch[1], 10) : null;
@@ -77,6 +74,9 @@ const CartDrawer = () => {
                       }
                       return null;
                     })()}
+                    <p className={`text-sm font-sans mt-0.5 ${isInternational ? 'text-muted-foreground' : 'text-foreground font-bold'}`}>
+                      Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {formatPrice(parseFloat(item.price.amount), item.price.currencyCode)}
+                    </p>
                     <div className="flex items-center gap-2 mt-2">
                       <button
                         onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
