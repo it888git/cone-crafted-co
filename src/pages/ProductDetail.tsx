@@ -242,15 +242,17 @@ const ProductDetail = () => {
               )}
             </div>
 
-            <div>
-              <span className="font-sans text-2xl font-semibold text-foreground">
-                {headlinePrice}
-              </span>
-            </div>
+            {!isInternational && (
+              <div>
+                <span className="font-sans text-2xl font-semibold text-foreground">
+                  {headlinePrice}
+                </span>
+              </div>
+            )}
 
             {/* Cone weight selection */}
             <div className="pt-1">
-              <p className="text-xs font-sans uppercase tracking-widest text-muted-foreground mb-3">Choose cone weight and quantity</p>
+              <p className={`text-xs font-sans uppercase tracking-widest mb-3 ${isInternational ? 'text-foreground font-bold' : 'text-muted-foreground'}`}>Choose cone weight and quantity</p>
               <div className="flex flex-wrap gap-2">
                 {variants.map((v, idx) => {
                   const weight = extractWeightGrams(v.node.title);
