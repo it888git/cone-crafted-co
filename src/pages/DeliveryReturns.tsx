@@ -27,7 +27,7 @@ const DeliveryReturns = () => (
 
           {/* Shipping table */}
            <div className="border border-border rounded-lg overflow-x-auto mb-5 -mx-4 sm:mx-0 sm:rounded-lg">
-            <table className="w-full min-w-[820px] text-sm font-sans">
+            <table className="w-full min-w-[720px] text-sm font-sans">
               <thead>
                 <tr className="bg-muted">
                   <th className="text-left px-4 py-3 font-medium text-foreground w-[24%]">Destination</th>
@@ -35,7 +35,6 @@ const DeliveryReturns = () => (
                   <th className="text-left px-4 py-3 font-medium text-foreground">Delivery Method</th>
                   <th className="text-center px-4 py-3 font-medium text-foreground">Cost</th>
                   <th className="text-left px-4 py-3 font-medium text-foreground">Delivery Time</th>
-                  <th className="text-left px-4 py-3 font-medium text-foreground">Free Delivery</th>
                 </tr>
               </thead>
               <tbody className="text-muted-foreground">
@@ -50,7 +49,6 @@ const DeliveryReturns = () => (
                   <td className="px-4 py-3">Pickup Locker DPD, UNISEND, OMNIVA (Nearest to your address)</td>
                   <td className="px-4 py-3 text-center">3.50€</td>
                   <td className="px-4 py-3">2 – 4 business days</td>
-                  <td className="px-4 py-3" rowSpan={4}>Orders 55.00€ and up (Pickup Locker)</td>
                 </tr>
                 <tr className="border-t border-border">
                   <td className="px-4 py-3">ALL</td>
@@ -80,7 +78,6 @@ const DeliveryReturns = () => (
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
                   <td className="px-4 py-3 text-center">£7.50</td>
                   <td className="px-4 py-3">4 – 7 business days</td>
-                  <td className="px-4 py-3" rowSpan={4}>Orders £45.00 and up (Express Mail)</td>
                 </tr>
                 <tr className="border-t border-border">
                   <td className="px-4 py-3">1.8kg and up</td>
@@ -89,15 +86,15 @@ const DeliveryReturns = () => (
                   <td className="px-4 py-3">4 – 7 business days</td>
                 </tr>
                 <tr className="border-t border-border">
-                  <td className="px-4 py-3">Orders £45.00 and up</td>
-                  <td className="px-4 py-3">Express Mail (Post Office)</td>
-                  <td className="px-4 py-3 text-center">FREE</td>
-                  <td className="px-4 py-3">4 – 7 business days</td>
-                </tr>
-                <tr className="border-t border-border">
                   <td className="px-4 py-3">ALL</td>
                   <td className="px-4 py-3">Home Delivery UPS Express</td>
                   <td className="px-4 py-3 text-center">£15.50</td>
+                  <td className="px-4 py-3">4 – 7 business days</td>
+                </tr>
+                <tr className="border-t border-border">
+                  <td className="px-4 py-3">Orders £45.00 and up</td>
+                  <td className="px-4 py-3">Express Mail (Post Office)</td>
+                  <td className="px-4 py-3 text-center">FREE</td>
                   <td className="px-4 py-3">4 – 7 business days</td>
                 </tr>
 
@@ -112,7 +109,6 @@ const DeliveryReturns = () => (
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
                   <td className="px-4 py-3 text-center">6.50€</td>
                   <td className="px-4 py-3">4 – 8 business days</td>
-                  <td className="px-4 py-3" rowSpan={5}>Orders 55.00€ and up (Express Mail)</td>
                 </tr>
                 <tr className="border-t border-border">
                   <td className="px-4 py-3">1.8kg and up</td>
@@ -150,7 +146,6 @@ const DeliveryReturns = () => (
                   <td className="px-4 py-3">Express Mail (Post Office)</td>
                   <td className="px-4 py-3 text-center">FREE</td>
                   <td className="px-4 py-3">4 – 12 business days</td>
-                  <td className="px-4 py-3" rowSpan={3}>Included (Express Mail)</td>
                 </tr>
                 <tr className="border-t border-border">
                   <td className="px-4 py-3">0 – 1.8kg</td>
@@ -168,6 +163,7 @@ const DeliveryReturns = () => (
               </tbody>
             </table>
           </div>
+
 
 
 
