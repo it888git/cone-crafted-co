@@ -30,7 +30,11 @@ const categoryRows = {
 };
 
 const Index = () => {
-  const { data: products, isLoading } = useShopifyProducts(10);
+  const { data: allProducts, isLoading } = useShopifyProducts(30);
+  const products = (allProducts || [])
+    .filter((p) => p.node.variants.edges.some((v) => v.node.availableForSale))
+    .sort((a, b) => new Date(b.node.createdAt).getTime() - new Date(a.node.createdAt).getTime())
+    .slice(0, 10);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
