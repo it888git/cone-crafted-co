@@ -33,9 +33,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
   let formattedPrice: string;
   if (isInternational) {
     // International: show cheapest variant absolute price + weight label
-    const lowest = getLowestVariantPrice(node.variants.edges);
+    const availableVariants = node.variants.edges.filter((v) => v.node.availableForSale);
+    const pool = availableVariants.length > 0 ? availableVariants : node.variants.edges;
+    const lowest = getLowestVariantPrice(pool);
     if (lowest) {
-      const hasMultiple = node.variants.edges.length > 1;
+      const hasMultiple = pool.length > 1;
       formattedPrice = `${hasMultiple ? 'from ' : ''}${symbol}${lowest.amount.toFixed(2)} / ${lowest.label}`;
     } else {
       formattedPrice = formatPrice(parseFloat(price.amount), currencyCode);
