@@ -60,7 +60,7 @@ const CartDrawer = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-sans text-sm font-semibold text-foreground">{item.product.node.title}</h4>
-                    <p className="text-sm text-muted-foreground font-sans mt-0.5">
+                    <p className={`text-sm font-sans mt-0.5 ${isInternational ? 'text-muted-foreground' : 'text-foreground font-bold'}`}>
                       Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {formatPrice(parseFloat(item.price.amount), item.price.currencyCode)}
                     </p>
                     {(() => {
@@ -70,7 +70,7 @@ const CartDrawer = () => {
                       if (grams && grams > 0) {
                         const perKg = (price / grams) * 1000;
                         return (
-                          <p className="text-sm font-sans font-bold mt-0.5">
+                          <p className="text-sm font-sans text-muted-foreground mt-0.5">
                             {formatPricePer100g(perKg, item.price.currencyCode)}
                           </p>
                         );
