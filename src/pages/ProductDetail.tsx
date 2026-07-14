@@ -103,6 +103,7 @@ const ProductDetail = () => {
   // Similar yarns: match by product category (productType), fallback to title keyword
   const similarProducts = (allProducts || []).filter((p) => {
     if (p.node.handle === node.handle) return false;
+    if (!p.node.variants.edges.some((v) => v.node.availableForSale)) return false;
     if (node.productType && p.node.productType) {
       return p.node.productType.toLowerCase() === node.productType.toLowerCase();
     }
@@ -319,7 +320,7 @@ const ProductDetail = () => {
               )}
               <Button
                 className={`flex-1 py-6 text-base font-sans font-semibold tracking-wide shadow-md border-0 ${
-                  !available && variantChosen
+                  (!available && variantChosen) || !node.variants.edges.some((v) => v.node.availableForSale)
                     ? "bg-muted text-muted-foreground hover:bg-muted cursor-not-allowed"
                     : "bg-primary text-primary-foreground hover:bg-primary/90"
                 }`}
@@ -328,6 +329,8 @@ const ProductDetail = () => {
               >
                 {cartLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
+                ) : !node.variants.edges.some((v) => v.node.availableForSale) ? (
+                  "Sold Out"
                 ) : !available && variantChosen ? (
                   "Sold Out"
                 ) : (
@@ -342,27 +345,24 @@ const ProductDetail = () => {
             {/* Product tags as features */}
             {node.tags && node.tags.length > 0 && (
               <div className="border-t border-border pt-5">
-                <p className="text-xs font-sans uppercase tracking-widest text-muted-foreground mb-3">Features</p>
+                <p className="text-xs font-sans uppercase tracking-widest text-muted-foreground mb-3">About the Yarn</p>
                 <ul className="flex flex-wrap gap-2">
-                  {parseProductTags(node.tags).map((t, i) => {
-                    const term = (t.value || t.label).toLowerCase();
-                    return (
-                      <li key={`${t.label}-${i}`}>
-                        <Link
-                          to={`/products?feature=${encodeURIComponent(term)}`}
-                          className="inline-block px-3 py-1.5 rounded-full border border-border bg-muted/40 text-xs font-sans text-foreground hover:bg-muted hover:border-foreground/40 transition-colors"
-                        >
-                          {t.value ? (
-                            <>
-                              <span className="text-muted-foreground">{t.label}:</span> <span className="font-medium">{t.value}</span>
-                            </>
-                          ) : (
-                            <span className="font-medium capitalize">{t.label}</span>
-                          )}
-                        </Link>
-                      </li>
-                    );
-                  })}
+                  {parseProductTags(node.tags).map((t, i) => (
+                    <li key={`${t.label}-${i}`}>
+                      <Link
+                        to={buildFilterHref(t.label, t.value)}
+                        className="inline-block px-3 py-1.5 rounded-full border border-border bg-muted/40 text-xs font-sans text-foreground hover:bg-muted hover:border-foreground/40 transition-colors"
+                      >
+                        {t.value ? (
+                          <>
+                            <span className="text-muted-foreground">{t.label}:</span> <span className="font-medium">{t.value}</span>
+                          </>
+                        ) : (
+                          <span className="font-medium capitalize">{t.label}</span>
+                        )}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             )}

@@ -196,6 +196,8 @@ const Products = () => {
   const searchQuery = params.get("search") || undefined;
   const categoryParam = params.get("category") || undefined;
   const featureParam = params.get("feature") || undefined;
+  const colorParam = params.get("color") || undefined;
+  const weightParam = params.get("weight") || undefined;
 
   // Resolve category param to matching yarnCategory key
   const resolvedCategory = useMemo(() => {
@@ -213,12 +215,26 @@ const Products = () => {
     return match ? [match] : [];
   }, [featureParam]);
 
+  const resolvedColors = useMemo(() => {
+    if (!colorParam) return [];
+    const kw = colorParam.toLowerCase();
+    const match = colorFilters.find(c => c.name.toLowerCase() === kw);
+    return match ? [match.name] : [];
+  }, [colorParam]);
+
+  const resolvedWeights = useMemo(() => {
+    if (!weightParam) return [];
+    const kw = weightParam.toLowerCase();
+    const match = weightFilters.find(w => w.toLowerCase() === kw);
+    return match ? [match] : [];
+  }, [weightParam]);
+
   const [localSearch, setLocalSearch] = useState(searchQuery || "");
   const [sortBy, setSortBy] = useState("latest");
   const [activeCategory, setActiveCategory] = useState(resolvedCategory);
-  const [activeWeights, setActiveWeights] = useState<string[]>([]);
+  const [activeWeights, setActiveWeights] = useState<string[]>(resolvedWeights);
   const [activeFeatures, setActiveFeatures] = useState<string[]>(resolvedFeatures);
-  const [activeColors, setActiveColors] = useState<string[]>([]);
+  const [activeColors, setActiveColors] = useState<string[]>(resolvedColors);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [showFloatingFilter, setShowFloatingFilter] = useState(false);
 
@@ -229,8 +245,10 @@ const Products = () => {
   useEffect(() => {
     setActiveCategory(resolvedCategory);
     setActiveFeatures(resolvedFeatures);
+    setActiveColors(resolvedColors);
+    setActiveWeights(resolvedWeights);
     setLocalSearch(searchQuery || "");
-  }, [resolvedCategory, resolvedFeatures, searchQuery]);
+  }, [resolvedCategory, resolvedFeatures, resolvedColors, resolvedWeights, searchQuery]);
 
   useEffect(() => {
     const onScroll = () => setShowFloatingFilter(window.scrollY > 200);
