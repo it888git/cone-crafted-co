@@ -83,7 +83,7 @@ export function getLowestVariantPrice(
   }
   
   const grams = extractWeightGrams(lowest.node.title);
-  const label = grams ? `${grams}g cone` : lowest.node.title;
+  const label = grams ? `${grams}g` : lowest.node.title;
   
   return {
     amount: parseFloat(lowest.node.price.amount),
