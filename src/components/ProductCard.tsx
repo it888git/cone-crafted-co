@@ -26,12 +26,18 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
 
-  // Price display: international = lowest variant price, others = per kg
+  // Price display: international = lowest variant price + per 100g, others = per 100g
   let formattedPrice: string;
+  let secondaryPrice: string | null = null;
   if (isInternational) {
     const lowest = getLowestVariantPrice(node.variants.edges);
     if (lowest) {
       formattedPrice = `${formatPrice(lowest.amount, lowest.currencyCode)} / ${lowest.label}`;
+      const grams = lowest.label.match(/(\d+)/);
+      if (grams) {
+        const perKg = (lowest.amount / parseInt(grams[1], 10)) * 1000;
+        secondaryPrice = formatPricePer100g(perKg, lowest.currencyCode);
+      }
     } else {
       formattedPrice = formatPrice(parseFloat(price.amount), price.currencyCode);
     }
