@@ -118,6 +118,13 @@ const CartDrawer = () => {
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-semibold">{formatPrice(totalPrice, items[0]?.price.currencyCode || 'EUR')}</span>
               </div>
+              {isInternational && (
+                <div className="flex justify-center">
+                  <span className="inline-block px-2 py-0.5 rounded-full bg-accent text-accent-foreground text-[10px] font-sans font-semibold tracking-wider uppercase">
+                    Free Delivery Included
+                  </span>
+                </div>
+              )}
               <Button
                 onClick={handleCheckout}
                 className="w-full bg-primary text-primary-foreground hover:opacity-90 font-sans py-6"

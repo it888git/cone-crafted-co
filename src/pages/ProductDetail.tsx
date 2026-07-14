@@ -100,21 +100,35 @@ const ProductDetail = () => {
   const { perKg: perKgPrice } = getPerKgPrice(firstVariant?.price.amount || "0", firstVariant?.title || "");
   const lowestVariant = getLowestVariantPrice(variants);
 
-  // Lowest per-100g across all variants (matches ProductCard display)
   const CURRENCY_SYMBOLS_PD: Record<string, string> = { EUR: '€', USD: '$', GBP: '£', JPY: '¥', AUD: 'A$', CAD: 'C$', CHF: 'CHF' };
   const symbolPD = CURRENCY_SYMBOLS_PD[currencyCode] || currencyCode;
-  const per100gVals = variants
-    .map((v) => {
-      const g = extractWeightGrams(v.node.title);
-      if (!g || g <= 0) return null;
-      return (parseFloat(v.node.price.amount) / g) * 100;
-    })
-    .filter((n): n is number => n !== null);
-  const lowestPer100gPD = per100gVals.length > 0 ? Math.min(...per100gVals) : null;
-  const hasMultiplePricesPD = per100gVals.length > 1 && Math.min(...per100gVals) !== Math.max(...per100gVals);
-  const headlinePrice = lowestPer100gPD !== null
-    ? `${hasMultiplePricesPD ? 'from ' : ''}${lowestPer100gPD.toFixed(1)} ${symbolPD}/100g`
-    : formatPricePer100g(perKgPrice, currencyCode);
+
+  let headlinePrice: string;
+  if (isInternational) {
+    const availableVariants = variants.filter((v) => v.node.availableForSale);
+    const pool = availableVariants.length > 0 ? availableVariants : variants;
+    const lowestIntl = getLowestVariantPrice(pool);
+    if (lowestIntl) {
+      const hasMultipleIntl = pool.length > 1;
+      headlinePrice = `${hasMultipleIntl ? 'from ' : ''}${symbolPD}${lowestIntl.amount.toFixed(2)} / ${lowestIntl.label}`;
+    } else {
+      headlinePrice = formatPricePer100g(perKgPrice, currencyCode);
+    }
+  } else {
+    const per100gVals = variants
+      .map((v) => {
+        const g = extractWeightGrams(v.node.title);
+        if (!g || g <= 0) return null;
+        return (parseFloat(v.node.price.amount) / g) * 100;
+      })
+      .filter((n): n is number => n !== null);
+    const lowestPer100gPD = per100gVals.length > 0 ? Math.min(...per100gVals) : null;
+    const hasMultiplePricesPD = per100gVals.length > 1 && Math.min(...per100gVals) !== Math.max(...per100gVals);
+    headlinePrice = lowestPer100gPD !== null
+      ? `${hasMultiplePricesPD ? 'from ' : ''}${lowestPer100gPD.toFixed(1)} ${symbolPD}/100g`
+      : formatPricePer100g(perKgPrice, currencyCode);
+  }
+
 
   // Similar yarns: match by product category (productType), fallback to title keyword
   const similarProducts = (allProducts || []).filter((p) => {
