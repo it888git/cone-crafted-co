@@ -10,14 +10,14 @@ import { useAuthModalStore } from "@/stores/authModalStore";
 import { useMarketStore } from "@/stores/marketStore";
 
 const announcements = [
+  "New store refresh — welcome 🎉",
   "reviews",
-  "Free Delivery from 60€",
   "Italian Yarn Selection",
 ];
 
 const internationalAnnouncements = [
+  "New store refresh — welcome 🎉",
   "reviews",
-  "Free Express Mail Delivery",
   "Italian Yarn Selection",
 ];
 
