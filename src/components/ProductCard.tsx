@@ -26,22 +26,36 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
 
-  // Price: find lowest per-100g across all variants, rounded to 1 decimal.
   const currencyCode = firstVariant?.price.currencyCode || price.currencyCode || 'EUR';
   const CURRENCY_SYMBOLS: Record<string, string> = { EUR: '€', USD: '$', GBP: '£', JPY: '¥', AUD: 'A$', CAD: 'C$', CHF: 'CHF' };
   const symbol = CURRENCY_SYMBOLS[currencyCode] || currencyCode;
-  const per100gValues = node.variants.edges
-    .map((v) => {
-      const grams = extractWeightGrams(v.node.title);
-      if (!grams || grams <= 0) return null;
-      return (parseFloat(v.node.price.amount) / grams) * 100;
-    })
-    .filter((n): n is number => n !== null);
-  const hasMultiplePrices = per100gValues.length > 1 && Math.min(...per100gValues) !== Math.max(...per100gValues);
-  const lowestPer100g = per100gValues.length > 0 ? Math.min(...per100gValues) : null;
-  const formattedPrice = lowestPer100g !== null
-    ? `${hasMultiplePrices ? 'from ' : ''}${lowestPer100g.toFixed(1)} ${symbol}/100g`
-    : formatPrice(parseFloat(price.amount), currencyCode);
+
+  let formattedPrice: string;
+  if (isInternational) {
+    // International: show cheapest variant absolute price + weight label
+    const lowest = getLowestVariantPrice(node.variants.edges);
+    if (lowest) {
+      const hasMultiple = node.variants.edges.length > 1;
+      formattedPrice = `${hasMultiple ? 'from ' : ''}${symbol}${lowest.amount.toFixed(2)} / ${lowest.label}`;
+    } else {
+      formattedPrice = formatPrice(parseFloat(price.amount), currencyCode);
+    }
+  } else {
+    // EU: lowest per-100g across variants, rounded to 1 decimal
+    const per100gValues = node.variants.edges
+      .map((v) => {
+        const grams = extractWeightGrams(v.node.title);
+        if (!grams || grams <= 0) return null;
+        return (parseFloat(v.node.price.amount) / grams) * 100;
+      })
+      .filter((n): n is number => n !== null);
+    const hasMultiplePrices = per100gValues.length > 1 && Math.min(...per100gValues) !== Math.max(...per100gValues);
+    const lowestPer100g = per100gValues.length > 0 ? Math.min(...per100gValues) : null;
+    formattedPrice = lowestPer100g !== null
+      ? `${hasMultiplePrices ? 'from ' : ''}${lowestPer100g.toFixed(1)} ${symbol}/100g`
+      : formatPrice(parseFloat(price.amount), currencyCode);
+  }
+
 
   const descriptionText = getProductDescriptionText(node.description, node.descriptionHtml);
 
