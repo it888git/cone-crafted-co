@@ -219,6 +219,16 @@ const ProductDetail = () => {
                   : formatPricePer100g(perKgPrice, currencyCode)
                 }
               </span>
+              {isInternational && lowestVariant && (() => {
+                const grams = extractWeightGrams(lowestVariant.label);
+                if (!grams) return null;
+                const perKg = (lowestVariant.amount / grams) * 1000;
+                return (
+                  <span className="ml-2 font-sans text-base text-muted-foreground">
+                    · {formatPricePer100g(perKg, lowestVariant.currencyCode)}
+                  </span>
+                );
+              })()}
             </div>
 
             {/* Cone weight selection */}
