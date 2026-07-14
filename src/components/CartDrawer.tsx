@@ -33,6 +33,13 @@ const CartDrawer = () => {
           </SheetDescription>
         </SheetHeader>
 
+        <div className="flex-shrink-0 bg-[#F7941E]/10 border border-[#F7941E]/30 rounded-md px-3 py-2 mt-2">
+          <p className="font-sans text-xs text-foreground text-center">
+            🎉 Re-opening offer: <span className="font-semibold">15% OFF</span> with code <span className="font-semibold">OPEN15</span>
+          </p>
+        </div>
+
+
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center flex-1 text-center">
             <ShoppingBag className="h-12 w-12 text-muted-foreground mb-4" />
