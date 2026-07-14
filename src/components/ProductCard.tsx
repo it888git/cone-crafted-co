@@ -111,9 +111,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
           )}
           <p className="font-sans text-sm font-semibold text-foreground pt-0.5">
             {formattedPrice}
-            {secondaryPrice && (
-              <span className="font-normal text-muted-foreground"> · {secondaryPrice}</span>
-            )}
           </p>
         </div>
       </Link>
