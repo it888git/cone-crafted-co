@@ -230,7 +230,7 @@ const ProductDetail = () => {
 
             <div>
               <span className="font-sans text-2xl font-semibold text-foreground">
-                {formatPricePer100g(perKgPrice, currencyCode)}
+                {headlinePrice}
               </span>
             </div>
 
