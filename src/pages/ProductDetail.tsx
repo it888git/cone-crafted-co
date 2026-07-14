@@ -214,21 +214,8 @@ const ProductDetail = () => {
 
             <div>
               <span className="font-sans text-2xl font-semibold text-foreground">
-                {isInternational && lowestVariant
-                  ? `${formatPrice(lowestVariant.amount, lowestVariant.currencyCode)} / ${lowestVariant.label}`
-                  : formatPricePer100g(perKgPrice, currencyCode)
-                }
+                {formatPricePer100g(perKgPrice, currencyCode)}
               </span>
-              {isInternational && lowestVariant && (() => {
-                const grams = extractWeightGrams(lowestVariant.label);
-                if (!grams) return null;
-                const perKg = (lowestVariant.amount / grams) * 1000;
-                return (
-                  <span className="ml-2 font-sans text-base text-muted-foreground">
-                    · {formatPricePer100g(perKg, lowestVariant.currencyCode)}
-                  </span>
-                );
-              })()}
             </div>
 
             {/* Cone weight selection */}
@@ -259,20 +246,8 @@ const ProductDetail = () => {
                 })}
               </div>
 
-              {/* Selected variant price – hide for international since main price already shows per-cone */}
-              {variantChosen && selectedVariant && !isInternational && (
-                <div className="mt-3 flex items-baseline gap-2">
-                  <span className="font-sans text-xl font-semibold text-foreground">
-                    {formatPrice(parseFloat(selectedVariant.price.amount), selectedVariant.price.currencyCode)}
-                  </span>
-                  <span className="text-sm font-sans text-muted-foreground">
-                    / {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g cone` : selectedVariant.title}
-                  </span>
-                </div>
-              )}
-              {/* International: show selected variant price only if different from lowest */}
-              {variantChosen && selectedVariant && isInternational && lowestVariant && 
-                parseFloat(selectedVariant.price.amount) !== lowestVariant.amount && (
+              {/* Selected variant price – shown for all markets */}
+              {variantChosen && selectedVariant && (
                 <div className="mt-3 flex items-baseline gap-2">
                   <span className="font-sans text-xl font-semibold text-foreground">
                     {formatPrice(parseFloat(selectedVariant.price.amount), selectedVariant.price.currencyCode)}
