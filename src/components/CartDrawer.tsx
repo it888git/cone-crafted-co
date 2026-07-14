@@ -118,6 +118,13 @@ const CartDrawer = () => {
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-semibold">{formatPrice(totalPrice, items[0]?.price.currencyCode || 'EUR')}</span>
               </div>
+              {isInternational && (
+                <div className="flex justify-end">
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-accent text-accent-foreground text-[9px] font-sans font-semibold tracking-wider uppercase">
+                    Free Delivery Included
+                  </span>
+                </div>
+              )}
               <Button
                 onClick={handleCheckout}
                 className="w-full bg-primary text-primary-foreground hover:opacity-90 font-sans py-6"
@@ -132,14 +139,7 @@ const CartDrawer = () => {
                   </span>
                 )}
               </Button>
-              
-              {isInternational && (
-                <div className="flex justify-center">
-                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-accent text-accent-foreground text-[9px] font-sans font-semibold tracking-wider uppercase">
-                    Free Delivery Included
-                  </span>
-                </div>
-              )}
+
 
               <div className="flex justify-center mt-3">
                 <img src="/icons/payment-methods.png" alt="Visa, Mastercard, Amex, Apple Pay, Google Pay" className="h-10 opacity-60" />
