@@ -161,8 +161,9 @@ const DeliveryReturns = () => (
                 <tr className="border-t border-border">
                   <td className="px-4 py-3">1.8kg and up</td>
                   <td className="px-4 py-3">Express Delivery (FEDEX or UPS)</td>
-                  <td className="px-4 py-3 text-center">34.50€</td>
-                  <td className="px-4 py-3">3 – 6 working days</td>
+                  <td className="px-4 py-3 text-center">$34.90</td>
+                  <td className="px-4 py-3">3 – 6 business days</td>
+
                 </tr>
               </tbody>
             </table>
