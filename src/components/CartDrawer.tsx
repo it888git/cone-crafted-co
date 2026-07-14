@@ -133,6 +133,14 @@ const CartDrawer = () => {
                 )}
               </Button>
               
+              {isInternational && (
+                <div className="flex justify-center">
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-accent text-accent-foreground text-[9px] font-sans font-semibold tracking-wider uppercase">
+                    Free Delivery Included
+                  </span>
+                </div>
+              )}
+
               <div className="flex justify-center mt-3">
                 <img src="/icons/payment-methods.png" alt="Visa, Mastercard, Amex, Apple Pay, Google Pay" className="h-10 opacity-60" />
               </div>
