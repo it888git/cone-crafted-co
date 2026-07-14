@@ -32,6 +32,22 @@ const parseProductTags = (tags: string[]): { label: string; value: string }[] =>
   return attrs;
 };
 
+// Known filter buckets on the archive page — used to route feature clicks
+const WEIGHT_TAGS = ["#0 Lace","#1 Fingering","#2 Sport","#3 DK/Light Worsted","#4 Aran/Worsted","#5 Chunky/Bulky"];
+const FEATURE_TAGS = ["Tweed","Sequin","Boucle","Kidsilk"];
+const COLOR_TAGS = ["White","Black","Grey","Beige","Brown","Red","Pink","Orange","Yellow","Green","Blue","Purple","Multi"];
+const CATEGORY_KEYWORDS = ["wool","cashmere","mohair","cotton","viscose","linen","silk","alpaca","synthetic"];
+
+const buildFilterHref = (label: string, value: string): string => {
+  const term = (value || label).trim();
+  const val = term.toLowerCase();
+  if (WEIGHT_TAGS.some((w) => w.toLowerCase() === val)) return `/products?weight=${encodeURIComponent(term)}`;
+  if (FEATURE_TAGS.some((f) => f.toLowerCase() === val)) return `/products?feature=${encodeURIComponent(term)}`;
+  if (COLOR_TAGS.some((c) => c.toLowerCase() === val)) return `/products?color=${encodeURIComponent(term)}`;
+  if (CATEGORY_KEYWORDS.some((c) => val.includes(c))) return `/products?category=${encodeURIComponent(val)}`;
+  return `/products?search=${encodeURIComponent(term)}`;
+};
+
 const ProductDetail = () => {
   const { id: handle } = useParams();
   const { data: product, isLoading } = useShopifyProduct(handle || "");
