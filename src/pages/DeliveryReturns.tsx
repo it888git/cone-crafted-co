@@ -169,7 +169,7 @@ const DeliveryReturns = () => (
 
 
           <p className="text-xs font-sans text-muted-foreground leading-relaxed">
-            To the United States we deliver with the DDP (Delivered Duty Paid) service — all tariffs and import duties are prepaid by us, so you will not be charged any extra costs on delivery. For orders to other countries outside of Europe, please keep in mind they may be subject to import duties and/or additional taxes or expenses, which will be your responsibility. We advise you contact your local customs office or taxation authority for more information.
+            To the United States we deliver with the DDP (Delivered Duty Paid) service — all tariffs and import duties are prepaid by us, so you will not be charged any extra costs on delivery.
           </p>
 
         </div>
