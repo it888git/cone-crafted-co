@@ -353,7 +353,7 @@ const MobileNavItem = ({ link, onClose }: { link: NavItem; onClose: () => void }
               )}
               {col.items.map((item) => {
                 const to = knitterRoutes[item] || (() => {
-                  const isFeature = ["Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby", "Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille"].includes(item);
+                  const isFeature = ["Fluffy", "Boucle", "Tweed", "Sequin"].includes(item);
                   if (link.label === "Yarns" && isFeature) return `/products?feature=${encodeURIComponent(item.toLowerCase())}`;
                   if (link.label === "Yarns" && item !== "Other Composition") return `/products?category=${encodeURIComponent(item.toLowerCase())}`;
                   return "/products";
