@@ -32,15 +32,7 @@ const yarnsMegaMenu = {
   },
   feature1: {
     title: "Shop by feature",
-    items: ["Fluffy", "Boucle", "Shiny", "Sequins"],
-  },
-  feature2: {
-    title: "",
-    items: ["Tape", "Scrubby", "Tweed", "Luxurious"],
-  },
-  feature3: {
-    title: "",
-    items: ["Thick & thin", "Gradient", "Elastic", "Chenille"],
+    items: ["Fluffy", "Boucle", "Tweed", "Sequin"],
   },
 };
 
@@ -272,7 +264,7 @@ const Header = () => {
                         // Build filter URL for composition/feature items
                         let to = knitterRoutes[item] || "/products";
                         if (!knitterRoutes[item] && link.label === "Yarns") {
-                          const isFeature = ["Fluffy", "Boucle", "Shiny", "Sequins", "Tape", "Scrubby", "Tweed", "Luxurious", "Thick & thin", "Gradient", "Elastic", "Chenille"].includes(item);
+                          const isFeature = ["Fluffy", "Boucle", "Tweed", "Sequin"].includes(item);
                           if (isFeature) {
                             to = `/products?feature=${encodeURIComponent(item.toLowerCase())}`;
                           } else if (item !== "Other Composition") {
