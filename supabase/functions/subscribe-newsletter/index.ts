@@ -1,96 +1,81 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { z } from 'npm:zod@3.23.8';
 
-const SHOPIFY_STORE_DOMAIN = 'ssduqq-wp.myshopify.com';
-const SHOPIFY_API_VERSION = '2025-07';
-const ADMIN_URL = `https://${SHOPIFY_STORE_DOMAIN}/admin/api/${SHOPIFY_API_VERSION}/graphql.json`;
-
-const CUSTOMER_CREATE_MUTATION = `
-  mutation customerCreate($input: CustomerInput!) {
-    customerCreate(input: $input) {
-      customer { id email }
-      userErrors { field message code }
-    }
-  }
-`;
-
-const isValidEmail = (v: unknown): v is string =>
-  typeof v === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) && v.length <= 255;
+const BodySchema = z.object({
+  email: z.string().trim().toLowerCase().email().max(255),
+});
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
-
-  const jsonHeaders = { ...corsHeaders, 'Content-Type': 'application/json' };
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
+  }
 
   try {
-    if (req.method !== 'POST') {
-      return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers: jsonHeaders });
+    const apiKey = Deno.env.get('OMNISEND_API_KEY');
+    if (!apiKey) {
+      console.error('OMNISEND_API_KEY missing');
+      return new Response(JSON.stringify({ error: 'Server misconfigured' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
-    const adminToken = Deno.env.get('SHOPIFY_ADMIN_API_TOKEN') || Deno.env.get('SHOPIFY_ACCESS_TOKEN');
-    if (!adminToken) {
-      console.error('Missing SHOPIFY_ADMIN_API_TOKEN');
-      return new Response(JSON.stringify({ error: 'Server not configured' }), { status: 500, headers: jsonHeaders });
+    const parsed = BodySchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: 'Invalid email' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
+    const { email } = parsed.data;
 
-    const body = await req.json().catch(() => null);
-    const email = body?.email?.trim?.().toLowerCase();
-    if (!isValidEmail(email)) {
-      return new Response(JSON.stringify({ error: 'Invalid email' }), { status: 400, headers: jsonHeaders });
-    }
-
-    const shopifyRes = await fetch(ADMIN_URL, {
+    const res = await fetch('https://api.omnisend.com/v3/contacts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': adminToken,
+        'X-API-KEY': apiKey,
       },
       body: JSON.stringify({
-        query: CUSTOMER_CREATE_MUTATION,
-        variables: {
-          input: {
-            email,
-            tags: ['newsletter'],
-            emailMarketingConsent: {
-              marketingState: 'SUBSCRIBED',
-              marketingOptInLevel: 'SINGLE_OPT_IN',
+        identifiers: [
+          {
+            type: 'email',
+            id: email,
+            channels: {
+              email: { status: 'subscribed', statusDate: new Date().toISOString() },
             },
           },
-        },
+        ],
+        tags: ['newsletter', 'website-signup'],
       }),
     });
 
-    if (!shopifyRes.ok) {
-      const text = await shopifyRes.text();
-      console.error(`Shopify admin error [${shopifyRes.status}]:`, text);
-      return new Response(JSON.stringify({ error: 'Upstream error', status: shopifyRes.status }), {
-        status: 502,
-        headers: jsonHeaders,
-      });
+    const text = await res.text();
+
+    // Omnisend returns 409 (or similar) if contact already exists — handle gracefully
+    if (!res.ok) {
+      const alreadyExists = res.status === 409 || /already exists|duplicate/i.test(text);
+      if (alreadyExists) {
+        return new Response(JSON.stringify({ alreadySubscribed: true }), {
+          status: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      console.error(`Omnisend error [${res.status}]: ${text}`);
+      return new Response(
+        JSON.stringify({ error: 'Provider request failed', status: res.status, details: text }),
+        { status: res.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+      );
     }
 
-    const data = await shopifyRes.json();
-    const userErrors = data?.data?.customerCreate?.userErrors ?? [];
-
-    // Treat "already taken" (already a customer / already subscribed) as success — idempotent from user POV.
-    const isAlreadyTaken = userErrors.some(
-      (e: { code?: string; message?: string }) =>
-        e.code === 'TAKEN' || /taken|already/i.test(e.message ?? ''),
-    );
-
-    if (userErrors.length > 0 && !isAlreadyTaken) {
-      console.error('customerCreate userErrors:', userErrors);
-      return new Response(JSON.stringify({ error: 'Could not subscribe', details: userErrors }), {
-        status: 400,
-        headers: jsonHeaders,
-      });
-    }
-
-    return new Response(JSON.stringify({ ok: true, alreadySubscribed: isAlreadyTaken }), {
+    return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: jsonHeaders,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (err) {
-    console.error('subscribe-newsletter error:', err);
-    return new Response(JSON.stringify({ error: 'Unexpected error' }), { status: 500, headers: jsonHeaders });
+    console.error('subscribe-newsletter exception:', err);
+    return new Response(JSON.stringify({ error: 'Internal error' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 });
