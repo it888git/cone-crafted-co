@@ -1,31 +1,36 @@
-## Problem
+## Ką padarysiu
 
-- `src/pages/Index.tsx` hero and category images are `import`-ed from `src/assets/*` → Vite bundles them into `/assets/*.jpg|png|webp` on the deployed site. These work without any subscription.
-- `src/components/EtsyReviews.tsx` and `src/components/CustomerCreations.tsx` use `https://i.ibb.co/<code>/<filename>` URLs that were constructed from your `https://ibb.co/<code>` share links. Those short codes are the ibb.co **page** IDs, not the direct-image IDs, so the URLs 404 in production.
+Sujungsiu naujienlaiškio formą (footeryje ir „Join Our Community" sekcijoje) su tavo Shopify parduotuve, kad kiekvienas paliktas emailas atsirastų **Shopify Admin → Customers** sąraše su pažymėtu „Accepts email marketing" laukeliu.
 
-Two clean fixes are possible. Pick one:
+## Kaip tai veiks
 
-### Option A — Resolve the real direct URLs from ibb.co (keep external hosting, zero repo weight)
-For every `https://ibb.co/<code>` share link you gave me, fetch the page, read the `<meta property="og:image">` (or the `#image-viewer-container img[src]`), and swap in that real `https://i.ibb.co/.../<hash>/<name>.<ext>` URL in:
-- `src/components/EtsyReviews.tsx` (12 review images)
-- `src/components/CustomerCreations.tsx` (8 About-Us / creations images)
+1. Vartotojas įveda emailą formoje ir paspaudžia „Subscribe" / „Join".
+2. Frontend'as siunčia užklausą į saugią backend funkciją (Lovable Cloud edge function).
+3. Edge funkcija kviečia Shopify Admin API ir sukuria/atnaujina customer įrašą su:
+   - email
+   - `emailMarketingConsent.marketingState = SUBSCRIBED`
+   - tag'as `newsletter` (kad lengvai atfiltruotum Shopify admine)
+4. Sėkmės atveju – toast „Thanks for subscribing! 🎉". Jei emailas jau buvo prenumeruotas – tiek pat draugiška žinutė (be klaidos).
 
-Pros: no files added to the repo, no build size increase.
-Cons: still depends on a third party (ibb.co) staying up and not changing URLs.
+## Kur juos matysi
 
-### Option B — Bundle the images into the app (fully self-hosted, no external deps)
-Download each image once, place them under `src/assets/reviews/` and `src/assets/creations/`, `import` them in the two components. They ship inside the deployed static bundle just like the hero image.
+Shopify Admin → **Customers** → filtras „Email subscribers" arba tag `newsletter`. Iš ten galėsi eksportuoti CSV arba tiesiai siųsti kampanijas per Shopify Email / bet kurią kitą marketing programėlę.
 
-Pros: images load as long as the site is deployed, no third-party dependency, works offline of ibb.co.
-Cons: ~1–3 MB added to the repo (depending on original sizes).
+## Techninės detalės
 
-### Files that will change either way
-- `src/components/EtsyReviews.tsx` — replace the 12 `r1…r10 / rKim / rDulce` URL constants.
-- `src/components/CustomerCreations.tsx` — replace the 8 entries in the `images` array.
+- **Lovable Cloud** įjungimas (jei dar neįjungtas) – reikalingas edge funkcijai.
+- Nauja edge funkcija `subscribe-newsletter` (Deno) – priima `{ email }`, validuoja formatu, kviečia Shopify Admin GraphQL `customerCreate` mutation. Jei grąžina „email has already been taken" – laikom kaip sėkmę (be klaidos vartotojui).
+- Shopify Admin API tokenas saugomas kaip secret (`SHOPIFY_ADMIN_API_TOKEN`) – paprašysiu jo, kai atėjus laikas (reikės Custom App su `write_customers` scope tavo Shopify admine, arba galiu paruošti tikslią instrukciją, kaip jį gauti per 2 min).
+- `SHOPIFY_STORE_DOMAIN` – imu iš esamų konstantų.
+- **Frontend**: `src/components/NewsletterForm.tsx` – pakeičiu simuliaciją į realų `supabase.functions.invoke('subscribe-newsletter', ...)` iškvietimą. Zod validacija emailui (kaip diktuoja projekto saugumo taisyklės). Kitas UI nesikeičia.
 
-No other files touched. No layout, no logic changes.
+## Ko nekeičiu
 
-### Verification
-After the swap I'll load `/`, `/about-us` (and wherever `EtsyReviews` renders) with Playwright against `localhost:8080`, listen for any `4xx/5xx` responses on `.jpg/.png/.webp/.avif`, and screenshot both sections to confirm the images visibly render before you republish.
+- Jokių dizaino/layoutų pakeitimų.
+- Jokios naujos duomenų bazės lentelės (viskas keliauja tiesiai į Shopify – single source of truth).
+- Jokių pakeitimų kituose puslapiuose.
 
-**Which option do you want — A (fix ibb.co URLs, keep external) or B (bundle into the app, self-hosted)?**
+## Ką reikės iš tavęs po patvirtinimo
+
+1. Leisti įjungti Lovable Cloud (vienu paspaudimu).
+2. Sukurti Shopify Custom App su `write_customers` teise ir įklijuoti Admin API access token'ą į saugią formą – parodysiu tikslius žingsnius.
