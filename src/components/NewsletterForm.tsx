@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
 
 interface NewsletterFormProps {
   variant?: "hero" | "footer";
 }
+
+const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .email({ message: "Please enter a valid email address" })
+  .max(255, { message: "Email must be less than 255 characters" });
 
 const NewsletterForm = ({ variant = "hero" }: NewsletterFormProps) => {
   const [email, setEmail] = useState("");
@@ -11,17 +20,36 @@ const NewsletterForm = ({ variant = "hero" }: NewsletterFormProps) => {
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    const trimmed = email.trim();
-    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-      toast.error("Please enter a valid email address");
+    const parsed = emailSchema.safeParse(email);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Invalid email");
       return;
     }
+
     setLoading(true);
-    // Simulate subscribe (no backend yet)
-    await new Promise((r) => setTimeout(r, 800));
-    toast.success("Thanks for subscribing! 🎉");
-    setEmail("");
-    setLoading(false);
+    try {
+      const { data, error } = await supabase.functions.invoke("subscribe-newsletter", {
+        body: { email: parsed.data },
+      });
+
+      if (error) {
+        console.error("subscribe-newsletter error:", error);
+        toast.error("Something went wrong. Please try again.");
+        return;
+      }
+
+      if (data?.alreadySubscribed) {
+        toast.success("You're already on the list! 💌");
+      } else {
+        toast.success("Thanks for subscribing! 🎉");
+      }
+      setEmail("");
+    } catch (err) {
+      console.error("subscribe-newsletter exception:", err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (variant === "footer") {
