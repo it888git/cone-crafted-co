@@ -226,7 +226,7 @@ const Index = () => {
         <div className="bg-primary rounded-2xl p-10 md:p-16 text-center text-primary-foreground">
           <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-3">Join Our Community</h2>
           <p className="font-sans text-sm opacity-80 max-w-md mx-auto mb-6">
-            Get early access to new fibers, limited colorways, and 10% off your first order.
+            Get early access to new fibers and limited colorways.
           </p>
           <NewsletterForm variant="hero" />
         </div>
