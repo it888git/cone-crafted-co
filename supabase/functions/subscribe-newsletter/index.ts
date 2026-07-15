@@ -26,9 +26,9 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers: jsonHeaders });
     }
 
-    const adminToken = Deno.env.get('SHOPIFY_ACCESS_TOKEN');
+    const adminToken = Deno.env.get('SHOPIFY_ADMIN_API_TOKEN') || Deno.env.get('SHOPIFY_ACCESS_TOKEN');
     if (!adminToken) {
-      console.error('Missing SHOPIFY_ACCESS_TOKEN');
+      console.error('Missing SHOPIFY_ADMIN_API_TOKEN');
       return new Response(JSON.stringify({ error: 'Server not configured' }), { status: 500, headers: jsonHeaders });
     }
 
