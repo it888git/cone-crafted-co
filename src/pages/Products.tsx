@@ -31,7 +31,7 @@ const weightFilters = [
   "#5 Chunky/Bulky",
 ];
 
-const featureFilters = ["Tweed", "Sequin", "Boucle", "Kidsilk"];
+const featureFilters = ["Fluffy", "Boucle", "Tweed", "Sequin"];
 
 const colorFilters = [
   { name: "White", hex: "#FFFFFF" },
