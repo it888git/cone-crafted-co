@@ -1,36 +1,51 @@
-## Ką padarysiu
+# Shopify analytics for headless Lovable storefront
 
-Sujungsiu naujienlaiškio formą (footeryje ir „Join Our Community" sekcijoje) su tavo Shopify parduotuve, kad kiekvienas paliktas emailas atsirastų **Shopify Admin → Customers** sąraše su pažymėtu „Accepts email marketing" laukeliu.
+## Goal
+Make Shopify Admin → Analytics (Live View, Online store sessions, product views, etc.) count visitors and pageviews from `yarneria.lovable.app`, even though the storefront runs on Lovable/Netlify — not on Shopify.
 
-## Kaip tai veiks
+## Why it's currently empty
+Shopify's Live View / Online Store analytics only count events sent to Shopify's tracking endpoint (`monorail-edge.shopifysvc.com`). The Lovable frontend never calls it, so Shopify sees 0 sessions. The Shopify "Custom Pixel" UI can't help either — Custom Pixels only run on Shopify-hosted pages (checkout, `myshopify.com` themes), not on external domains.
 
-1. Vartotojas įveda emailą formoje ir paspaudžia „Subscribe" / „Join".
-2. Frontend'as siunčia užklausą į saugią backend funkciją (Lovable Cloud edge function).
-3. Edge funkcija kviečia Shopify Admin API ir sukuria/atnaujina customer įrašą su:
-   - email
-   - `emailMarketingConsent.marketingState = SUBSCRIBED`
-   - tag'as `newsletter` (kad lengvai atfiltruotum Shopify admine)
-4. Sėkmės atveju – toast „Thanks for subscribing! 🎉". Jei emailas jau buvo prenumeruotas – tiek pat draugiška žinutė (be klaidos).
+The supported path for a headless storefront is exactly what Shopify Hydrogen does: send analytics beacons to Shopify's monorail endpoint from the storefront itself, using the Storefront API token you already have.
 
-## Kur juos matysi
+## Approach — Shopify Storefront Analytics via `sendShopifyAnalytics`
 
-Shopify Admin → **Customers** → filtras „Email subscribers" arba tag `newsletter`. Iš ten galėsi eksportuoti CSV arba tiesiai siųsti kampanijas per Shopify Email / bet kurią kitą marketing programėlę.
+Use Shopify's official `@shopify/hydrogen-react` package (works in plain React, no Hydrogen framework needed). It exposes `sendShopifyAnalytics()` which posts `page_view` / `product_view` / `collection_view` / `search_view` events to Shopify's monorail endpoint in the exact format Shopify Analytics expects.
 
-## Techninės detalės
+## Implementation
 
-- **Lovable Cloud** įjungimas (jei dar neįjungtas) – reikalingas edge funkcijai.
-- Nauja edge funkcija `subscribe-newsletter` (Deno) – priima `{ email }`, validuoja formatu, kviečia Shopify Admin GraphQL `customerCreate` mutation. Jei grąžina „email has already been taken" – laikom kaip sėkmę (be klaidos vartotojui).
-- Shopify Admin API tokenas saugomas kaip secret (`SHOPIFY_ADMIN_API_TOKEN`) – paprašysiu jo, kai atėjus laikas (reikės Custom App su `write_customers` scope tavo Shopify admine, arba galiu paruošti tikslią instrukciją, kaip jį gauti per 2 min).
-- `SHOPIFY_STORE_DOMAIN` – imu iš esamų konstantų.
-- **Frontend**: `src/components/NewsletterForm.tsx` – pakeičiu simuliaciją į realų `supabase.functions.invoke('subscribe-newsletter', ...)` iškvietimą. Zod validacija emailui (kaip diktuoja projekto saugumo taisyklės). Kitas UI nesikeičia.
+1. **Install dep**
+   - `bun add @shopify/hydrogen-react`
 
-## Ko nekeičiu
+2. **Create `src/lib/shopifyAnalytics.ts`**
+   - Wrap `sendShopifyAnalytics` and `AnalyticsEventName` from `@shopify/hydrogen-react`.
+   - Read `shopId`, `storefrontToken`, `currency` from the existing shopify env constants (`src/lib/shopify.ts`).
+   - Generate + persist a `_shopify_y` (visitor) cookie and a `_shopify_s` (session, 30 min) cookie — Shopify Live View keys sessions off these.
+   - Export helpers: `trackPageView(url, canonicalUrl)`, `trackProductView(product)`, `trackCollectionView(handle)`, `trackSearch(query)`.
 
-- Jokių dizaino/layoutų pakeitimų.
-- Jokios naujos duomenų bazės lentelės (viskas keliauja tiesiai į Shopify – single source of truth).
-- Jokių pakeitimų kituose puslapiuose.
+3. **Wire pageview tracking globally**
+   - New hook `src/hooks/useShopifyAnalytics.ts` — listens to `useLocation()` in React Router and fires `trackPageView` on every route change.
+   - Mount it once inside `AppContent` in `src/App.tsx` next to `useCartSync()`.
 
-## Ką reikės iš tavęs po patvirtinimo
+4. **Wire per-page events**
+   - `src/pages/ProductDetail.tsx` — call `trackProductView(product)` once the product loads.
+   - `src/pages/Products.tsx` — call `trackCollectionView('all')` on mount and `trackSearch(query)` when the search input has a value.
 
-1. Leisti įjungti Lovable Cloud (vienu paspaudimu).
-2. Sukurti Shopify Custom App su `write_customers` teise ir įklijuoti Admin API access token'ą į saugią formą – parodysiu tikslius žingsnius.
+5. **Respect market / currency**
+   - Pull current currency from `useMarketStore` so events carry the right ISO currency (EUR / USD / GBP) — this makes Shopify's per-country breakdown work.
+
+6. **Verify**
+   - After publishing: open the live site in an incognito tab, click through a few products.
+   - In Shopify Admin → Analytics → **Live View** the visitor should show up within ~30 seconds. Online Store Sessions, Top products by views, and Sessions by traffic source reports will start filling in over the next few hours (Shopify reports have a delay).
+
+## What this does *not* do
+- Doesn't send `add_to_cart` / `begin_checkout` server-side conversion events. Shopify already tracks conversion + purchases from the checkout URL you redirect to, so orders and conversion rate keep working as-is. If you later want cart/checkout funnel analytics too, we can add `ADD_TO_CART` and `BEGIN_CHECKOUT` events in the same helper.
+- Doesn't touch Lovable's built-in analytics or add Google Analytics. Purely Shopify.
+
+## Files touched
+- `package.json` (new dep)
+- `src/lib/shopifyAnalytics.ts` (new)
+- `src/hooks/useShopifyAnalytics.ts` (new)
+- `src/App.tsx` (mount hook)
+- `src/pages/ProductDetail.tsx` (product_view)
+- `src/pages/Products.tsx` (collection_view / search)

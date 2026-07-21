@@ -3,6 +3,7 @@ import ProductCard from "@/components/ProductCard";
 import { Loader2, Search, ChevronDown, MapPin, Repeat2, Globe, Lock, SlidersHorizontal, X } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
+import { trackCollectionView, trackSearch } from "@/lib/shopifyAnalytics";
 
 // Map each category to exact tag(s) that should match
 const yarnCategoryTags: Record<string, string[]> = {
@@ -257,6 +258,16 @@ const Products = () => {
     setActiveWeights(resolvedWeights);
     setLocalSearch(searchQuery || "");
   }, [resolvedCategory, resolvedFeatures, resolvedColors, resolvedWeights, searchQuery]);
+
+  // Shopify analytics: collection_view + search
+  useEffect(() => {
+    if (searchQuery && searchQuery.trim()) {
+      trackSearch(searchQuery);
+    } else {
+      trackCollectionView(resolvedCategory === "All cone yarn" ? "all" : resolvedCategory);
+    }
+  }, [searchQuery, resolvedCategory, resolvedFeatures.join(","), resolvedColors.join(","), resolvedWeights.join(",")]);
+
 
   useEffect(() => {
     const onScroll = () => setShowFloatingFilter(window.scrollY > 200);

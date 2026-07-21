@@ -6,11 +6,12 @@ import { ShoppingBag, Heart, ChevronRight, Loader2, Package, Truck, RotateCcw, M
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getPerKgPrice, formatPrice, extractWeightGrams, getLowestVariantPrice, formatPricePer100g } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
 import ProductCard from "@/components/ProductCard";
 import { getProductDescriptionText } from "@/lib/productDescription";
+import { trackProductView } from "@/lib/shopifyAnalytics";
 
 const isNewProduct = (createdAt: string): boolean => {
   const created = new Date(createdAt);
@@ -62,6 +63,12 @@ const ProductDetail = () => {
 
   // Fetch all products for "similar yarns"
   const { data: allProducts } = useShopifyProducts(50);
+
+  // Fire Shopify analytics product_view once the product loads
+  useEffect(() => {
+    if (product) trackProductView(product);
+  }, [product?.node.id]);
+
 
   if (isLoading) {
     return (

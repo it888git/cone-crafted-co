@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useCartSync } from "@/hooks/useCartSync";
+import { useShopifyAnalytics } from "@/hooks/useShopifyAnalytics";
 import { useMarketStore } from "@/stores/marketStore";
 import { useEffect } from "react";
 import Header from "@/components/Header";
@@ -35,6 +36,7 @@ const queryClient = new QueryClient({
 const AppContent = () => {
   const autoDetect = useMarketStore((s) => s.autoDetectCountry);
   useCartSync();
+  useShopifyAnalytics();
   useEffect(() => { autoDetect(); }, [autoDetect]);
   return (
     <>
