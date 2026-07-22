@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { getPerKgPrice, formatPrice, extractWeightGrams, getLowestVariantPrice, formatPricePer100g } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
+import { useConverter, currencySymbol, roundForDisplay } from "@/lib/currency";
 import ProductCard from "@/components/ProductCard";
 import { getProductDescriptionText } from "@/lib/productDescription";
 import { trackProductView } from "@/lib/shopifyAnalytics";
@@ -60,6 +61,7 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
   const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
+  const { convert } = useConverter();
 
   // Fetch all products for "similar yarns"
   const { data: allProducts } = useShopifyProducts(50);
@@ -117,7 +119,10 @@ const ProductDetail = () => {
     const lowestIntl = getLowestVariantPrice(pool);
     if (lowestIntl) {
       const hasMultipleIntl = pool.length > 1;
-      headlinePrice = `${hasMultipleIntl ? 'from ' : ''}${symbolPD}${lowestIntl.amount.toFixed(2)} / ${lowestIntl.label}`;
+      const conv = convert(lowestIntl.amount, lowestIntl.currencyCode);
+      const sym = currencySymbol(conv.currencyCode);
+      const zero = ['JPY','KRW'].includes(conv.currencyCode);
+      headlinePrice = `${hasMultipleIntl ? 'from ' : ''}${sym}${roundForDisplay(conv.amount, conv.currencyCode).toFixed(zero ? 0 : 2)} / ${lowestIntl.label}`;
     } else {
       headlinePrice = formatPricePer100g(perKgPrice, currencyCode);
     }
@@ -286,16 +291,19 @@ const ProductDetail = () => {
               </div>
 
               {/* Selected variant price – shown for all markets */}
-              {variantChosen && selectedVariant && (
-                <div className="mt-3 flex items-baseline gap-2">
-                  <span className="font-sans text-xl font-semibold text-foreground">
-                    {formatPrice(parseFloat(selectedVariant.price.amount), selectedVariant.price.currencyCode)}
-                  </span>
-                  <span className="text-sm font-sans text-muted-foreground">
-                    / {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g cone` : selectedVariant.title}
-                  </span>
-                </div>
-              )}
+              {variantChosen && selectedVariant && (() => {
+                const conv = convert(parseFloat(selectedVariant.price.amount), selectedVariant.price.currencyCode);
+                return (
+                  <div className="mt-3 flex items-baseline gap-2">
+                    <span className="font-sans text-xl font-semibold text-foreground">
+                      {formatPrice(conv.amount, conv.currencyCode)}
+                    </span>
+                    <span className="text-sm font-sans text-muted-foreground">
+                      / {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g cone` : selectedVariant.title}
+                    </span>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Stock indicator */}

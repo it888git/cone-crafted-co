@@ -6,6 +6,7 @@ import { useWishlistStore } from "@/stores/wishlistStore";
 import { Badge } from "@/components/ui/badge";
 import { getPerKgPrice, formatPrice, getLowestVariantPrice, formatPricePer100g, extractWeightGrams } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
+import { useConverter, currencySymbol, roundForDisplay } from "@/lib/currency";
 import { getProductDescriptionText } from "@/lib/productDescription";
 
 interface ProductCardProps {
@@ -25,25 +26,29 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const available = node.variants.edges.some((e) => e.node.availableForSale);
 
   const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
+  const { convert } = useConverter();
 
   const currencyCode = firstVariant?.price.currencyCode || price.currencyCode || 'EUR';
-  const CURRENCY_SYMBOLS: Record<string, string> = { EUR: '€', USD: '$', GBP: '£', JPY: '¥', AUD: 'A$', CAD: 'C$', CHF: 'CHF' };
-  const symbol = CURRENCY_SYMBOLS[currencyCode] || currencyCode;
 
   let formattedPrice: string;
   if (isInternational) {
-    // International: show cheapest variant absolute price + weight label
+    // International: show cheapest variant absolute price + weight label, converted to user's currency
     const availableVariants = node.variants.edges.filter((v) => v.node.availableForSale);
     const pool = availableVariants.length > 0 ? availableVariants : node.variants.edges;
     const lowest = getLowestVariantPrice(pool);
     if (lowest) {
       const hasMultiple = pool.length > 1;
-      formattedPrice = `${hasMultiple ? 'from ' : ''}${symbol}${lowest.amount.toFixed(2)} / ${lowest.label}`;
+      const conv = convert(lowest.amount, lowest.currencyCode);
+      const sym = currencySymbol(conv.currencyCode);
+      const displayAmount = roundForDisplay(conv.amount, conv.currencyCode);
+      formattedPrice = `${hasMultiple ? 'from ' : ''}${sym}${displayAmount.toFixed(['JPY','KRW'].includes(conv.currencyCode) ? 0 : 2)} / ${lowest.label}`;
     } else {
-      formattedPrice = formatPrice(parseFloat(price.amount), currencyCode);
+      const conv = convert(parseFloat(price.amount), currencyCode);
+      formattedPrice = formatPrice(conv.amount, conv.currencyCode);
     }
   } else {
     // EU: lowest per-100g across variants, rounded to 1 decimal
+    const symbol = currencySymbol(currencyCode);
     const per100gValues = node.variants.edges
       .map((v) => {
         const grams = extractWeightGrams(v.node.title);
