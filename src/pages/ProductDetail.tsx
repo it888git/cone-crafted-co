@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { getPerKgPrice, formatPrice, extractWeightGrams, getLowestVariantPrice, formatPricePer100g } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
+import { useConverter, currencySymbol, roundForDisplay } from "@/lib/currency";
 import ProductCard from "@/components/ProductCard";
 import { getProductDescriptionText } from "@/lib/productDescription";
 import { trackProductView } from "@/lib/shopifyAnalytics";
