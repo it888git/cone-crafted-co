@@ -68,19 +68,25 @@ const CartDrawer = () => {
                       const weightMatch = item.selectedOptions.map(o => o.value).join('').match(/(\d+)\s*g/i);
                       const grams = weightMatch ? parseInt(weightMatch[1], 10) : null;
                       const price = parseFloat(item.price.amount);
+                      const priceConv = convert(price, item.price.currencyCode);
                       if (grams && grams > 0) {
-                        const perKg = (price / grams) * 1000;
+                        const perKg = (priceConv.amount / grams) * 1000;
                         return (
                           <p className="text-sm font-sans text-muted-foreground mt-0.5">
-                            {formatPricePer100g(perKg, item.price.currencyCode)}
+                            {formatPricePer100g(perKg, priceConv.currencyCode)}
                           </p>
                         );
                       }
                       return null;
                     })()}
-                    <p className={`text-sm font-sans mt-0.5 ${isInternational ? 'text-muted-foreground' : 'text-foreground font-bold'}`}>
-                      Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {formatPrice(parseFloat(item.price.amount), item.price.currencyCode)}
-                    </p>
+                    {(() => {
+                      const priceConv = convert(parseFloat(item.price.amount), item.price.currencyCode);
+                      return (
+                        <p className={`text-sm font-sans mt-0.5 ${isInternational ? 'text-muted-foreground' : 'text-foreground font-bold'}`}>
+                          Cone weight: {item.selectedOptions.map(o => o.value).join(' · ')} – {formatPrice(priceConv.amount, priceConv.currencyCode)}
+                        </p>
+                      );
+                    })()}
                     <div className="flex items-center gap-2 mt-2">
                       <button
                         onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
@@ -120,7 +126,7 @@ const CartDrawer = () => {
             <div className="flex-shrink-0 border-t border-border pt-4 pb-8 space-y-3">
               <div className="flex justify-between items-center font-sans text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-semibold">{formatPrice(totalPrice, items[0]?.price.currencyCode || 'EUR')}</span>
+                <span className="font-semibold">{formatPrice(totalConv.amount, totalConv.currencyCode)}</span>
               </div>
               {isInternational && (
                 <div className="flex justify-end">
