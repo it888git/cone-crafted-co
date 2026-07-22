@@ -5,13 +5,17 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { formatPrice, formatPricePer100g } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
+import { useConverter } from "@/lib/currency";
 import { getVariantQuantityAvailable } from "@/lib/shopify";
 
 const CartDrawer = () => {
   const { items, isOpen, setIsOpen, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
   const isInternational = useMarketStore((s) => s.selectedCountry.deliveryRegion === 'international');
+  const { convert } = useConverter();
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
+  const rawTotalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
+  const baseCurrency = items[0]?.price.currencyCode || 'EUR';
+  const totalConv = convert(rawTotalPrice, baseCurrency);
 
   useEffect(() => { if (isOpen) syncCart(); }, [isOpen, syncCart]);
 

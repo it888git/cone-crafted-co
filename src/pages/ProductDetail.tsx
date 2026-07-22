@@ -119,7 +119,10 @@ const ProductDetail = () => {
     const lowestIntl = getLowestVariantPrice(pool);
     if (lowestIntl) {
       const hasMultipleIntl = pool.length > 1;
-      headlinePrice = `${hasMultipleIntl ? 'from ' : ''}${symbolPD}${lowestIntl.amount.toFixed(2)} / ${lowestIntl.label}`;
+      const conv = convert(lowestIntl.amount, lowestIntl.currencyCode);
+      const sym = currencySymbol(conv.currencyCode);
+      const zero = ['JPY','KRW'].includes(conv.currencyCode);
+      headlinePrice = `${hasMultipleIntl ? 'from ' : ''}${sym}${roundForDisplay(conv.amount, conv.currencyCode).toFixed(zero ? 0 : 2)} / ${lowestIntl.label}`;
     } else {
       headlinePrice = formatPricePer100g(perKgPrice, currencyCode);
     }
@@ -288,16 +291,19 @@ const ProductDetail = () => {
               </div>
 
               {/* Selected variant price – shown for all markets */}
-              {variantChosen && selectedVariant && (
-                <div className="mt-3 flex items-baseline gap-2">
-                  <span className="font-sans text-xl font-semibold text-foreground">
-                    {formatPrice(parseFloat(selectedVariant.price.amount), selectedVariant.price.currencyCode)}
-                  </span>
-                  <span className="text-sm font-sans text-muted-foreground">
-                    / {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g cone` : selectedVariant.title}
-                  </span>
-                </div>
-              )}
+              {variantChosen && selectedVariant && (() => {
+                const conv = convert(parseFloat(selectedVariant.price.amount), selectedVariant.price.currencyCode);
+                return (
+                  <div className="mt-3 flex items-baseline gap-2">
+                    <span className="font-sans text-xl font-semibold text-foreground">
+                      {formatPrice(conv.amount, conv.currencyCode)}
+                    </span>
+                    <span className="text-sm font-sans text-muted-foreground">
+                      / {extractWeightGrams(selectedVariant.title) ? `${extractWeightGrams(selectedVariant.title)}g cone` : selectedVariant.title}
+                    </span>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Stock indicator */}
