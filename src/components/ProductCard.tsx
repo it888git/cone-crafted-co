@@ -6,6 +6,7 @@ import { useWishlistStore } from "@/stores/wishlistStore";
 import { Badge } from "@/components/ui/badge";
 import { getPerKgPrice, formatPrice, getLowestVariantPrice, formatPricePer100g, extractWeightGrams } from "@/lib/priceUtils";
 import { useMarketStore } from "@/stores/marketStore";
+import { useConverter, currencySymbol, roundForDisplay } from "@/lib/currency";
 import { getProductDescriptionText } from "@/lib/productDescription";
 
 interface ProductCardProps {
