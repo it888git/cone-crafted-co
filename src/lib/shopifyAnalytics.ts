@@ -35,12 +35,15 @@ async function getShopId(): Promise<string | null> {
 // Persistent visitor + session ids required by Shopify Live View
 const Y_KEY = "_shopify_y";
 const S_KEY = "_shopify_s";
+const S_CREATED_KEY = "_shopify_s_created_at";
 const S_TTL_MS = 30 * 60 * 1000;
 
 function uid() {
-  // 32-char hex-ish string, good enough for Shopify's cookie id format
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return `${Date.now().toString(16)}-${crypto.randomUUID()}`.toUpperCase();
+  }
   const rnd = () => Math.random().toString(16).slice(2).padEnd(13, "0");
-  return (rnd() + rnd()).slice(0, 32).toUpperCase();
+  return `${Date.now().toString(16)}-${(rnd() + rnd()).slice(0, 32)}`.toUpperCase();
 }
 
 function readCookie(name: string): string | null {
@@ -67,19 +70,17 @@ function getVisitorId(): string {
 }
 
 function getSessionId(): string {
-  const stored = readCookie(S_KEY);
   const now = Date.now();
-  if (stored) {
-    const [id, tsStr] = stored.split(".");
-    const ts = Number(tsStr);
-    if (id && ts && now - ts < S_TTL_MS) {
-      // refresh timestamp (sliding session)
-      writeCookie(S_KEY, `${id}.${now}`, 1);
-      return id;
-    }
+  const stored = readCookie(S_KEY);
+  const createdAt = Number(window.localStorage.getItem(S_CREATED_KEY) || "0");
+  if (stored && createdAt && now - createdAt < S_TTL_MS) {
+    writeCookie(S_KEY, stored, 1);
+    window.localStorage.setItem(S_CREATED_KEY, String(now));
+    return stored;
   }
   const id = uid();
-  writeCookie(S_KEY, `${id}.${now}`, 1);
+  writeCookie(S_KEY, id, 1);
+  window.localStorage.setItem(S_CREATED_KEY, String(now));
   return id;
 }
 
@@ -93,6 +94,9 @@ interface BasePayload {
   gdprEnforced?: boolean;
   storefrontId2?: string;
   acceptedLanguage: string;
+  analyticsAllowed: boolean;
+  marketingAllowed: boolean;
+  saleOfDataAllowed: boolean;
 }
 
 async function basePayload(): Promise<BasePayload | null> {
@@ -105,6 +109,9 @@ async function basePayload(): Promise<BasePayload | null> {
     hasUserConsent: true,
     shopifySalesChannel: "headless",
     acceptedLanguage: (typeof navigator !== "undefined" && navigator.language) || "en",
+    analyticsAllowed: true,
+    marketingAllowed: true,
+    saleOfDataAllowed: true,
   };
 }
 
@@ -118,6 +125,8 @@ export async function trackPageView(
   const payload: ShopifyPageViewPayload = {
     ...base,
     ...browser,
+    uniqueToken: getVisitorId(),
+    visitToken: getSessionId(),
     canonicalUrl: window.location.href,
     pageType: pageType as ShopifyPageViewPayload["pageType"],
     ...extras,
@@ -153,6 +162,8 @@ export async function trackProductView(product: ProductForAnalytics) {
   const payload: ShopifyPageViewPayload = {
     ...base,
     ...browser,
+    uniqueToken: getVisitorId(),
+    visitToken: getSessionId(),
     canonicalUrl: window.location.href,
     pageType: AnalyticsPageType.product,
     resourceId: product.node.id,
